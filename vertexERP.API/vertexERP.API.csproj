@@ -10,4 +10,13 @@
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.14" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\vertexERP.Application\vertexERP.Application.csproj" />
+    <ProjectReference Include="..\vertexERP.Infrastructure\vertexERP.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

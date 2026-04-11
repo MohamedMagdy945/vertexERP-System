@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\vertexERP.Application\vertexERP.Application.csproj" />
+    <ProjectReference Include="..\vertexERP.Domain\vertexERP.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
