@@ -12,6 +12,6 @@ namespace vertexERP.Domain.Modules.Sales
 
         public DateTime PaymentDate { get; set; }
 
-        public string Method { get; set; } = string.Empty
+        public string Method { get; set; } = string.Empty;
     }
 }
