@@ -8,10 +8,11 @@ namespace vertexERP.Domain.Modules.HR
         public string LastName { get; set; } = default!;
         public string JobTitel { get; set; } = default!;
         public DateTime HireDate { get; set; }
-        public Money Salary { get; set; }
+        public Money Salary { get; set; } = default!;
         public int DepartmentId { get; set; }
         public int BranchId { get; set; }
         public int? ManagerId { get; set; }
+        public int PositionId { get; set; }
         public string UserId { get; set; } = default!;
 
     }
