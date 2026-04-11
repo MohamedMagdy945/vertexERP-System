@@ -6,5 +6,7 @@ namespace vertexERP.Domain.Modules.HR
     {
         public int EmployeeId { get; set; }
         public AttendanceType AttendanceType { get; set; }
+
+        public Employee Employee { get; set; } = default!;
     }
 }

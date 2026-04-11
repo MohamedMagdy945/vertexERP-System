@@ -6,5 +6,7 @@ namespace vertexERP.Domain.Modules.HR
     {
         public string Name { get; set; } = default!;
         public decimal BaseSalary { get; set; } = default!;
+
+        public ICollection<Employee> Employees { get; set; } = new List<Employee>();
     }
 }

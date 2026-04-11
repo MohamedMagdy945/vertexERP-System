@@ -13,5 +13,8 @@
         public int PositionId { get; set; }
         public string UserId { get; set; } = default!;
 
+        public Department Department { get; set; } = null!;
+        public Position Position { get; set; } = null!;
+        public ICollection<Attendance> Attendances { get; set; } = new List<Attendance>();
     }
 }
