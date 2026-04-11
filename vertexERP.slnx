@@ -1,1 +1,6 @@
-<Solution />
+<Solution>
+  <Project Path="vertexERP.API/vertexERP.API.csproj" Id="e154e1d5-0522-4f3b-a657-3ddaea2f4356" />
+  <Project Path="vertexERP.Application/vertexERP.Application.csproj" Id="97d75ca5-b645-40ca-9cc6-1b5688db4a90" />
+  <Project Path="vertexERP.Domain/vertexERP.Domain.csproj" Id="5d6c2d85-e906-4cec-a3db-df689bddefe8" />
+  <Project Path="vertexERP.Infrastructure/vertexERP.Infrastructure.csproj" Id="9086d82c-ee97-4d51-9948-0b80fa46885c" />
+</Solution>
