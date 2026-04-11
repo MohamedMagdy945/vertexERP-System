@@ -1,6 +1,4 @@
-﻿using vertexERP.Domain.Common;
-
-namespace vertexERP.Domain.Modules.HR
+﻿namespace vertexERP.Domain.Modules.HR
 {
     public class Employee
     {
@@ -8,7 +6,7 @@ namespace vertexERP.Domain.Modules.HR
         public string LastName { get; set; } = default!;
         public string JobTitel { get; set; } = default!;
         public DateTime HireDate { get; set; }
-        public Money Salary { get; set; } = default!;
+        public decimal Salary { get; set; }
         public int DepartmentId { get; set; }
         public int BranchId { get; set; }
         public int? ManagerId { get; set; }
