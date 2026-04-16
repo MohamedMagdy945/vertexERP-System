@@ -1,4 +1,5 @@
 ﻿using vertexERP.Domain.Common;
+using vertexERP.Domain.Common.ValueObjects;
 
 namespace vertexERP.Domain.Modules.Inventory
 {
@@ -10,7 +11,7 @@ namespace vertexERP.Domain.Modules.Inventory
         public int WarehouseId { get; set; }
         public Warehouse Warehouse { get; set; } = null!;
 
-        public int Quantity { get; set; }
+        public Quantity Quantity { get; set; } = default!;
 
         public ICollection<StockMovement> Movements { get; set; } = new List<StockMovement>();
 
