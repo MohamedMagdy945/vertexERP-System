@@ -1,6 +1,7 @@
 ﻿using vertexERP.Domain.Common;
+using vertexERP.Domain.Common.Enum;
 
-namespace vertexERP.Domain.Modules.Inventory
+namespace vertexERP.Domain.Modules.Inventory.Entities
 {
     public class StockMovement : BaseEntity
     {
