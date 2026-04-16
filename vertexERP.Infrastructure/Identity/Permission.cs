@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using vertexERP.Domain.Common;
 
 namespace vertexERP.Infrastructure.Identity
 {
-    public class ApplicationRole : IdentityRole<int>
+    public class Permission : BaseEntity
     {
+        public string Name { get; set; } = null!;
         public ICollection<RolePermission> RolePermissions { get; set; } = new List<RolePermission>();
     }
 }
