@@ -1,5 +1,5 @@
 ﻿using vertexERP.Domain.Common;
-using vertexERP.Domain.Common.Enum;
+using vertexERP.Domain.Modules.Inventory.Enums;
 
 namespace vertexERP.Domain.Modules.Inventory.Entities
 {

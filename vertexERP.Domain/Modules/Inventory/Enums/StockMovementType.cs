@@ -1,4 +1,4 @@
-﻿namespace vertexERP.Domain.Common
+﻿namespace vertexERP.Domain.Modules.Inventory.Enums
 {
     public enum StockMovementType
     {
