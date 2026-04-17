@@ -4,11 +4,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using vertexERP.Infrastructure.Common.Models;
+using vertexERP.Application.Common.Models;
 using vertexERP.Infrastructure.Common.Settings;
 using vertexERP.Infrastructure.Identity;
 
-namespace vertexERP.Infrastructure.Services
+namespace vertexERP.Infrastructure.Services.Identity
 {
     public class JwtTokenGenerator
     {
@@ -17,24 +17,19 @@ namespace vertexERP.Infrastructure.Services
         {
             _jwtSettings = settings.Value;
         }
-        public TokenPair GenerateTokenPair(ApplicationUser user, IEnumerable<string> roles, string ip, string device)
+        public TokenResponse GenerateTokenPair(ApplicationUser user, IEnumerable<string>? permissions)
         {
-            var accessToken = GenerateAccessToken(user, roles);
-            var refreshToken = GenerateRefreshToken();
 
-            return new TokenPair
+            return new TokenResponse
             {
-                AccessToken = accessToken,
-                RefreshToken = refreshToken,
-                RefreshTokenHash = HashToken(refreshToken),
+                AccessToken = GenerateAccessToken(user, permissions),
+                RefreshToken = GenerateRefreshToken(),
                 AccessTokenExpiration = DateTime.UtcNow.AddMinutes(_jwtSettings.AccessTokenExpiryMinutes),
                 RefreshTokenExpiration = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpiryDays),
-                Ip = ip,
-                Device = device
             };
         }
 
-        public string GenerateAccessToken(ApplicationUser user, IEnumerable<string> permissions)
+        public string GenerateAccessToken(ApplicationUser user, IEnumerable<string>? permissions)
         {
             var claims = new List<Claim>
             {
@@ -43,8 +38,11 @@ namespace vertexERP.Infrastructure.Services
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
-            claims.AddRange(permissions.Select(p =>
-                      new Claim("permission", p)));
+            if (permissions != null)
+            {
+                claims.AddRange(permissions.Select(p =>
+                          new Claim("permission", p)));
+            }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.AccessTokenSecret));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using vertexERP.Application.Interfaces;
-using vertexERP.Domain.Modules.Auth;
 using vertexERP.Infrastructure.Identity;
 
 namespace vertexERP.Infrastructure.Persistence
@@ -16,7 +15,8 @@ namespace vertexERP.Infrastructure.Persistence
         }
 
         public DbSet<RefreshToken> RefreshTokens { get; set; }
-        public DbSet<ApplicationRole> ApplicationRoles { get; set; }
+        public DbSet<RolePermission> RolePermissions { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

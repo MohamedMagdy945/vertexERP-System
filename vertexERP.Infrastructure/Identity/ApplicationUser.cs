@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using vertexERP.Domain.Modules.Auth;
 
 namespace vertexERP.Infrastructure.Identity
 {

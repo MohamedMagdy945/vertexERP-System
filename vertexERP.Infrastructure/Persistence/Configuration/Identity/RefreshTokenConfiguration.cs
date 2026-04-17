@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using vertexERP.Domain.Modules.Auth;
 using vertexERP.Infrastructure.Identity;
 
 namespace vertexERP.Infrastructure.Persistence.Configuration.Identity

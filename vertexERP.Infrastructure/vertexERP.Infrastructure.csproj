@@ -15,6 +15,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.17.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,7 +27,6 @@
     <Folder Include="Data\Files\" />
     <Folder Include="Data\Seed\" />
     <Folder Include="Persistence\Migrations\" />
-    <Folder Include="Persistence\Configuration\" />
   </ItemGroup>
 
 </Project>
