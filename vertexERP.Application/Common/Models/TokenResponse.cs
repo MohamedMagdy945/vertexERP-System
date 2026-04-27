@@ -1,4 +1,4 @@
-﻿namespace vertexERP.Application.Common.Models
+﻿namespace VertexERP.Application.Common.Models
 {
     public class TokenResponse
     {

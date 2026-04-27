@@ -1,6 +1,6 @@
-﻿using vertexERP.Domain.Common;
+﻿using VertexERP.Domain.Common;
 
-namespace vertexERP.Domain.Modules.Sales
+namespace VertexERP.Domain.Modules.Sales
 {
     public class Payment : BaseEntity
     {

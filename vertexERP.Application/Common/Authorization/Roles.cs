@@ -1,4 +1,4 @@
-﻿namespace vertexERP.Application.Common.Authorization
+﻿namespace VertexERP.Application.Common.Authorization
 {
     public static class Roles
     {

@@ -1,4 +1,4 @@
-﻿namespace vertexERP.Domain.Common.ValueObjects
+﻿namespace VertexERP.Domain.Common.ValueObjects
 {
     public class Quantity
     {

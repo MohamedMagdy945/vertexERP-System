@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using vertexERP.Infrastructure.Persistence;
+using VertexERP.Infrastructure.Persistence;
 
-namespace vertexERP.Infrastructure.Services.Identity
+namespace VertexERP.Infrastructure.Services.Identity
 {
     public class PermissionService
     {

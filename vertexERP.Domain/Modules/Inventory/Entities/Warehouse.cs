@@ -1,6 +1,6 @@
-﻿using vertexERP.Domain.Common;
+﻿using VertexERP.Domain.Common;
 
-namespace vertexERP.Domain.Modules.Inventory.Entities
+namespace VertexERP.Domain.Modules.Inventory.Entities
 {
     public class Warehouse : BaseEntity
     {

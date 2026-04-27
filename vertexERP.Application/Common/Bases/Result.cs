@@ -1,4 +1,4 @@
-﻿namespace vertexERP.Application.Common.Bases
+﻿namespace VertexERP.Application.Common.Bases
 {
     public class Result
     {

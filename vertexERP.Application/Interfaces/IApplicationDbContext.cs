@@ -1,4 +1,4 @@
-﻿namespace vertexERP.Application.Interfaces
+﻿namespace VertexERP.Application.Interfaces
 {
     public interface IApplicationDbContext
     {

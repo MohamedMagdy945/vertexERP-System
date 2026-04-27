@@ -1,4 +1,4 @@
-﻿namespace vertexERP.Domain.Modules.Purchasing
+﻿namespace VertexERP.Domain.Modules.Purchasing
 {
     public class GoodsReceipt
     {

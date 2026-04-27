@@ -19,14 +19,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\vertexERP.Application\vertexERP.Application.csproj" />
-    <ProjectReference Include="..\vertexERP.Domain\vertexERP.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Data\Files\" />
     <Folder Include="Data\Seed\" />
     <Folder Include="Persistence\Migrations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VertexERP.Application\VertexERP.Application.csproj" />
   </ItemGroup>
 
 </Project>

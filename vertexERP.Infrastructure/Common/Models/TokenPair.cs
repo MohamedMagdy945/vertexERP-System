@@ -1,4 +1,4 @@
-﻿namespace vertexERP.Infrastructure.Common.Models
+﻿namespace VertexERP.Infrastructure.Common.Models
 {
     public class TokenPair
     {

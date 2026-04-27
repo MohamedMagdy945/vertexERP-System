@@ -1,7 +1,7 @@
-﻿using vertexERP.Domain.Common;
-using vertexERP.Domain.Common.ValueObjects;
+﻿using VertexERP.Domain.Common;
+using VertexERP.Domain.Common.ValueObjects;
 
-namespace vertexERP.Domain.Modules.Inventory.Entities
+namespace VertexERP.Domain.Modules.Inventory.Entities
 {
     public class Stock : BaseEntity
     {

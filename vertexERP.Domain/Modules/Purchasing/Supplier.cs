@@ -1,6 +1,6 @@
-﻿using vertexERP.Domain.Common;
+﻿using VertexERP.Domain.Common;
 
-namespace vertexERP.Domain.Modules.Purchasing
+namespace VertexERP.Domain.Modules.Purchasing
 {
     public class Supplier : BaseEntity
     {

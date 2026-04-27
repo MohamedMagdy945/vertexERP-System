@@ -1,6 +1,6 @@
-﻿using vertexERP.Domain.Common;
+﻿using VertexERP.Domain.Common;
 
-namespace vertexERP.Domain.Modules.HR
+namespace VertexERP.Domain.Modules.HR
 {
     public class Department : BaseEntity
     {

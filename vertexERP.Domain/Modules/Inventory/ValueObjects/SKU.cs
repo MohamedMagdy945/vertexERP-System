@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace vertexERP.Domain.Modules.Inventory.ValueObjects
+namespace VertexERP.Domain.Modules.Inventory.ValueObjects
 {
     public class SKU
     {

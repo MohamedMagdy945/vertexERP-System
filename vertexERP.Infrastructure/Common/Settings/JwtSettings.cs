@@ -1,4 +1,4 @@
-﻿namespace vertexERP.Infrastructure.Common.Settings
+﻿namespace VertexERP.Infrastructure.Common.Settings
 {
     public class JwtSettings
     {

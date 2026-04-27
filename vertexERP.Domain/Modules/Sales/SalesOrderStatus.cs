@@ -1,4 +1,4 @@
-﻿namespace vertexERP.Domain.Modules.Sales
+﻿namespace VertexERP.Domain.Modules.Sales
 {
     public enum SalesOrderStatus
     {

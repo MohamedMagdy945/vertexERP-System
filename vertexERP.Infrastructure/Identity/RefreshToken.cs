@@ -1,6 +1,6 @@
-﻿using vertexERP.Domain.Common;
+﻿using VertexERP.Domain.Common;
 
-namespace vertexERP.Infrastructure.Identity
+namespace VertexERP.Infrastructure.Identity
 {
     public class RefreshToken : BaseEntity
     {

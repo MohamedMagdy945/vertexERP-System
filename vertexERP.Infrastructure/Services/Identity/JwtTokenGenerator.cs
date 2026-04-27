@@ -4,11 +4,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using vertexERP.Application.Common.Models;
-using vertexERP.Infrastructure.Common.Settings;
-using vertexERP.Infrastructure.Identity;
+using VertexERP.Application.Common.Models;
+using VertexERP.Infrastructure.Common.Settings;
+using VertexERP.Infrastructure.Identity;
 
-namespace vertexERP.Infrastructure.Services.Identity
+namespace VertexERP.Infrastructure.Services.Identity
 {
     public class JwtTokenGenerator
     {

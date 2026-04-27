@@ -1,4 +1,4 @@
-﻿namespace vertexERP.Domain.Common
+﻿namespace VertexERP.Domain.Common
 {
     public enum AttendanceType
     {

@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
-using vertexERP.Application.Common.Authorization;
-using vertexERP.Application.Common.Bases;
-using vertexERP.Application.Common.Models;
-using vertexERP.Application.Interfaces.Identity;
-using vertexERP.Infrastructure.Identity;
+using VertexERP.Application.Common.Authorization;
+using VertexERP.Application.Common.Bases;
+using VertexERP.Application.Common.Models;
+using VertexERP.Application.Interfaces.Identity;
+using VertexERP.Infrastructure.Identity;
 
-namespace vertexERP.Infrastructure.Services.Identity
+namespace VertexERP.Infrastructure.Services.Identity
 {
     public class AuthService : IAuthService
     {
