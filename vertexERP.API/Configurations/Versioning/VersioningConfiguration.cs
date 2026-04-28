@@ -1,8 +1,8 @@
-﻿namespace VertexERP.API.Extensions
+﻿namespace VertexERP.API.Configurations.Versioning
 {
-    public static class VersioningExtensions
+    public static class VersioningConfiguration
     {
-        public static IServiceCollection RegisterApiVersioning(this IServiceCollection services)
+        public static IServiceCollection AddApiVersioningConfig(this IServiceCollection services)
         {
             services.AddApiVersioning(options =>
             {
@@ -18,6 +18,5 @@
            });
             return services;
         }
-
     }
 }

@@ -2,14 +2,13 @@
 using Serilog.Events;
 using Serilog.Exceptions;
 
-namespace VertexERP.API.Extensions
+namespace VertexERP.API.Configurations.Logging
 {
-    public static class LoggingExtension
+    public static class SerilogConfiguration
     {
-
-        public static ConfigureHostBuilder UseSerilogLogging(
-            this ConfigureHostBuilder host,
-            IConfiguration configuration)
+        public static ConfigureHostBuilder AddSerilogLogging(
+         this ConfigureHostBuilder host,
+         IConfiguration configuration)
         {
 
             Log.Logger = new LoggerConfiguration()

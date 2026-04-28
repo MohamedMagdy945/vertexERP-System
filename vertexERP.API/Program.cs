@@ -1,5 +1,6 @@
 using Microsoft.OpenApi;
-using VertexERP.API.Extensions;
+using VertexERP.API.Configurations.Logging;
+using VertexERP.API.Configurations.Versioning;
 using VertexERP.API.Middleware;
 using VertexERP.Infrastructure;
 
@@ -12,7 +13,7 @@ namespace VertexERP.API
 
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Host.UseSerilogLogging(builder.Configuration);
+            builder.Host.AddSerilogLogging(builder.Configuration);
 
 
             builder.Services.AddControllers();
@@ -31,7 +32,7 @@ namespace VertexERP.API
                     }
                 });
             });
-            builder.Services.RegisterApiVersioning();
+            builder.Services.AddApiVersioningConfig();
 
             builder.Services.AddInfrastructureService(builder.Configuration);
 
