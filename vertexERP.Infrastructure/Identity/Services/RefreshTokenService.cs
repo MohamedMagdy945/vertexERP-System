@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using VertexERP.Infrastructure.Identity;
-using VertexERP.Infrastructure.Persistence;
+using VertexERP.Infrastructure.Identity.Entities;
+using VertexERP.Infrastructure.Persistence.DbContext;
 
-namespace VertexERP.Infrastructure.Services.Identity
+namespace VertexERP.Infrastructure.Identity.Identity
 {
     public class RefreshTokenService
     {

@@ -19,9 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Files\" />
-    <Folder Include="Data\Seed\" />
-    <Folder Include="Persistence\Migrations\" />
+    <Folder Include="Persistence\Files\" />
+    <Folder Include="Persistence\Seed\" />
   </ItemGroup>
 
   <ItemGroup>

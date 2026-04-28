@@ -1,4 +1,4 @@
-﻿namespace VertexERP.Infrastructure.Identity
+﻿namespace VertexERP.Infrastructure.Identity.Entities
 {
     public class RolePermission
     {

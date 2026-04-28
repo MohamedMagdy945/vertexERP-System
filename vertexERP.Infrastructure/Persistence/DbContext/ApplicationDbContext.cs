@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using VertexERP.Application.Interfaces;
-using VertexERP.Infrastructure.Identity;
+using VertexERP.Infrastructure.Identity.Entities;
 
-namespace VertexERP.Infrastructure.Persistence
+namespace VertexERP.Infrastructure.Persistence.DbContext
 {
     public class ApplicationDbContext :
         IdentityDbContext<ApplicationUser, ApplicationRole, int>,

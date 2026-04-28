@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace VertexERP.Infrastructure.Identity
+namespace VertexERP.Infrastructure.Identity.Entities
 {
     public class ApplicationUser : IdentityUser<int>
     {

@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using VertexERP.Infrastructure.Identity;
+using VertexERP.Infrastructure.Identity.Entities;
 
-namespace VertexERP.Infrastructure.Persistence.Configuration.Identity
+namespace VertexERP.Infrastructure.Identity.Identity
 {
     public class RolePermissionConfiguration : IEntityTypeConfiguration<RolePermission>
     {

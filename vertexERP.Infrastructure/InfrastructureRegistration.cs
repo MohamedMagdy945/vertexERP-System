@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using VertexERP.Infrastructure.Persistence;
+using VertexERP.Infrastructure.Persistence.DbContext;
 
 namespace VertexERP.Infrastructure
 {
-    public static class InfrastructureRegistrationService
+    public static class InfrastructureRegistration
     {
         public static IServiceCollection AddInfrastructureService(this IServiceCollection services, IConfiguration configuration)
         {

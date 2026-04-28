@@ -6,9 +6,9 @@ using System.Security.Cryptography;
 using System.Text;
 using VertexERP.Application.Common.Models;
 using VertexERP.Infrastructure.Common.Settings;
-using VertexERP.Infrastructure.Identity;
+using VertexERP.Infrastructure.Identity.Entities;
 
-namespace VertexERP.Infrastructure.Services.Identity
+namespace VertexERP.Infrastructure.Identity.Identity
 {
     public class JwtTokenGenerator
     {
