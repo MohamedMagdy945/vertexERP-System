@@ -39,6 +39,7 @@ namespace VertexERP.API
             var app = builder.Build();
 
             app.UseMiddleware<CorrelationIdMiddleware>();
+            app.UseMiddleware<ErrorHandlerMiddleware>();
 
             app.UseAppRequestLogging();
 

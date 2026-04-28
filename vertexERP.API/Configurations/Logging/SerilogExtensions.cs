@@ -28,7 +28,7 @@ namespace VertexERP.API.Configurations.Logging
                                         ?? httpContext.TraceIdentifier;
 
                     diag.Set("CorrelationId", correlationId);
-                    diag.Set("UserAgent", httpContext.Request.Headers["User-Agent"]); // إضافة مفيدة
+
                 };
 
                 options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000} ms [ID: {CorrelationId}]";

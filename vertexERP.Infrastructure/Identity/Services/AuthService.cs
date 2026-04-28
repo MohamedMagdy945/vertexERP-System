@@ -4,7 +4,7 @@ using System.Data;
 using VertexERP.Application.Common.Authorization;
 using VertexERP.Application.Common.Bases;
 using VertexERP.Application.Common.Models;
-using VertexERP.Application.Interfaces.Identity;
+using VertexERP.Application.Identity.Interfaces;
 using VertexERP.Infrastructure.Identity.Entities;
 
 namespace VertexERP.Infrastructure.Identity.Identity

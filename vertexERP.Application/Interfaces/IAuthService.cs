@@ -1,7 +1,7 @@
 ﻿using VertexERP.Application.Common.Bases;
 using VertexERP.Application.Common.Models;
 
-namespace VertexERP.Application.Interfaces.Identity
+namespace VertexERP.Application.Identity.Interfaces
 {
     public interface IAuthService
     {
