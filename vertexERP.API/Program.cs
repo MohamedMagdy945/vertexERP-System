@@ -3,6 +3,7 @@ using CorrelationId.DependencyInjection;
 using Serilog;
 using Serilog.Events;
 using Serilog.Exceptions;
+using VertexERP.Infrastructure;
 
 namespace VertexERP.API
 {
@@ -37,6 +38,8 @@ namespace VertexERP.API
             builder.Services.AddControllers();
 
             builder.Services.AddOpenApi();
+
+            builder.Services.AddInfrastructureService(builder.Configuration);
 
             var app = builder.Build();
             app.UseCorrelationId();

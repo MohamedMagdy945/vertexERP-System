@@ -9,7 +9,7 @@ namespace VertexERP.Infrastructure.Persistence.Configuration.Identity
         public void Configure(EntityTypeBuilder<RefreshToken> builder)
         {
             builder.HasOne<ApplicationUser>()
-                .WithMany()
+                .WithMany(u => u.RefreshTokens)
                 .HasForeignKey(s => s.UserId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
