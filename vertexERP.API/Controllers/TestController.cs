@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Serilog;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Mvc;
 
 namespace VertexERP.API.Controllers
 {
+    [ApiVersion("1.0")]
     [Route("api/[controller]")]
     [ApiController]
     public class TestController : ControllerBase
@@ -15,12 +16,12 @@ namespace VertexERP.API.Controllers
             this.logger = logger;
         }
 
-        [HttpGet]
-        public ActionResult Index()
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(UserDto), 200)]
+        public IActionResult Get()
         {
-            Log.Information("🔥 Test log from application");
-            return Ok("Done");
-
+            return Ok("API is working");
         }
+
     }
 }

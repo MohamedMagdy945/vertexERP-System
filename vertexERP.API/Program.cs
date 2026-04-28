@@ -1,5 +1,6 @@
-using CorrelationId;
+using Microsoft.OpenApi;
 using VertexERP.API.Extensions;
+using VertexERP.API.Middleware;
 using VertexERP.Infrastructure;
 
 namespace VertexERP.API
@@ -13,24 +14,42 @@ namespace VertexERP.API
 
             builder.Host.UseSerilogLogging(builder.Configuration);
 
-            builder.Services.AddCorrelationIdSetup();
 
             builder.Services.AddControllers();
 
-            builder.Services.AddOpenApi();
+            builder.Services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "VertexERP System",
+                    Version = "v1",
+                    Description = "ERP System",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Mohamed Magdy",
+                        Email = "mohamedmagdy000022@gmail.com"
+                    }
+                });
+            });
+            builder.Services.RegisterApiVersioning();
 
             builder.Services.AddInfrastructureService(builder.Configuration);
 
             var app = builder.Build();
-            app.UseCorrelationId();
+
+            app.UseMiddleware<CorrelationIdMiddleware>();
 
             app.UseAppRequestLogging();
 
             if (app.Environment.IsDevelopment())
             {
-                app.MapOpenApi();
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI(c =>
+                {
+                    c.DocumentTitle = "Vertex ERP System";
+                    c.DisplayRequestDuration();
+                    c.EnableTryItOutByDefault();
+                });
             }
 
             app.UseRouting();

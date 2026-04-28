@@ -9,10 +9,16 @@ namespace VertexERP.API.Extensions
         {
             app.UseSerilogRequestLogging(options =>
             {
+
+                options.GetLevel = (httpContext, _, __) =>
+                    httpContext.Request.Path.StartsWithSegments("/swagger")
+                        ? LogEventLevel.Verbose
+                        : LogEventLevel.Information;
+
                 options.EnrichDiagnosticContext = (diag, httpContext) =>
                 {
                     var correlationId =
-                        httpContext.Request.Headers["X-Correlation-Id"].FirstOrDefault()
+                        httpContext.Items["X-Correlation-Id"]?.ToString()
                         ?? httpContext.TraceIdentifier;
 
                     diag.Set("CorrelationId", correlationId);
@@ -20,15 +26,6 @@ namespace VertexERP.API.Extensions
 
                 options.MessageTemplate =
                     "HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000} ms CorrelationId={CorrelationId}";
-
-                options.GetLevel = (httpContext, elapsed, ex) =>
-                {
-                    return ex != null || httpContext.Response.StatusCode >= 500
-                        ? LogEventLevel.Error
-                        : httpContext.Response.StatusCode >= 400
-                            ? LogEventLevel.Warning
-                            : LogEventLevel.Information;
-                };
             });
 
             return app;

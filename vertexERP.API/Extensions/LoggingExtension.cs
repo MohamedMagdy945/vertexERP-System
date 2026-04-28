@@ -25,6 +25,8 @@ namespace VertexERP.API.Extensions
                     .ReadFrom.Configuration(context.Configuration)
                     .ReadFrom.Services(services)
                     .Enrich.WithExceptionDetails();
+
+
             });
 
             return host;
