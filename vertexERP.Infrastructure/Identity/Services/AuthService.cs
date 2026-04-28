@@ -29,7 +29,7 @@ namespace VertexERP.Infrastructure.Identity.Identity
             _refreshTokenService = refreshTokenService;
         }
 
-        public async Task<Result<TokenResponse>> RegisterAsync(string username, string email, string password, string? ip, string? device)
+        public async Task<Result<TokenResponse>> RegisterAsync(string username, string email, string password)
         {
             var existingUser = await _userManager.FindByNameAsync(username)
                          ?? await _userManager.FindByEmailAsync(email);
@@ -51,7 +51,7 @@ namespace VertexERP.Infrastructure.Identity.Identity
                     string.Join(", ", createResult.Errors.Select(e => e.Description)));
             }
 
-            var roleResult = await _userManager.AddToRoleAsync(user, Roles.User);
+            var roleResult = await _userManager.AddToRoleAsync(user, AppRoles.User);
 
             if (!roleResult.Succeeded)
             {

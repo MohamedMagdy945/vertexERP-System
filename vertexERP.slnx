@@ -3,4 +3,5 @@
   <Project Path="VertexERP.Application/VertexERP.Application.csproj" />
   <Project Path="VertexERP.Domain/VertexERP.Domain.csproj" />
   <Project Path="VertexERP.Infrastructure/VertexERP.Infrastructure.csproj" />
+  <Project Path="VertexERP.Shared/VertexERP.Shared.csproj" Id="1218aaf6-ce08-49ff-9df0-accbe8340173" />
 </Solution>

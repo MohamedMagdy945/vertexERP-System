@@ -2,16 +2,20 @@ using Microsoft.OpenApi;
 using VertexERP.API.Configurations.Logging;
 using VertexERP.API.Configurations.Versioning;
 using VertexERP.API.Middleware;
+using VertexERP.Application;
 using VertexERP.Infrastructure;
+using VertexERP.Infrastructure.Persistence.SeederRunner;
 
 namespace VertexERP.API
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
 
             var builder = WebApplication.CreateBuilder(args);
+
+
 
             builder.Host.AddSerilogLogging(builder.Configuration);
 
@@ -33,7 +37,7 @@ namespace VertexERP.API
                 });
             });
             builder.Services.AddApiVersioningConfig();
-
+            builder.Services.AddApplicationService();
             builder.Services.AddInfrastructureService(builder.Configuration);
 
             var app = builder.Build();
@@ -41,8 +45,14 @@ namespace VertexERP.API
             app.UseMiddleware<CorrelationIdMiddleware>();
             app.UseMiddleware<ErrorHandlerMiddleware>();
 
+
             app.UseAppRequestLogging();
 
+            using (var scope = app.Services.CreateScope())
+            {
+                var runner = scope.ServiceProvider.GetRequiredService<DataSeederRunner>();
+                await runner.SeedAsync();
+            }
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();

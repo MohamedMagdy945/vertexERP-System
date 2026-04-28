@@ -1,0 +1,20 @@
+{
+  "roles": [
+    "Admin",
+    "Manager",
+    "User"
+  ],
+  "permissions": [
+    "Users.Create",
+    "Users.View",
+    "Users.Edit",
+    "Users.Delete",
+    "Orders.Create",
+    "Orders.View"
+  ],
+  "adminUser": {
+    "userName": "admin",
+    "email": "admin@erp.com",
+    "password": "Admin@123"
+  }
+}

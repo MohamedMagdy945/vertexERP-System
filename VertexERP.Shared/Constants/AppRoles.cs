@@ -1,9 +1,10 @@
 ﻿namespace VertexERP.Application.Common.Authorization
 {
-    public static class Roles
+    public static class AppRoles
     {
         public const string Admin = "Admin";
-        public const string Manager = "Manager";
         public const string User = "User";
+        public static List<string> GetAll() => new() { Admin, User };
+
     }
 }

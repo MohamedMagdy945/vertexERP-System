@@ -6,7 +6,7 @@ using VertexERP.Application.Identity.Interfaces;
 namespace VertexERP.Application.Identity.Register
 {
     public record CreateUserCommand(string UserName, string Email, string Password,
-    string ConfirmPassword, string? Ip, string? Device) : IRequest<Response<TokenResponse>>;
+    string ConfirmPassword) : IRequest<Response<TokenResponse>>;
 
     public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Response<TokenResponse>>
     {
@@ -21,9 +21,7 @@ namespace VertexERP.Application.Identity.Register
             var result = await _authService.RegisterAsync(
                 request.UserName,
                 request.Email,
-                request.Password,
-                request.Ip ?? "",
-                request.Device ?? "");
+                request.Password);
 
             if (!result.IsSuccess)
                 return ResponseHandler.Failure<TokenResponse>(result.Error ?? "User registration failed");

@@ -20,13 +20,14 @@
 
   <ItemGroup>
     <Folder Include="Abstraction\" />
+    <Folder Include="Persistence\Models\" />
     <Folder Include="Services\" />
     <Folder Include="Persistence\Files\" />
-    <Folder Include="Persistence\Seed\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\VertexERP.Application\VertexERP.Application.csproj" />
+    <ProjectReference Include="..\VertexERP.Shared\VertexERP.Shared.csproj" />
   </ItemGroup>
 
 </Project>
