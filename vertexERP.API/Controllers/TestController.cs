@@ -1,4 +1,4 @@
-﻿using Asp.Versioning;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 
 namespace VertexERP.API.Controllers
@@ -16,11 +16,18 @@ namespace VertexERP.API.Controllers
             this.logger = logger;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet]
         [ProducesResponseType(typeof(UserDto), 200)]
         public IActionResult Get()
         {
-            return Ok("API is working");
+            logger.LogInformation("Health check endpoint was called.");
+
+            return Ok(new UserDto
+            {
+                Id = 1,
+                UserId = 1,
+                Name = "API is working"
+            });
         }
 
     }

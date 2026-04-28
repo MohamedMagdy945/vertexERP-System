@@ -1,4 +1,4 @@
-﻿using Serilog;
+using Serilog;
 using Serilog.Events;
 
 namespace VertexERP.API.Extensions
@@ -9,11 +9,25 @@ namespace VertexERP.API.Extensions
         {
             app.UseSerilogRequestLogging(options =>
             {
+                options.GetLevel = (httpContext, _, exception) =>
+                {
+                    if (httpContext.Request.Path.StartsWithSegments("/swagger"))
+                    {
+                        return LogEventLevel.Verbose;
+                    }
 
-                options.GetLevel = (httpContext, _, __) =>
-                    httpContext.Request.Path.StartsWithSegments("/swagger")
-                        ? LogEventLevel.Verbose
-                        : LogEventLevel.Information;
+                    if (exception is not null || httpContext.Response.StatusCode >= 500)
+                    {
+                        return LogEventLevel.Error;
+                    }
+
+                    if (httpContext.Response.StatusCode >= 400)
+                    {
+                        return LogEventLevel.Warning;
+                    }
+
+                    return LogEventLevel.Information;
+                };
 
                 options.EnrichDiagnosticContext = (diag, httpContext) =>
                 {
