@@ -67,9 +67,11 @@ namespace VertexERP.Infrastructure.Identity.Identity
 
             var tokenResponse = _tokenGenerator.GenerateTokenPair(user, permissions);
 
+            var hashToken = _tokenGenerator.HashToken(tokenResponse.RefreshToken);
+
             await _refreshTokenService.SaveRefreshTokenAsync(
                              user.Id,
-                             tokenResponse.RefreshToken,
+                             hashToken,
                              tokenResponse.RefreshTokenExpiration);
 
             return Result<TokenResponse>.Success(tokenResponse);
@@ -91,9 +93,12 @@ namespace VertexERP.Infrastructure.Identity.Identity
 
             var tokenResponse = _tokenGenerator.GenerateTokenPair(user, permissions);
 
+            var hashToken = _tokenGenerator.HashToken(tokenResponse.RefreshToken);
+
+
             await _refreshTokenService.SaveRefreshTokenAsync(
                 user.Id,
-                tokenResponse.RefreshToken,
+                hashToken,
                 tokenResponse.RefreshTokenExpiration);
 
             return Result<TokenResponse>.Success(tokenResponse);
@@ -129,11 +134,12 @@ namespace VertexERP.Infrastructure.Identity.Identity
 
             var permissions = await _permissionService.GetUserPermissionsAsync(user.Id);
 
+            var hashToken = _tokenGenerator.HashToken(hashedToken);
             var tokenResponse = _tokenGenerator.GenerateTokenPair(user, permissions);
 
             await _refreshTokenService.SaveRefreshTokenAsync(
                 user.Id,
-                tokenResponse.RefreshToken,
+                hashToken,
                 tokenResponse.RefreshTokenExpiration);
 
             return Result<TokenResponse>.Success(tokenResponse);
