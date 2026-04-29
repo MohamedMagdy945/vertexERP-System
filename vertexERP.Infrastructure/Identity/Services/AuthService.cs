@@ -51,6 +51,8 @@ namespace VertexERP.Infrastructure.Identity.Identity
                     string.Join(", ", createResult.Errors.Select(e => e.Description)));
             }
 
+
+
             var roleResult = await _userManager.AddToRoleAsync(user, AppRoles.User);
 
             if (!roleResult.Succeeded)
@@ -73,6 +75,8 @@ namespace VertexERP.Infrastructure.Identity.Identity
                              user.Id,
                              hashToken,
                              tokenResponse.RefreshTokenExpiration);
+
+            tokenResponse.UserId = user.Id;
 
             return Result<TokenResponse>.Success(tokenResponse);
         }
@@ -100,6 +104,7 @@ namespace VertexERP.Infrastructure.Identity.Identity
                 user.Id,
                 hashToken,
                 tokenResponse.RefreshTokenExpiration);
+            tokenResponse.UserId = user.Id;
 
             return Result<TokenResponse>.Success(tokenResponse);
         }
@@ -136,6 +141,7 @@ namespace VertexERP.Infrastructure.Identity.Identity
 
             var hashToken = _tokenGenerator.HashToken(hashedToken);
             var tokenResponse = _tokenGenerator.GenerateTokenPair(user, permissions);
+            tokenResponse.UserId = user.Id;
 
             await _refreshTokenService.SaveRefreshTokenAsync(
                 user.Id,

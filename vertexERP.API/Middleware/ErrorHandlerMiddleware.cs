@@ -82,13 +82,11 @@ public class ErrorHandlerMiddleware
 
         if (ex is ValidationAppException validationExce)
         {
-            _logger.LogWarning("Validation failed for request {CorrelationId}. Errors: {Errors}",
-                correlationId, validationExce.Errors);
+            _logger.LogWarning("Validation failed for request . Errors: {Errors}", validationExce.Errors);
         }
         else
         {
-            _logger.LogError(ex, "CRITICAL ERROR: Unhandled exception caught. CorrelationId: {CorrelationId}",
-                correlationId);
+            _logger.LogError(ex, "CRITICAL ERROR: Unhandled exception caught");
         }
 
         context.Response.StatusCode = (int)statusCode;
