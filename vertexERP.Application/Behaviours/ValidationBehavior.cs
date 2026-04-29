@@ -1,24 +1,27 @@
 ﻿using FluentValidation;
 using MediatR;
-using VertexERP.Application.Common.Bases;
+using VertexERP.Application.Common.Exceptions;
 
-namespace VertexERP.Application.Behaviours
+namespace VertexERP.Application.Behaviours;
+
+public class ValidationBehavior<TRequest, TResponse>
+    : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : notnull
 {
-    public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, Response<TResponse>>
-            where TRequest : IRequest<Response<TResponse>>
+    private readonly IEnumerable<IValidator<TRequest>> _validators;
+
+    public ValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
     {
-        private readonly IEnumerable<IValidator<TRequest>> _validators;
+        _validators = validators;
+    }
 
-        public ValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
+    public async Task<TResponse> Handle(
+        TRequest request,
+        RequestHandlerDelegate<TResponse> next,
+        CancellationToken cancellationToken)
+    {
+        if (_validators.Any())
         {
-            _validators = validators;
-        }
-
-        public async Task<Response<TResponse>> Handle(TRequest request, RequestHandlerDelegate<Response<TResponse>> next, CancellationToken cancellationToken)
-        {
-            if (!_validators.Any())
-                return await next();
-
             var context = new ValidationContext<TRequest>(request);
 
             var validationResults = await Task.WhenAll(
@@ -36,9 +39,10 @@ namespace VertexERP.Application.Behaviours
 
             if (failures.Any())
             {
-                return ResponseHandler.Failure<TResponse>("Invalid input data. Please check your request and try again.", failures);
+                throw new ValidationAppException("Invalid data", failures);
             }
-            return await next();
         }
+
+        return await next();
     }
 }

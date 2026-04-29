@@ -1,5 +1,8 @@
-﻿using System.Net;
+﻿using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.EntityFrameworkCore;
+using System.Net;
 using VertexERP.Application.Common.Bases;
+using VertexERP.Application.Common.Exceptions;
 
 namespace VertexERP.API.Middleware;
 
@@ -7,13 +10,16 @@ public class ErrorHandlerMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly IWebHostEnvironment _env;
+    private readonly ILogger<ErrorHandlerMiddleware> _logger;
 
-    public ErrorHandlerMiddleware(RequestDelegate next,
-        ILogger<ErrorHandlerMiddleware> logger,
-        IWebHostEnvironment env)
+    public ErrorHandlerMiddleware(
+        RequestDelegate next,
+        IWebHostEnvironment env,
+        ILogger<ErrorHandlerMiddleware> logger)
     {
         _next = next;
         _env = env;
+        _logger = logger;
     }
 
     public async Task InvokeAsync(HttpContext context)
@@ -24,40 +30,75 @@ public class ErrorHandlerMiddleware
         }
         catch (Exception ex)
         {
-            var correlationId = context.Items["X-Correlation-Id"]?.ToString();
-
+            var correlationId = context.Items[CorrelationIdMiddleware.HeaderName] as string;
 
             if (!context.Response.HasStarted)
             {
+                context.Features.Set<IExceptionHandlerFeature>(new ExceptionHandlerFeature { Error = ex });
                 await HandleExceptionAsync(context, ex, correlationId);
             }
         }
     }
 
-    private async Task HandleExceptionAsync(HttpContext context, Exception ex, string correlationId)
+    private async Task HandleExceptionAsync(
+     HttpContext context,
+     Exception ex,
+     string correlationId)
     {
-        context.Response.ContentType = "application/json";
+        var isDev = _env.IsDevelopment();
 
-        var statusCode = ex switch
+        var (statusCode, message, errors) = ex switch
         {
-            NotImplementedException => HttpStatusCode.NotImplemented,
-            UnauthorizedAccessException => HttpStatusCode.Unauthorized,
-            ArgumentException => HttpStatusCode.BadRequest,
-            _ => HttpStatusCode.InternalServerError
+            ValidationAppException validationEx => (
+                HttpStatusCode.BadRequest,
+                "Validation failed",
+                validationEx.Errors),
+
+            UnauthorizedAccessException => (
+                HttpStatusCode.Unauthorized,
+                isDev ? ex.Message : "Unauthorized access.",
+                null),
+
+            ArgumentException => (
+                HttpStatusCode.BadRequest,
+                isDev ? ex.Message : "Invalid argument.",
+                null),
+
+            NotImplementedException => (
+                HttpStatusCode.NotImplemented,
+                isDev ? ex.Message : "Not implemented.",
+                null),
+
+            DbUpdateException => (
+                HttpStatusCode.InternalServerError,
+                isDev ? ex.Message : "Database error occurred.",
+                null),
+
+            _ => (
+                HttpStatusCode.InternalServerError,
+                isDev ? ex.Message : "Unexpected error occurred.",
+                null)
         };
 
+        if (ex is ValidationAppException validationExce)
+        {
+            _logger.LogWarning("Validation failed for request {CorrelationId}. Errors: {Errors}",
+                correlationId, validationExce.Errors);
+        }
+        else
+        {
+            _logger.LogError(ex, "CRITICAL ERROR: Unhandled exception caught. CorrelationId: {CorrelationId}",
+                correlationId);
+        }
+
         context.Response.StatusCode = (int)statusCode;
+        context.Response.ContentType = "application/json";
 
-        string message = _env.IsDevelopment()
-            ? ex.Message
-            : "An unexpected error occurred. Please use the Correlation ID to report this issue.";
-
-        var response = ResponseHandler.Failure<string>(
-            message: message,
-            statusCode: (int)statusCode,
-            correlationId: correlationId
-        );
-
-        await context.Response.WriteAsJsonAsync(response);
+        await context.Response.WriteAsJsonAsync(
+            ResponseHandler.Failure<string>(
+                message,
+                errors ?? new(),
+                context.Response.StatusCode,
+                correlationId));
     }
 }

@@ -1,31 +1,34 @@
 ﻿using Serilog.Context;
 
-namespace VertexERP.API.Middleware
+namespace VertexERP.API.Middleware;
+
+public class CorrelationIdMiddleware
 {
-    public class CorrelationIdMiddleware
+    private readonly RequestDelegate _next;
+    public const string HeaderName = "X-Correlation-Id";
+
+    public CorrelationIdMiddleware(RequestDelegate next)
     {
-        private readonly RequestDelegate _next;
-        private const string HeaderName = "X-Correlation-Id";
+        _next = next;
+    }
 
-        public CorrelationIdMiddleware(RequestDelegate next)
+    public async Task InvokeAsync(HttpContext context)
+    {
+        var correlationId =
+            context.Request.Headers[HeaderName].FirstOrDefault()
+            ?? Guid.NewGuid().ToString();
+
+        context.Items[HeaderName] = correlationId;
+
+        context.Response.OnStarting(() =>
         {
-            _next = next;
-        }
-
-        public async Task InvokeAsync(HttpContext context)
-        {
-            var correlationId =
-                context.Request.Headers[HeaderName].FirstOrDefault()
-                ?? Guid.NewGuid().ToString();
-
-            context.Items[HeaderName] = correlationId;
-
             context.Response.Headers[HeaderName] = correlationId;
+            return Task.CompletedTask;
+        });
 
-            using (LogContext.PushProperty("CorrelationId", correlationId))
-            {
-                await _next(context);
-            }
+        using (LogContext.PushProperty("CorrelationId", correlationId))
+        {
+            await _next(context);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Serilog;
 using Serilog.Events;
+using VertexERP.API.Middleware;
 
 namespace VertexERP.API.Configurations.Logging
 {
@@ -14,18 +15,23 @@ namespace VertexERP.API.Configurations.Logging
                     if (httpContext.Request.Path.StartsWithSegments("/swagger"))
                         return LogEventLevel.Verbose;
 
-                    if (exception is not null || httpContext.Response.StatusCode >= 500)
-                        return LogEventLevel.Error;
 
-                    return httpContext.Response.StatusCode >= 400
-                        ? LogEventLevel.Warning
-                        : LogEventLevel.Information;
+                    if (exception is not null)
+                        return LogEventLevel.Verbose;
+
+                    return httpContext.Response.StatusCode switch
+                    {
+                        >= 500 => LogEventLevel.Error,
+                        >= 400 => LogEventLevel.Warning,
+                        _ => LogEventLevel.Information
+                    };
                 };
 
                 options.EnrichDiagnosticContext = (diag, httpContext) =>
                 {
-                    var correlationId = httpContext.Items["X-Correlation-Id"]?.ToString()
-                                        ?? httpContext.TraceIdentifier;
+                    var correlationId =
+                         httpContext.Items[CorrelationIdMiddleware.HeaderName] as string
+                         ?? httpContext.TraceIdentifier;
 
                     diag.Set("CorrelationId", correlationId);
 
