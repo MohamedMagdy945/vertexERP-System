@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using VertexERP.Application.Identity.Interfaces;
 using VertexERP.Infrastructure.Common.Settings;
 using VertexERP.Infrastructure.Identity.Entities;
@@ -27,6 +31,55 @@ namespace VertexERP.Infrastructure
 
 
             services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
+
+
+            var jwtSettings = services
+            .BuildServiceProvider()
+            .GetRequiredService<IOptions<JwtSettings>>()
+            .Value;
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = "Bearer";
+                options.DefaultChallengeScheme = "Bearer";
+            })
+           .AddJwtBearer("Bearer", options =>
+           {
+               options.RequireHttpsMetadata = false;
+               options.SaveToken = true;
+
+               options.TokenValidationParameters = new TokenValidationParameters
+               {
+                   ValidateIssuer = true,
+                   ValidIssuer = jwtSettings.Issuer,
+
+                   ValidateAudience = true,
+                   ValidAudience = jwtSettings.Audience,
+
+                   ValidateLifetime = true,
+
+                   ValidateIssuerSigningKey = true,
+                   IssuerSigningKey = new SymmetricSecurityKey(
+                       Encoding.UTF8.GetBytes(jwtSettings.AccessTokenSecret)),
+
+                   ClockSkew = TimeSpan.Zero
+               };
+
+               options.Events = new JwtBearerEvents
+               {
+                   OnAuthenticationFailed = context =>
+                   {
+                       Console.WriteLine("Token failed: " + context.Exception.Message);
+                       return Task.CompletedTask;
+                   },
+                   OnTokenValidated = context =>
+                   {
+                       return Task.CompletedTask;
+                   }
+               };
+           });
+
+
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<PermissionService>();
             services.AddScoped<JwtTokenGenerator>();
