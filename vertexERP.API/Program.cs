@@ -1,11 +1,10 @@
-using Microsoft.OpenApi;
+using Microsoft.OpenApi.Models;
 using VertexERP.API.Configurations.Logging;
 using VertexERP.API.Configurations.Versioning;
 using VertexERP.API.Middleware;
 using VertexERP.Application;
 using VertexERP.Infrastructure;
 using VertexERP.Infrastructure.Persistence.SeederRunner;
-
 namespace VertexERP.API
 {
     public class Program
@@ -35,6 +34,30 @@ namespace VertexERP.API
                         Email = "mohamedmagdy000022@gmail.com"
                     }
                 });
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "Enter your JWT token in the text box below. \r\n\r\nExample: '12345abcdef'"
+                });
+
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                        {
+                            new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference
+                                {
+                                    Type = ReferenceType.SecurityScheme,
+                                    Id = "Bearer"
+                                }
+                            },
+                            Array.Empty<string>()
+                        }
+                });
             });
             builder.Services.AddApiVersioningConfig();
             builder.Services.AddApplicationService();
@@ -46,7 +69,6 @@ namespace VertexERP.API
             app.UseMiddleware<CorrelationIdMiddleware>();
             app.UseAppRequestLogging();
             app.UseMiddleware<ErrorHandlerMiddleware>();
-
 
 
 
