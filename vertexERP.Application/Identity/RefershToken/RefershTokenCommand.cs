@@ -40,7 +40,7 @@ namespace VertexERP.Application.Identity.RefershToken
 
             var tokenResponse = result.Data;
 
-            _logger.LogInformation("Referesh Token successfully {UserId}", tokenResponse!.UserId);
+            _logger.LogInformation("Refersh Token successfully {UserId}", tokenResponse!.UserId);
 
             return ResponseHandler.Success(tokenResponse!, "Refersh Token successfully");
         }

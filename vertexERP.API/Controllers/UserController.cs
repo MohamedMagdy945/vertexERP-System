@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using VertexERP.Application.Identity.Login;
+using VertexERP.Application.Identity.RefershToken;
 using VertexERP.Application.Identity.Register;
 
 namespace VertexERP.API.Controllers
@@ -23,6 +24,12 @@ namespace VertexERP.API.Controllers
             return NewResult(response);
         }
 
+        [HttpPost("RefershToken")]
+        public async Task<IActionResult> Login(RefershTokenCommand command)
+        {
+            var response = await _mediator.Send(command);
+            return NewResult(response);
+        }
 
     }
 }
