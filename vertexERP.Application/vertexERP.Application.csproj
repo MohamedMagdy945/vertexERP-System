@@ -19,8 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Identity\Login\" />
     <Folder Include="Modules\Auth\Login\" />
+    <Folder Include="Modules\Auth\Register\" />
   </ItemGroup>
 
 </Project>

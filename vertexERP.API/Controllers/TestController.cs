@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace VertexERP.API.Controllers
 {
@@ -8,6 +9,7 @@ namespace VertexERP.API.Controllers
     {
 
         [HttpGet]
+        [Authorize]
         public ActionResult Index()
         {
             throw new NotImplementedException();

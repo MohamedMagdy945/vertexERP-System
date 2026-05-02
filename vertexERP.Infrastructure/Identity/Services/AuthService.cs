@@ -80,7 +80,7 @@ namespace VertexERP.Infrastructure.Identity.Identity
 
             return Result<TokenResponse>.Success(tokenResponse);
         }
-        public async Task<Result<TokenResponse>> LoginAsync(string username, string password, string? ip, string? device)
+        public async Task<Result<TokenResponse>> LoginAsync(string username, string password)
         {
 
             var user = await _userManager.FindByNameAsync(username)
@@ -109,7 +109,7 @@ namespace VertexERP.Infrastructure.Identity.Identity
             return Result<TokenResponse>.Success(tokenResponse);
         }
 
-        public async Task<Result<TokenResponse>> RefreshTokenAsync(string refreshToken, string? ip, string? device)
+        public async Task<Result<TokenResponse>> RefreshTokenAsync(string refreshToken)
         {
             var hashedToken = _tokenGenerator.HashToken(refreshToken);
 
