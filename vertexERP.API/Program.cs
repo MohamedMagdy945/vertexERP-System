@@ -7,7 +7,7 @@ using VertexERP.Infrastructure;
 using VertexERP.Infrastructure.Persistence.SeederRunner;
 namespace VertexERP.API
 {
-    public class Program
+    public class Program8
     {
         public static async Task Main(string[] args)
         {
@@ -62,6 +62,7 @@ namespace VertexERP.API
             builder.Services.AddApiVersioningConfig();
             builder.Services.AddApplicationService();
             builder.Services.AddInfrastructureService(builder.Configuration);
+
 
             var app = builder.Build();
 

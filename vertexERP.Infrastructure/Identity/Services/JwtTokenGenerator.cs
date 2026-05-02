@@ -13,9 +13,9 @@ namespace VertexERP.Infrastructure.Identity.Identity
     public class JwtTokenGenerator
     {
         private readonly JwtSettings _jwtSettings;
-        public JwtTokenGenerator(IOptions<JwtSettings> settings)
+        public JwtTokenGenerator(IOptions<JwtSettings> options)
         {
-            _jwtSettings = settings.Value;
+            _jwtSettings = options.Value;
         }
         public TokenResponse GenerateTokenPair(ApplicationUser user, IEnumerable<string>? permissions)
         {
@@ -38,10 +38,10 @@ namespace VertexERP.Infrastructure.Identity.Identity
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
-            if (permissions != null)
+            if (permissions != null && permissions.Any())
             {
-                claims.AddRange(permissions.Select(p =>
-                          new Claim("permission", p)));
+                claims.AddRange(permissions!.Select(p =>
+                         new Claim("permission", p)));
             }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.AccessTokenSecret));

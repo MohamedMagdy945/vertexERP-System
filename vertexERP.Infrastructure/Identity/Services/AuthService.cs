@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using System.Data;
 using VertexERP.Application.Common.Authorization;
 using VertexERP.Application.Common.Bases;
@@ -119,10 +118,9 @@ namespace VertexERP.Infrastructure.Identity.Identity
             if (user == null)
                 return Result<TokenResponse>.Failure("Invalid credentials");
 
-            var hashedToken = _tokenGenerator.HashToken(refreshToken);
+            var userHasheToken = _tokenGenerator.HashToken(refreshToken);
 
-
-            var storedToken = await _refreshTokenService.GetRefreshTokenAsync(hashedToken);
+            var storedToken = await _refreshTokenService.GetRefreshTokenAsync(userHasheToken);
 
             if (storedToken == null)
                 return Result<TokenResponse>.Failure("Invalid refresh token");
@@ -133,9 +131,6 @@ namespace VertexERP.Infrastructure.Identity.Identity
             if (storedToken.ExpiresAt < DateTime.UtcNow)
                 return Result<TokenResponse>.Failure("Refresh token expired");
 
-
-            var user = await _userManager.Users
-                .FirstOrDefaultAsync(u => u.Id == storedToken.UserId);
             if (user == null)
                 return Result<TokenResponse>.Failure("User not found");
 
@@ -146,8 +141,10 @@ namespace VertexERP.Infrastructure.Identity.Identity
 
             var permissions = await _permissionService.GetUserPermissionsAsync(user.Id);
 
-            var hashToken = _tokenGenerator.HashToken(hashedToken);
             var tokenResponse = _tokenGenerator.GenerateTokenPair(user, permissions);
+
+            var hashToken = _tokenGenerator.HashToken(tokenResponse.RefreshToken);
+
             tokenResponse.UserId = user.Id;
 
             await _refreshTokenService.SaveRefreshTokenAsync(

@@ -30,10 +30,9 @@ namespace VertexERP.Infrastructure
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
+            services.Configure<JwtSettings>(
+               configuration.GetSection("JwtSettings"));
 
-            var jwtSettings = configuration
-              .GetSection("JwtSettings")
-              .Get<JwtSettings>();
 
             services.AddAuthentication(options =>
             {
@@ -42,6 +41,11 @@ namespace VertexERP.Infrastructure
             })
            .AddJwtBearer("Bearer", options =>
            {
+
+               var jwtSettings = configuration
+               .GetSection("JwtSettings")
+               .Get<JwtSettings>();
+
                options.RequireHttpsMetadata = false;
                options.SaveToken = true;
 
