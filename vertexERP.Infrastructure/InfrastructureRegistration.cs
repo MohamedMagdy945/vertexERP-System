@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 using System.Text;
 using VertexERP.Application.Identity.Interfaces;
 using VertexERP.Infrastructure.Common.Settings;
@@ -30,13 +31,9 @@ namespace VertexERP.Infrastructure
             .AddDefaultTokenProviders();
 
 
-            services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
-
-
-            var jwtSettings = services
-            .BuildServiceProvider()
-            .GetRequiredService<IOptions<JwtSettings>>()
-            .Value;
+            var jwtSettings = configuration
+              .GetSection("JwtSettings")
+              .Get<JwtSettings>();
 
             services.AddAuthentication(options =>
             {
@@ -69,13 +66,53 @@ namespace VertexERP.Infrastructure
                {
                    OnAuthenticationFailed = context =>
                    {
-                       Console.WriteLine("Token failed: " + context.Exception.Message);
+                       var logger = context.HttpContext
+                           .RequestServices
+                           .GetRequiredService<ILoggerFactory>()
+                           .CreateLogger("JWT");
+
+                       logger.LogWarning(
+                           "JWT Authentication failed: {Message} | Path: {Path}",
+                           context.Exception.Message,
+                           context.Request.Path
+                       );
+
                        return Task.CompletedTask;
                    },
+
+                   OnChallenge = context =>
+                   {
+                       var logger = context.HttpContext
+                           .RequestServices
+                           .GetRequiredService<ILoggerFactory>()
+                           .CreateLogger("JWT");
+
+                       logger.LogWarning(
+                           "Unauthorized request to {Path} | IP: {IP}",
+                           context.Request.Path,
+                           context.HttpContext.Connection.RemoteIpAddress
+                       );
+
+                       return Task.CompletedTask;
+                   },
+
                    OnTokenValidated = context =>
                    {
+                       var logger = context.HttpContext
+                           .RequestServices
+                           .GetRequiredService<ILoggerFactory>()
+                           .CreateLogger("JWT");
+
+                       var userId = context.Principal?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                       logger.LogInformation(
+                           "Token validated successfully for UserId: {UserId}",
+                           userId
+                       );
+
                        return Task.CompletedTask;
                    }
+
                };
            });
 

@@ -109,8 +109,16 @@ namespace VertexERP.Infrastructure.Identity.Identity
             return Result<TokenResponse>.Success(tokenResponse);
         }
 
-        public async Task<Result<TokenResponse>> RefreshTokenAsync(string refreshToken)
+        public async Task<Result<TokenResponse>> RefreshTokenAsync(string username, string refreshToken)
         {
+
+
+            var user = await _userManager.FindByNameAsync(username)
+                         ?? await _userManager.FindByEmailAsync(username);
+
+            if (user == null)
+                return Result<TokenResponse>.Failure("Invalid credentials");
+
             var hashedToken = _tokenGenerator.HashToken(refreshToken);
 
 
@@ -133,7 +141,6 @@ namespace VertexERP.Infrastructure.Identity.Identity
 
             storedToken.RevokedAt = DateTime.UtcNow;
             storedToken.RevokedReason = "Replaced by new token";
-            storedToken.RevokedByIp = ip;
 
             await _refreshTokenService.UpdateRefreshTokenAsync(storedToken);
 

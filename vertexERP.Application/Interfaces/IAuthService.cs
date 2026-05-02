@@ -7,7 +7,7 @@ namespace VertexERP.Application.Identity.Interfaces
     {
         Task<Result<TokenResponse>> RegisterAsync(string username, string email, string password);
         Task<Result<TokenResponse>> LoginAsync(string username, string password);
-        Task<Result<TokenResponse>> RefreshTokenAsync(string refreshToken);
+        Task<Result<TokenResponse>> RefreshTokenAsync(string username, string refreshToken);
         Task<Result> LogoutAsync(string refreshToken);
 
     }
