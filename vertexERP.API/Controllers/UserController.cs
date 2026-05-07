@@ -25,7 +25,7 @@ namespace VertexERP.API.Controllers
         }
 
         [HttpPost("RefershToken")]
-        public async Task<IActionResult> Login(RefershTokenCommand command)
+        public async Task<IActionResult> Login(RefreshTokenCommand command)
         {
             var response = await _mediator.Send(command);
             return NewResult(response);

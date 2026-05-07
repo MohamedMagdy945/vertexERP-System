@@ -3,36 +3,41 @@
     public class Result
     {
         public bool IsSuccess { get; }
-        public string? Error { get; }
+        public bool IsFailure => !IsSuccess;
+        public string Error { get; }
 
-        protected Result(bool isSuccess, string? error)
+        protected Result(bool isSuccess, string error)
         {
             IsSuccess = isSuccess;
             Error = error;
         }
 
         public static Result Success()
-            => new Result(true, null);
+            => new(true, string.Empty);
 
         public static Result Failure(string error)
-            => new Result(false, error);
+            => new(false, error);
     }
 
     public class Result<T>
     {
         public bool IsSuccess { get; }
-        public T? Data { get; }
-        public string? Error { get; }
+        public bool IsFailure => !IsSuccess;
 
-        private Result(bool isSuccess, T? data, string? error)
+        public T? Data { get; }
+        public string Error { get; }
+
+        private Result(bool isSuccess, T? value, string error)
         {
             IsSuccess = isSuccess;
-            Data = data;
+            Data = value;
             Error = error;
         }
 
         public static Result<T> Success(T value)
-            => new(true, value, null);
+        {
+            return new(true, value, string.Empty);
+        }
 
         public static Result<T> Failure(string error)
             => new(false, default, error);

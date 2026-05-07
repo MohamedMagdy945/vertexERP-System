@@ -15,12 +15,15 @@ namespace VertexERP.Infrastructure.Identity.Identity
         private readonly PermissionService _permissionService;
         private readonly RefreshTokenService _refreshTokenService;
 
+        // Constants for token revocation reasons
+        private const string TokenReplacedReason = "Replaced by new token";
+        private const string UserLogoutReason = "User logged out";
+
         public AuthService(
             UserManager<ApplicationUser> userManager,
             JwtTokenGenerator tokenGenerator,
             PermissionService permissionService,
-            RefreshTokenService refreshTokenService
-            )
+            RefreshTokenService refreshTokenService)
         {
             _userManager = userManager;
             _tokenGenerator = tokenGenerator;
@@ -34,7 +37,7 @@ namespace VertexERP.Infrastructure.Identity.Identity
                          ?? await _userManager.FindByEmailAsync(email);
 
             if (existingUser != null)
-                return Result<TokenResponse>.Failure("User already exists");
+                return Result<TokenResponse>.Failure("Registration failed. Please try a different username or email.");
 
             var user = new ApplicationUser
             {
@@ -50,8 +53,6 @@ namespace VertexERP.Infrastructure.Identity.Identity
                     string.Join(", ", createResult.Errors.Select(e => e.Description)));
             }
 
-
-
             var roleResult = await _userManager.AddToRoleAsync(user, AppRoles.User);
 
             if (!roleResult.Succeeded)
@@ -60,28 +61,24 @@ namespace VertexERP.Infrastructure.Identity.Identity
                     string.Join(", ", roleResult.Errors.Select(e => e.Description)));
             }
 
-            var roles = await _userManager.GetRolesAsync(user);
-
-
             var permissions = await _permissionService.GetUserPermissionsAsync(user.Id);
-
 
             var tokenResponse = _tokenGenerator.GenerateTokenPair(user, permissions);
 
             var hashToken = _tokenGenerator.HashToken(tokenResponse.RefreshToken);
 
             await _refreshTokenService.SaveRefreshTokenAsync(
-                             user.Id,
-                             hashToken,
-                             tokenResponse.RefreshTokenExpiration);
+                user.Id,
+                hashToken,
+                tokenResponse.RefreshTokenExpiration);
 
             tokenResponse.UserId = user.Id;
 
             return Result<TokenResponse>.Success(tokenResponse);
         }
+
         public async Task<Result<TokenResponse>> LoginAsync(string username, string password)
         {
-
             var user = await _userManager.FindByNameAsync(username)
                          ?? await _userManager.FindByEmailAsync(username);
 
@@ -98,11 +95,11 @@ namespace VertexERP.Infrastructure.Identity.Identity
 
             var hashToken = _tokenGenerator.HashToken(tokenResponse.RefreshToken);
 
-
             await _refreshTokenService.SaveRefreshTokenAsync(
                 user.Id,
                 hashToken,
                 tokenResponse.RefreshTokenExpiration);
+
             tokenResponse.UserId = user.Id;
 
             return Result<TokenResponse>.Success(tokenResponse);
@@ -110,17 +107,15 @@ namespace VertexERP.Infrastructure.Identity.Identity
 
         public async Task<Result<TokenResponse>> RefreshTokenAsync(string username, string refreshToken)
         {
-
-
             var user = await _userManager.FindByNameAsync(username)
                          ?? await _userManager.FindByEmailAsync(username);
 
             if (user == null)
                 return Result<TokenResponse>.Failure("Invalid credentials");
 
-            var userHasheToken = _tokenGenerator.HashToken(refreshToken);
+            var userHashedToken = _tokenGenerator.HashToken(refreshToken);
 
-            var storedToken = await _refreshTokenService.GetRefreshTokenAsync(userHasheToken);
+            var storedToken = await _refreshTokenService.GetRefreshTokenAsync(userHashedToken);
 
             if (storedToken == null)
                 return Result<TokenResponse>.Failure("Invalid refresh token");
@@ -131,11 +126,8 @@ namespace VertexERP.Infrastructure.Identity.Identity
             if (storedToken.ExpiresAt < DateTime.UtcNow)
                 return Result<TokenResponse>.Failure("Refresh token expired");
 
-            if (user == null)
-                return Result<TokenResponse>.Failure("User not found");
-
             storedToken.RevokedAt = DateTime.UtcNow;
-            storedToken.RevokedReason = "Replaced by new token";
+            storedToken.RevokedReason = TokenReplacedReason;
 
             await _refreshTokenService.UpdateRefreshTokenAsync(storedToken);
 
@@ -154,25 +146,28 @@ namespace VertexERP.Infrastructure.Identity.Identity
 
             return Result<TokenResponse>.Success(tokenResponse);
         }
-        public async Task<Result> LogoutAsync(string refreshToken)
-        {
 
+        public async Task<Result<LogoutResponse>> LogoutAsync(string refreshToken)
+        {
             var hashedToken = _tokenGenerator.HashToken(refreshToken);
 
-            var storedToken = await _refreshTokenService.GetRefreshTokenAsync(hashedToken);
+            var storedToken = await _refreshTokenService
+                .GetRefreshTokenAsync(hashedToken);
 
             if (storedToken == null)
-                return Result.Failure("Invalid refresh token");
+                return Result<LogoutResponse>.Failure("Invalid refresh token");
 
             if (storedToken.RevokedAt.HasValue)
-                return Result.Failure("Token already revoked");
+                return Result<LogoutResponse>.Failure("Token already revoked");
 
             storedToken.RevokedAt = DateTime.UtcNow;
-            storedToken.RevokedReason = "User logged out";
-
+            storedToken.RevokedReason = UserLogoutReason;
             await _refreshTokenService.UpdateRefreshTokenAsync(storedToken);
 
-            return Result.Success();
+            return Result<LogoutResponse>.Success(new LogoutResponse
+            {
+                UserId = storedToken.UserId,
+            });
         }
     }
 }

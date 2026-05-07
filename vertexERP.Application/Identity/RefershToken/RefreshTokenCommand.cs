@@ -6,10 +6,10 @@ using VertexERP.Application.Identity.Interfaces;
 
 namespace VertexERP.Application.Identity.RefershToken
 {
-    public record RefershTokenCommand(string Username, string RefershToken)
+    public record RefreshTokenCommand(string Username, string RefreshToken)
         : IRequest<Response<TokenResponse>>;
 
-    public class RefershTokenCommandHandler : IRequestHandler<RefershTokenCommand, Response<TokenResponse>>
+    public class RefershTokenCommandHandler : IRequestHandler<RefreshTokenCommand, Response<TokenResponse>>
     {
         private readonly IAuthService _authService;
         private readonly ILogger<RefershTokenCommandHandler> _logger;
@@ -21,19 +21,19 @@ namespace VertexERP.Application.Identity.RefershToken
             _authService = authService;
             _logger = logger;
         }
-        public async Task<Response<TokenResponse>> Handle(RefershTokenCommand request, CancellationToken cancellationToken)
+        public async Task<Response<TokenResponse>> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
         {
 
             var result = await _authService.RefreshTokenAsync(
                 request.Username,
-                request.RefershToken);
+                request.RefreshToken);
 
             if (!result.IsSuccess)
             {
                 _logger.LogError(
                     "Refresh Token failed . Username: {UserName}, RefershToken: {RefershToken}",
                     request.Username,
-                    request.RefershToken);
+                    request.RefreshToken);
 
                 return ResponseHandler.Failure<TokenResponse>(result.Error ?? "RefershToken failed");
             }

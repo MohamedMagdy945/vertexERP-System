@@ -2,15 +2,15 @@
 
 namespace VertexERP.Application.Identity.RefershToken
 {
-    public class LoginUserCommandValidator : AbstractValidator<RefershTokenCommand>
+    public class RefreshTokenCommandValidator : AbstractValidator<RefreshTokenCommand>
     {
-        public LoginUserCommandValidator()
+        public RefreshTokenCommandValidator()
         {
 
             RuleFor(v => v.Username).
                 NotEmpty().MaximumLength(50);
 
-            RuleFor(v => v.RefershToken)
+            RuleFor(v => v.RefreshToken)
                 .NotEmpty()
                 .MinimumLength(6);
 
