@@ -18,9 +18,4 @@
     <ProjectReference Include="..\vertexERP.Domain\VertexERP.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Modules\Auth\Login\" />
-    <Folder Include="Modules\Auth\Register\" />
-  </ItemGroup>
-
 </Project>
