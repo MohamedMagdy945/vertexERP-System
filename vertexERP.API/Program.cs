@@ -1,13 +1,11 @@
-using Microsoft.OpenApi.Models;
-using VertexERP.API.Configurations.Logging;
-using VertexERP.API.Configurations.Versioning;
+using VertexERP.API.Configurations;
 using VertexERP.API.Middleware;
 using VertexERP.Application;
 using VertexERP.Infrastructure;
 using VertexERP.Infrastructure.Persistence.SeederRunner;
 namespace VertexERP.API
 {
-    public class Program8
+    public class Program
     {
         public static async Task Main(string[] args)
         {
@@ -18,47 +16,12 @@ namespace VertexERP.API
 
             builder.Host.AddSerilogLogging(builder.Configuration);
 
-
-            builder.Services.AddControllers();
-
-            builder.Services.AddSwaggerGen(options =>
+            builder.Services.AddControllers(options =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Title = "VertexERP System",
-                    Version = "v1",
-                    Description = "ERP System",
-                    Contact = new OpenApiContact
-                    {
-                        Name = "Mohamed Magdy",
-                        Email = "mohamedmagdy000022@gmail.com"
-                    }
-                });
-                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                {
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.Http,
-                    Scheme = "Bearer",
-                    BearerFormat = "JWT",
-                    In = ParameterLocation.Header,
-                    Description = "Enter your JWT token in the text box below. \r\n\r\nExample: '12345abcdef'"
-                });
-
-                options.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                        {
-                            new OpenApiSecurityScheme
-                            {
-                                Reference = new OpenApiReference
-                                {
-                                    Type = ReferenceType.SecurityScheme,
-                                    Id = "Bearer"
-                                }
-                            },
-                            Array.Empty<string>()
-                        }
-                });
+                options.RespectBrowserAcceptHeader = true;
             });
+
+            builder.Services.AddSwaggerDocumentation();
             builder.Services.AddApiVersioningConfig();
             builder.Services.AddApplicationService();
             builder.Services.AddInfrastructureService(builder.Configuration);
@@ -73,20 +36,16 @@ namespace VertexERP.API
 
 
 
-            using (var scope = app.Services.CreateScope())
-            {
-                var runner = scope.ServiceProvider.GetRequiredService<DataSeederRunner>();
-                await runner.SeedAsync();
-            }
+            app.UseStaticFiles();
             if (app.Environment.IsDevelopment())
             {
-                app.UseSwagger();
-                app.UseSwaggerUI(c =>
+                app.UseSwaggerDocumentation();
+
+                using (var scope = app.Services.CreateScope())
                 {
-                    c.DocumentTitle = "Vertex ERP System";
-                    c.DisplayRequestDuration();
-                    c.EnableTryItOutByDefault();
-                });
+                    var runner = scope.ServiceProvider.GetRequiredService<DataSeederRunner>();
+                    await runner.SeedAsync();
+                }
             }
 
             app.UseRouting();

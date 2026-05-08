@@ -5,9 +5,8 @@ using VertexERP.Application.Common.Bases;
 
 namespace VertexERP.API.Controllers
 {
-    [ApiVersion("1.0")]
-
-    public class TestController : AppControllerBase
+    [ApiVersion("2.0")]
+    public class TestV2Controller : AppControllerBase
     {
 
         [HttpGet]
