@@ -1,5 +1,5 @@
 ﻿using Asp.Versioning;
-using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace VertexERP.API.Configurations
 {
@@ -7,52 +7,64 @@ namespace VertexERP.API.Configurations
     {
         public static IServiceCollection AddSwaggerDocumentation(this IServiceCollection services)
         {
-            services.AddEndpointsApiExplorer();
 
             services.AddSwaggerGen(options =>
             {
-                // JWT
-                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                {
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.Http,
-                    Scheme = "bearer",
-                    BearerFormat = "JWT",
-                    In = ParameterLocation.Header,
-                    Description = "Enter JWT token only"
-                });
 
-                options.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
+                options.SwaggerDoc("v1",
+                    new Microsoft.OpenApi.Models.OpenApiInfo
                     {
-                        new OpenApiSecurityScheme
+                        Version = "v1",
+                        Title = "Basket API",
+                        Description = "An ASP.NET Core Web API for managing basket v1 micro-services in commerce application",
+                        Contact = new Microsoft.OpenApi.Models.OpenApiContact
                         {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
-                        },
-                        Array.Empty<string>()
-                    }
-                });
-
-                // Important: API Versioning integration
-                options.DocInclusionPredicate((docName, apiDesc) =>
+                            Name = "Mohamed Magdy",
+                            Email = "mohamedmagdy000022@gmail.com",
+                        }
+                    });
+                options.SwaggerDoc("v2",
+                    new Microsoft.OpenApi.Models.OpenApiInfo
+                    {
+                        Version = "v2",
+                        Title = "Basket API",
+                        Description = "An ASP.NET Core Web API for managing basket v2 micro-services in commerce application",
+                        Contact = new Microsoft.OpenApi.Models.OpenApiContact
+                        {
+                            Name = "Mohamed Magdy",
+                            Email = "mohamedmagdy000022@gmail.com",
+                        }
+                    });
+                options.DocInclusionPredicate((version, apiDescription) =>
                 {
-                    if (!apiDesc.ActionDescriptor.EndpointMetadata
-                        .OfType<ApiVersionAttribute>()
-                        .Any())
-                        return true;
+                    if (!apiDescription.TryGetMethodInfo(out var methodInfo))
+                    {
+                        return false;
+                    }
+                    var versions = methodInfo.DeclaringType?
+                                    .GetCustomAttributes(true)
+                                    .OfType<ApiVersionAttribute>()
+                                    .SelectMany(attr => attr.Versions);
+                    return versions?.Any(v => $"v{v.ToString()}" == version) ?? false;
+                }
 
-                    var versions = apiDesc.ActionDescriptor.EndpointMetadata
-                        .OfType<ApiVersionAttribute>()
-                        .SelectMany(v => v.Versions);
+                );
 
-                    return versions.Any(v => $"v{v}" == docName);
-                });
+                options.DocInclusionPredicate((version, apiDescription) =>
+                {
+                    if (!apiDescription.TryGetMethodInfo(out var methodInfo))
+                    {
+                        return false;
+                    }
+                    var versions = methodInfo.DeclaringType?
+                                    .GetCustomAttributes(true)
+                                    .OfType<ApiVersionAttribute>()
+                                    .SelectMany(attr => attr.Versions);
+                    return versions?.Any(v => $"v{v.ToString()}" == version) ?? false;
+                }
 
-                options.CustomSchemaIds(type => type.FullName);
+                );
+
             });
 
             return services;
@@ -67,14 +79,6 @@ namespace VertexERP.API.Configurations
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "VertexERP API V1");
                 options.SwaggerEndpoint("/swagger/v2/swagger.json", "VertexERP API V2");
 
-                options.RoutePrefix = "swagger";
-                options.DocumentTitle = "VertexERP API Docs";
-
-                options.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.None);
-                options.DefaultModelsExpandDepth(-1);
-                options.DisplayRequestDuration();
-                options.EnableFilter();
-                options.EnableDeepLinking();
             });
 
             return app;
