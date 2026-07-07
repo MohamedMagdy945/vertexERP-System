@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/ERP.Application/VertexERP.Application.csproj" Id="20df4778-ad1f-4aa3-a8cf-7f008f5cbef2" />
+    <Project Path="src/VertexERP.API/VertexERP.API.csproj" Id="27ba8357-a2ea-4e4f-96c0-758c773c0759" />
+    <Project Path="src/VertexERP.Infrastructure/VertexERP.Infrastructure.csproj" Id="7076b230-ad24-4685-a666-76ce6043d713" />
+  </Folder>
+  <Folder Name="/tests/" />
+</Solution>

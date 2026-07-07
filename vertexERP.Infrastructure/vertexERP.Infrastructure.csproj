@@ -27,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\VertexERP.Application\VertexERP.Application.csproj" />
     <ProjectReference Include="..\VertexERP.Shared\VertexERP.Shared.csproj" />
   </ItemGroup>
 
