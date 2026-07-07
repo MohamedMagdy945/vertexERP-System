@@ -25,7 +25,7 @@ public static class LoggingConfiguration
         var loggingSetting = new LoggingSetting();
 
         builder.Configuration
-            .GetSection("LoggingOptions")
+            .GetSection("LoggingSetting")
             .Bind(loggingSetting);
 
         var loggerConfiguration = new LoggerConfiguration()
