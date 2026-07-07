@@ -1,4 +1,11 @@
-﻿namespace VertexERP.API.Configuration;
+﻿using Elastic.Ingest.Elasticsearch.DataStreams;
+using Elastic.Serilog.Sinks;
+using Serilog;
+using Serilog.Events;
+using Serilog.Exceptions;
+using VertexERP.API.settings;
+
+namespace VertexERP.API.Configuration;
 
 public static class LoggingConfiguration
 {
@@ -6,49 +13,49 @@ public static class LoggingConfiguration
     {
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Information()
-            .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] " +
-            "{Message:lj}{NewLine}{Exception}")
             .Enrich.FromLogContext()
             .Enrich.WithExceptionDetails()
+            .WriteTo.Console(
+                outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
             .CreateBootstrapLogger();
     }
 
     public static WebApplicationBuilder ConfigureSerilog(this WebApplicationBuilder builder)
     {
-        var logginSetting = new LogginSetting();
+        var loggingSetting = new LoggingSetting();
 
         builder.Configuration
-           .GetSection("LoggingOptions")
-           .Bind(loggingOptions);
+            .GetSection("LoggingOptions")
+            .Bind(loggingSetting);
 
-        Log.Logger = new LoggerConfiguration()
-        .ReadFrom.Configuration(builder.Configuration)
-        .CreateLogger();
+        var loggerConfiguration = new LoggerConfiguration()
+            .ReadFrom.Configuration(builder.Configuration)
+            .Enrich.FromLogContext()
+            .Enrich.WithExceptionDetails();
 
-        if (logginSetting.UseConsole)
+        if (loggingSetting.UseConsole)
         {
             loggerConfiguration.WriteTo.Console(
-               outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] " +
-               "{Message:lj} [{CorrelationId}]{NewLine}{Exception}"
-            );
+                outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] " +
+                "{Message:lj} [{CorrelationId}]{NewLine}{Exception}");
         }
 
-        if (logginSetting.UseSeq)
+        if (loggingSetting.UseSeq)
         {
-            loggerConfiguration.WriteTo.Seq(loggingOptions.SeqUrl);
+            loggerConfiguration.WriteTo.Seq(loggingSetting.SeqUrl);
         }
 
-        if (logginSetting.UseElasticsearch)
+        if (loggingSetting.UseElasticsearch)
         {
             loggerConfiguration.WriteTo.Elasticsearch(
-             new[] { new Uri(loggingOptions.ElasticsearchUrl) },
-             opts =>
-             {
-                 opts.DataStream = new DataStreamName(
-                     loggingOptions.ServiceName,
-                     "logs",
-                     "application");
-             });
+                new[] { new Uri(loggingSetting.ElasticsearchUrl) },
+                opts =>
+                {
+                    opts.DataStream = new DataStreamName(
+                        loggingSetting.ServiceName,
+                        "logs",
+                        "application");
+                });
         }
 
         Log.Logger = loggerConfiguration.CreateLogger();
@@ -57,16 +64,16 @@ public static class LoggingConfiguration
 
         return builder;
     }
+
     public static IApplicationBuilder UseCustomRequestLogging(this IApplicationBuilder app)
     {
-
         return app.UseSerilogRequestLogging(options =>
         {
             options.GetLevel = (ctx, _, ex) =>
-               ex != null ? LogEventLevel.Error :
-               ctx.Response.StatusCode >= 500 ? LogEventLevel.Error :
-               ctx.Response.StatusCode >= 400 ? LogEventLevel.Warning :
-               LogEventLevel.Information;
+                ex != null ? LogEventLevel.Error :
+                ctx.Response.StatusCode >= 500 ? LogEventLevel.Error :
+                ctx.Response.StatusCode >= 400 ? LogEventLevel.Warning :
+                LogEventLevel.Information;
 
             options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} -> {StatusCode} in {Elapsed:0.0000} ms";
         });
