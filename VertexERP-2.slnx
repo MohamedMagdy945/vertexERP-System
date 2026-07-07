@@ -2,7 +2,12 @@
   <Folder Name="/src/">
     <Project Path="src/ERP.Application/VertexERP.Application.csproj" Id="20df4778-ad1f-4aa3-a8cf-7f008f5cbef2" />
     <Project Path="src/VertexERP.API/VertexERP.API.csproj" Id="27ba8357-a2ea-4e4f-96c0-758c773c0759" />
+    <Project Path="src/VertexERP.Domain/VertexERP.Domain.csproj" Id="33a44097-9ad6-40df-9778-ae8da7672383" />
     <Project Path="src/VertexERP.Infrastructure/VertexERP.Infrastructure.csproj" Id="7076b230-ad24-4685-a666-76ce6043d713" />
+    <Project Path="src/VertexERP.Shared/VertexERP.Shared.csproj" Id="86e3620a-1413-4b16-948c-ad41d0cd9e61" />
   </Folder>
-  <Folder Name="/tests/" />
+  <Folder Name="/tests/">
+    <Project Path="tests/VertexERP.IntegrationTests/VertexERP.IntegrationTests.csproj" Id="7306227e-241b-4b60-b05f-12d6aa7626a9" />
+    <Project Path="tests/VertexERP.UnitTests/VertexERP.UnitTests.csproj" Id="5dbf60c4-2caa-4208-a799-38cbc7406037" />
+  </Folder>
 </Solution>

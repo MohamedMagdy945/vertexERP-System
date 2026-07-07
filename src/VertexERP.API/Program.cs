@@ -1,25 +1,35 @@
-namespace VertexERP.API
+using VertexERP.API.Configuration;
+
+namespace VertexERP.API;
+
+public class Program
 {
-    public class Program
+    public static async Task Main(string[] args)
     {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
+        LoggingConfiguration.ConfigureBootstrapLogger();
 
-            // Add services to the container.
+        var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddControllers();
-
-            var app = builder.Build();
-
-            // Configure the HTTP request pipeline.
-
-            app.UseAuthorization();
+        builder.ConfigureSerilog();
 
 
-            app.MapControllers();
+        // Add services to the container.
 
-            app.Run();
-        }
+        builder.Services.AddControllers();
+
+        var app = builder.Build();
+
+        app.UseCustomRequestLogging();
+
+
+        // Configure the HTTP request pipeline.
+
+        app.UseAuthorization();
+
+
+        app.MapControllers();
+
+        app.Run();
     }
 }
+
