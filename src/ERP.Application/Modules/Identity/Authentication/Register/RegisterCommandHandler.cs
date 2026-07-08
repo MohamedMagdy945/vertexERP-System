@@ -4,20 +4,20 @@ using VertexERP.Application.Abstractions.Authentication;
 using VertexERP.Application.Abstractions.Persistence;
 using VertexERP.Shared.Results;
 
-namespace VertexERP.Application.Modules.Identity.Login;
+namespace VertexERP.Application.Modules.Identity.Authentication.Register;
 
-public class LoginCommandHandler
-    : IRequestHandler<LoginCommand, Result<LoginResponse>>
+public class RegisterCommandHandler
+    : IRequestHandler<RegisterCommand, Result<RegisterResponse>>
 {
     private readonly IApplicationDbContext _dbContext;
     private readonly ITokenGenerator _tokenGenerator;
     private readonly IPasswordHasher _passwordHasher;
-    private readonly ILogger<LoginCommandHandler> _logger;
-    public LoginCommandHandler(
+    private readonly ILogger<RegisterCommandHandler> _logger;
+    public RegisterCommandHandler(
         IApplicationDbContext dbContext,
         ITokenGenerator tokenGenerator,
         IPasswordHasher passwordHasher,
-        ILogger<LoginCommandHandler> logger)
+        ILogger<RegisterCommandHandler> logger)
     {
         _dbContext = dbContext;
         _tokenGenerator = tokenGenerator;
@@ -25,9 +25,9 @@ public class LoginCommandHandler
         _logger = logger;
     }
 
-    public async Task<Result<LoginResponse>> Handle(LoginCommand request, CancellationToken cancellationToken)
+    public async Task<Result<RegisterResponse>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
-
+        throw new NotImplementedException();
     }
 }
 
