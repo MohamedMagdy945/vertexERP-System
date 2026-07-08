@@ -1,14 +1,16 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-public class Result<T>
+namespace VertexERP.Shared.Results;
+
+public sealed class Result<T>
 {
     public bool IsSuccess { get; init; }
     public string Message { get; init; } = string.Empty;
-    public List<string>? Errors { get; init; }
+    public string[] Errors { get; init; } = Array.Empty<string>();
     public T? Data { get; init; }
     public int StatusCode { get; init; }
 
-    public Result() { }
+    private Result() { }
 
     public static Result<T> Success(T data, string message = "Request successful", int statusCode = StatusCodes.Status200OK)
     {
@@ -21,24 +23,24 @@ public class Result<T>
         };
     }
 
-    public static Result<T> Failure(string message, List<string>? errors = null, int statusCode = StatusCodes.Status400BadRequest)
+    public static Result<T> Failure(string[] errors, string message = "Bad request", int statusCode = StatusCodes.Status400BadRequest)
     {
         return new Result<T>
         {
             IsSuccess = false,
             Message = message,
-            Errors = errors ?? new List<string>(),
+            Errors = errors ?? Array.Empty<string>(),
             StatusCode = statusCode,
         };
     }
 
-    public static Result<T> NotFound(string message = "Resource not found", List<string>? errors = null)
+    public static Result<T> NotFound(string[] errors, string message = "Resource not found")
     {
         return new Result<T>
         {
             IsSuccess = false,
             Message = message,
-            Errors = errors ?? new List<string>(),
+            Errors = errors ?? Array.Empty<string>(),
             StatusCode = StatusCodes.Status404NotFound
         };
     }
@@ -49,9 +51,7 @@ public class Result<T>
         {
             IsSuccess = false,
             Message = message,
-            Errors = new List<string>(),
             StatusCode = StatusCodes.Status401Unauthorized
         };
     }
 }
-

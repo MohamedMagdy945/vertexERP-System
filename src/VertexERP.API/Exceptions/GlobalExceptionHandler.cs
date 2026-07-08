@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
-using VertexERP.API.middlewares;
+using VertexERP.Shared.Results;
 
 namespace VertexERP.API.Exceptions;
 
@@ -16,36 +16,30 @@ public sealed class GlobalExceptionHandler(
         Exception exception,
         CancellationToken cancellationToken)
     {
-        var correlationId = context.Items[CorrelationIdMiddleware.HeaderName]?.ToString()
-               ?? context.TraceIdentifier;
+
 
         var result = MapException(exception, environment.IsDevelopment());
 
-        LogException(exception, result.Errors, correlationId);
+        LogException(exception, result.Errors);
 
         context.Response.StatusCode = (int)result.StatusCode;
 
-        //await context.Response.WriteAsJsonAsync(
-        //    ResponseHandler.Failure<string>(
-        //        result.Message,
-        //        result.Errors,
-        //        context.Response.StatusCode,
-        //        correlationId),
-        //    cancellationToken);
+        await context.Response.WriteAsJsonAsync(
+            Result<string>.Failure(
+                result.Errors),
+            cancellationToken);
 
         return true;
     }
 
     private void LogException(
         Exception exception,
-        string[] errors,
-        string correlationId)
+        string[] errors)
     {
         if (exception is ValidationException)
         {
             logger.LogWarning(
-                "Validation failed. CorrelationId: {CorrelationId}. Errors: {@Errors}",
-                correlationId,
+                "Validation failed. Errors: {@Errors}",
                 errors);
 
             return;
@@ -53,8 +47,7 @@ public sealed class GlobalExceptionHandler(
 
         logger.LogError(
             exception,
-            "Unhandled exception occurred. CorrelationId: {CorrelationId}",
-            correlationId);
+            "Unhandled exception occurred.");
     }
 
 

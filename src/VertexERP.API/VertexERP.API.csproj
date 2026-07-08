@@ -24,5 +24,9 @@
   <ItemGroup>
     <Folder Include="Controllers\" />
   </ItemGroup>
+	
+  <ItemGroup>
+    <ProjectReference Include="..\VertexERP.Shared\VertexERP.Shared.csproj" />
+  </ItemGroup>
 
 </Project>
