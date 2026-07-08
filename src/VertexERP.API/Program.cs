@@ -1,4 +1,5 @@
 using VertexERP.API.Configuration;
+using VertexERP.API.Configurations;
 using VertexERP.API.Exceptions;
 using VertexERP.API.middlewares;
 
@@ -15,12 +16,17 @@ public class Program
         builder.ConfigureSerilog();
 
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
-
+        builder.Services.AddProblemDetails();
         // Add services to the container.
 
         builder.Services.AddControllers();
 
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerConfiguration();
+
         var app = builder.Build();
+
+        app.UseSwaggerDocumentation();
 
         app.UseMiddleware<CorrelationIdMiddleware>();
 
