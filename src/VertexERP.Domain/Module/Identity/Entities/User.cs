@@ -1,6 +1,6 @@
 ﻿namespace VertexERP.Domain.Module.Identity.Entities;
 
-public class User
+public class User : BaseIdentityEntity
 {
     public string FullName { get; set; } = string.Empty;
     public string FirstName { get; set; } = string.Empty;

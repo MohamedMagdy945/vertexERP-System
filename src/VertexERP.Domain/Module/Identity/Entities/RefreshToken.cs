@@ -1,6 +1,6 @@
 ﻿namespace VertexERP.Domain.Module.Identity.Entities;
 
-public class RefreshToken
+public class RefreshToken : BaseIdentityEntity
 {
     public string TokenHash { get; set; } = string.Empty;
     public int UserId { get; set; }
