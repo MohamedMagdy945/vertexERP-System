@@ -11,19 +11,26 @@ using VertexERP.Domain.Module.Identity.Entities;
 
 namespace VertexERP.Infrastructure.Authentication;
 
-public class JwtTokenGenerator : ITokenGenerator
+public class TokenPairGenerator : ITokenGenerator
 {
-    private readonly JwtSettings _jwtSettings;
+    private readonly TokenPairSettings _tokenPairSettings;
 
     private readonly JwtSecurityTokenHandler _tokenHandler = new();
 
-    public JwtTokenGenerator(IOptions<JwtSettings> options)
+    public TokenPairGenerator(IOptions<TokenPairSettings> options)
     {
-        _jwtSettings = options.Value;
+        _tokenPairSettings = options.Value;
     }
     public TokenPair GenerateTokenPair(User user, IEnumerable<string>? permissions)
     {
-        throw new NotImplementedException();
+        return new TokenPair
+        {
+            UserId = user.Id,
+            AccessToken = GenerateAccessToken(user, permissions),
+            RefreshToken = GenerateRefreshToken(),
+            AccessTokenExpiration = DateTime.UtcNow.AddMinutes(_tokenPairSettings.AccessTokenExpiryMinutes),
+            RefreshTokenExpiration = DateTime.UtcNow.AddDays(_tokenPairSettings.RefreshTokenExpiryDays),
+        };
     }
 
     public string GenerateAccessToken(User user, IEnumerable<string>? permissions)
@@ -42,14 +49,14 @@ public class JwtTokenGenerator : ITokenGenerator
             claims.AddRange(permissions.Select(p => new Claim("permission", p)));
         }
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.AccessTokenSecret));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenPairSettings.AccessTokenSecret));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
-            issuer: _jwtSettings.Issuer,
-            audience: _jwtSettings.Audience,
+            issuer: _tokenPairSettings.Issuer,
+            audience: _tokenPairSettings.Audience,
             claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(_jwtSettings.AccessTokenExpiryMinutes),
+            expires: DateTime.UtcNow.AddMinutes(_tokenPairSettings.AccessTokenExpiryMinutes),
             signingCredentials: creds);
 
         return _tokenHandler.WriteToken(token);
@@ -61,7 +68,7 @@ public class JwtTokenGenerator : ITokenGenerator
     }
     public string HashToken(string token)
     {
-        var key = Encoding.UTF8.GetBytes(_jwtSettings.RefreshTokenSecret);
+        var key = Encoding.UTF8.GetBytes(_tokenPairSettings.RefreshTokenSecret);
 
         using var hmac = new HMACSHA256(key);
         var bytes = hmac.ComputeHash(Encoding.UTF8.GetBytes(token));

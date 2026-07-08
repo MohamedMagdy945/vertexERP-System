@@ -1,6 +1,8 @@
-﻿namespace VertexERP.Application.Modules.Identity.Login;
+﻿using MediatR;
+using VertexERP.Shared.Results;
 
-public class LoginCommand
-{
-}
+namespace VertexERP.Application.Modules.Identity.Login;
+
+public record LoginCommand(string Email, string Password)
+    : IRequest<Result<LoginResponse>>;
 
