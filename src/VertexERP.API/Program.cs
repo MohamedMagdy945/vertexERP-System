@@ -2,6 +2,7 @@ using VertexERP.API.Configuration;
 using VertexERP.API.Configurations;
 using VertexERP.API.Exceptions;
 using VertexERP.API.middlewares;
+using VertexERP.Infrastructure;
 
 namespace VertexERP.API;
 
@@ -23,6 +24,8 @@ public class Program
 
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerConfiguration();
+
+        builder.Services.AddInfrastructureServices(builder.Configuration);
 
         var app = builder.Build();
 

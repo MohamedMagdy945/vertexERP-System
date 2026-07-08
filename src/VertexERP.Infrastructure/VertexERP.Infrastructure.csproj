@@ -18,5 +18,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
+	
+  <ItemGroup>
+    <Folder Include="Persistence\Migrations\" />
+    <Folder Include="Persistence\Seeder\" />
+  </ItemGroup>
   
 </Project>

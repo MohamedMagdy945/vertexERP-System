@@ -1,6 +1,6 @@
 ﻿namespace VertexERP.Infrastructure.Authentication;
 
-public class JwtSettings
+public class TokenPairSettings
 {
     public string AccessTokenSecret { get; set; } = default!;
     public string RefreshTokenSecret { get; set; } = default!;
