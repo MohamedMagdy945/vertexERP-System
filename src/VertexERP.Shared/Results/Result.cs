@@ -23,7 +23,10 @@ public sealed class Result<T>
         };
     }
 
-    public static Result<T> Failure(string[] errors, string message = "Bad request", int statusCode = StatusCodes.Status400BadRequest)
+    public static Result<T> Failure(
+     string message = "Bad request",
+     string[]? errors = null,
+     int statusCode = StatusCodes.Status400BadRequest)
     {
         return new Result<T>
         {
@@ -34,7 +37,9 @@ public sealed class Result<T>
         };
     }
 
-    public static Result<T> NotFound(string[] errors, string message = "Resource not found")
+    public static Result<T> NotFound(
+        string message = "Resource not found",
+        string[]? errors = null)
     {
         return new Result<T>
         {

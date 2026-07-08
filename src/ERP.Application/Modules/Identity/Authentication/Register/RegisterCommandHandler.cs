@@ -1,7 +1,9 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using VertexERP.Application.Abstractions.Authentication;
 using VertexERP.Application.Abstractions.Persistence;
+using VertexERP.Domain.Module.Identity.Entities;
 using VertexERP.Shared.Results;
 
 namespace VertexERP.Application.Modules.Identity.Authentication.Register;
@@ -28,6 +30,25 @@ public class RegisterCommandHandler
     public async Task<Result<RegisterResponse>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
+        var user = await _dbContext.Users
+                    .AsNoTracking().FirstOrDefaultAsync(cancellationToken);
+        if (user != null)
+        {
+            return Result<RegisterResponse>.
+                Failure("Email already exists");
+        }
+
+        var newUser = new User
+        {
+            FullName = request.FullName,
+            Email = request.Email,
+            PhoneNumber = request.PhoneNumber,
+            IsEnabled = true
+        };
+
+        var passwordHash = _passwordHasher.Hash(request.Password);
+
+
     }
 }
 
