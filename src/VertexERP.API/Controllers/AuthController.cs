@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using VertexERP.API.Helper;
 using VertexERP.Application.Models.Authentication;
 using VertexERP.Application.Modules.Identity.Authentication.Login;
+using VertexERP.Application.Modules.Identity.Authentication.Logout;
 using VertexERP.Application.Modules.Identity.Authentication.Refresh;
 using VertexERP.Shared.Results;
 
@@ -54,6 +55,19 @@ public class AuthController : AppControllerBase
         return ApiResponse(
             Result<AuthenticationResponse>.Success(
                 result.Data.Adapt<AuthenticationResponse>()));
+    }
+
+    [HttpPost("logout")]
+    [ProducesResponseType(typeof(Result<LogoutResponse>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> Logout()
+    {
+        var refreshToken = Request.Cookies[CookieHelper.RefreshTokenCookieName] ?? string.Empty;
+
+        var result = await Mediator.Send(new LogoutCommand(refreshToken));
+
+        CookieHelper.DeleteRefreshTokenCookie(Response, HttpContext.Request.IsHttps);
+
+        return ApiResponse(result);
     }
 
 }

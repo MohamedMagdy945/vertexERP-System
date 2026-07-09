@@ -7,7 +7,9 @@ public class RefreshCommandValidator
 {
     public RefreshCommandValidator()
     {
-
+        RuleFor(x => x.RefreshToken)
+            .NotEmpty()
+            .WithMessage("Refresh token is required.");
 
     }
 }
