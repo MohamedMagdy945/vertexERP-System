@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
+using VertexERP.Shared.Exceptions;
 
 namespace VertexERP.Application.Behaviors;
 
@@ -30,13 +31,14 @@ public sealed class ValidationBehavior<TRequest, TResponse>
             _validators.Select(v => v.ValidateAsync(context, cancellationToken)));
 
         var failures = validationResults
-            .SelectMany(r => r.Errors)
-            .Where(f => f is not null)
-            .ToList();
+        .SelectMany(r => r.Errors)
+        .Where(f => f is not null)
+        .Select(f => f.ErrorMessage)
+        .ToArray();
 
-        if (failures.Count != 0)
+        if (failures.Length > 0)
         {
-            throw new ValidationException(failures);
+            throw new ValidationAppException(failures);
         }
 
         return await next();

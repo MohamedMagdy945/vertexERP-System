@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
-using System.ComponentModel.DataAnnotations;
 using System.Net;
+using VertexERP.Shared.Exceptions;
 using VertexERP.Shared.Results;
 
 namespace VertexERP.API.Exceptions;
@@ -36,7 +36,7 @@ public sealed class GlobalExceptionHandler(
         Exception exception,
         string[] errors)
     {
-        if (exception is ValidationException)
+        if (exception is ValidationAppException)
         {
             logger.LogWarning(
                 "Validation failed. Errors: {@Errors}",
@@ -58,13 +58,11 @@ public sealed class GlobalExceptionHandler(
     {
         return exception switch
         {
-            FluentValidation.ValidationException ex => new ExceptionResult(
+            ValidationAppException ex => new ExceptionResult(
                 HttpStatusCode.BadRequest,
                 "Validation failed.",
-                ex.Errors
-                    .Select(x => x.ErrorMessage)
-                    .Distinct()
-                    .ToArray()),
+                ex.Errors.ToArray()),
+
 
             UnauthorizedAccessException ex => new ExceptionResult(
                 HttpStatusCode.Unauthorized,
