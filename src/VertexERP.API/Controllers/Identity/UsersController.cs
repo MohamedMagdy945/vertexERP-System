@@ -4,12 +4,12 @@ using VertexERP.Application.Modules.Identity.Users.Commands.CreateUser;
 using VertexERP.Shared.Constants;
 using VertexERP.Shared.Results;
 
-namespace VertexERP.API.Controllers;
+namespace VertexERP.API.Controllers.Identity;
 
 public class UsersController : AppControllerBase
 {
     [HttpPost("CreateUser")]
-    [Authorize(Policy = Permissions.Users.Create)]
+    [Authorize(Policy = PermissionNames.Users.Create)]
     [ProducesResponseType(typeof(Result<CreateUserResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> CreateUser(CreateUserCommand command, CancellationToken cancellationToken)
     {

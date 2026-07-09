@@ -1,6 +1,6 @@
 ﻿namespace VertexERP.Shared.Constants;
 
-public class Permissions
+public class PermissionNames
 {
     public static class Users
     {
@@ -16,5 +16,11 @@ public class Permissions
         public const string Create = "products.create";
         public const string Update = "products.update";
         public const string Delete = "products.delete";
+    }
+
+    public static class Permissions
+    {
+        public const string View = "permissions.view";
+        public const string Update = "permissions.update";
     }
 }

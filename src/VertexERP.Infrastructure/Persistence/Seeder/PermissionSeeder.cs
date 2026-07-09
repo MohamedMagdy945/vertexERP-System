@@ -23,14 +23,17 @@ public class PermissionSeeder
 
         var permissions = new List<Permission>
         {
-            new Permission { Name = Permissions.Users.View,  },
-            new Permission { Name = Permissions.Users.Create },
-            new Permission { Name = Permissions.Users.Update },
-            new Permission { Name = Permissions.Users.Delete},
-            new Permission { Name = Permissions.Products.View},
-            new Permission { Name = Permissions.Products.Create },
-            new Permission { Name = Permissions.Products.Update  },
-            new Permission { Name = Permissions.Products.Delete }
+            new Permission { Name = PermissionNames.Users.View,  },
+            new Permission { Name = PermissionNames.Users.Create },
+            new Permission { Name = PermissionNames.Users.Update },
+            new Permission { Name = PermissionNames.Users.Delete},
+            new Permission { Name = PermissionNames.Products.View},
+            new Permission { Name = PermissionNames.Products.Create },
+            new Permission { Name = PermissionNames.Products.Update  },
+            new Permission { Name = PermissionNames.Products.Delete },
+            new Permission { Name = PermissionNames.Permissions.View },
+            new Permission { Name = PermissionNames.Permissions.Update },
+
         };
 
         await _dbcontext.Permissions.AddRangeAsync(permissions);

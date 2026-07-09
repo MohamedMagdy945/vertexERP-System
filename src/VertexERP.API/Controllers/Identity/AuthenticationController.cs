@@ -2,14 +2,14 @@
 using Microsoft.AspNetCore.Mvc;
 using VertexERP.API.Helper;
 using VertexERP.Application.Models.Authentication;
+using VertexERP.Application.Modules.Identity.Authentication.CreateUser;
 using VertexERP.Application.Modules.Identity.Authentication.Login;
 using VertexERP.Application.Modules.Identity.Authentication.Logout;
-using VertexERP.Application.Modules.Identity.Authentication.CreateUser;
 using VertexERP.Shared.Results;
 
-namespace VertexERP.API.Controllers;
+namespace VertexERP.API.Controllers.Identity;
 
-public class AuthController : AppControllerBase
+public class AuthenticationController : AppControllerBase
 {
     [HttpPost("login")]
     [ProducesResponseType(typeof(Result<AuthenticationResponse>), StatusCodes.Status200OK)]

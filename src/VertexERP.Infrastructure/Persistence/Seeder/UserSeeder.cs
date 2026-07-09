@@ -57,11 +57,11 @@ public class UserSeeder
         [
             new UserPermission
         {
-            PermissionId = permissions.First(p => p.Name == Permissions.Users.View).Id
+            PermissionId = permissions.First(p => p.Name == PermissionNames.Users.View).Id
         },
         new UserPermission
         {
-            PermissionId = permissions.First(p => p.Name == Permissions.Products.View).Id
+            PermissionId = permissions.First(p => p.Name == PermissionNames.Products.View).Id
         }
         ];
 
