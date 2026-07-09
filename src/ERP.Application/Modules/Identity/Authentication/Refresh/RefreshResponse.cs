@@ -1,4 +1,4 @@
-﻿namespace VertexERP.Application.Modules.Identity.Authentication.Refresh;
+﻿namespace VertexERP.Application.Modules.Identity.Authentication.CreateUser;
 
 public class RefreshResponse
 {

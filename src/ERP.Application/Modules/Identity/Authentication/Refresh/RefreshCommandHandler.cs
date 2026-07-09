@@ -6,7 +6,7 @@ using VertexERP.Application.Abstractions.Persistence;
 using VertexERP.Domain.Module.Identity.Entities;
 using VertexERP.Shared.Results;
 
-namespace VertexERP.Application.Modules.Identity.Authentication.Refresh;
+namespace VertexERP.Application.Modules.Identity.Authentication.CreateUser;
 
 public class RefreshCommandHandler
     : IRequestHandler<RefreshCommand, Result<RefreshResponse>>

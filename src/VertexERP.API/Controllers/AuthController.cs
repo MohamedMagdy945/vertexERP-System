@@ -4,7 +4,7 @@ using VertexERP.API.Helper;
 using VertexERP.Application.Models.Authentication;
 using VertexERP.Application.Modules.Identity.Authentication.Login;
 using VertexERP.Application.Modules.Identity.Authentication.Logout;
-using VertexERP.Application.Modules.Identity.Authentication.Refresh;
+using VertexERP.Application.Modules.Identity.Authentication.CreateUser;
 using VertexERP.Shared.Results;
 
 namespace VertexERP.API.Controllers;
