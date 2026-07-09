@@ -28,10 +28,6 @@
 	</ItemGroup>
 	
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-	
-  <ItemGroup>
     <ProjectReference Include="..\VertexERP.Infrastructure\VertexERP.Infrastructure.csproj" />
   </ItemGroup>
 

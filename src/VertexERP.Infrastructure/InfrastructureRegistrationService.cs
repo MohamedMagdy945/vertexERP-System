@@ -32,6 +32,8 @@ public static class InfrastructureRegistrationService
 
         services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
 
+        services.AddSingleton<IClientInfoProvider, ClientInfoProvider>();
+
         services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = "Bearer";

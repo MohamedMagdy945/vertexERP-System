@@ -26,7 +26,7 @@ public sealed class GlobalExceptionHandler(
 
         await context.Response.WriteAsJsonAsync(
             Result<string>.Failure(
-                result.Errors),
+               result.Message, result.Errors),
             cancellationToken);
 
         return true;
@@ -58,55 +58,37 @@ public sealed class GlobalExceptionHandler(
     {
         return exception switch
         {
-            ValidationException validationException => new ExceptionResult(
+            FluentValidation.ValidationException ex => new ExceptionResult(
                 HttpStatusCode.BadRequest,
                 "Validation failed.",
-                new[]
-                {
-                    validationException.ValidationResult?.ErrorMessage
-                    ?? validationException.Message
-                }),
+                ex.Errors
+                    .Select(x => x.ErrorMessage)
+                    .Distinct()
+                    .ToArray()),
 
-            UnauthorizedAccessException => new ExceptionResult(
+            UnauthorizedAccessException ex => new ExceptionResult(
                 HttpStatusCode.Unauthorized,
-                isDevelopment
-                    ? exception.Message
-                    : "Unauthorized access.",
+                isDevelopment ? ex.Message : "Unauthorized access.",
                 EmptyErrors),
 
-            KeyNotFoundException => new ExceptionResult(
+            KeyNotFoundException ex => new ExceptionResult(
                 HttpStatusCode.NotFound,
-                isDevelopment
-                    ? exception.Message
-                    : "Resource not found.",
+                isDevelopment ? ex.Message : "Resource not found.",
                 EmptyErrors),
 
-            ArgumentException => new ExceptionResult(
+            ArgumentException ex => new ExceptionResult(
                 HttpStatusCode.BadRequest,
-                isDevelopment
-                    ? exception.Message
-                    : "Invalid request.",
+                isDevelopment ? ex.Message : "Invalid request.",
                 EmptyErrors),
 
-            InvalidOperationException => new ExceptionResult(
+            InvalidOperationException ex => new ExceptionResult(
                 HttpStatusCode.BadRequest,
-                isDevelopment
-                    ? exception.Message
-                    : "Invalid operation.",
+                isDevelopment ? ex.Message : "Invalid operation.",
                 EmptyErrors),
 
-            //DbUpdateException => new ExceptionResult(
-            //    HttpStatusCode.InternalServerError,
-            //    isDevelopment
-            //        ? exception.Message
-            //        : "A database error occurred.",
-            //    EmptyErrors),
-
-            TimeoutException => new ExceptionResult(
+            TimeoutException ex => new ExceptionResult(
                 HttpStatusCode.RequestTimeout,
-                isDevelopment
-                    ? exception.Message
-                    : "The request timed out.",
+                isDevelopment ? ex.Message : "The request timed out.",
                 EmptyErrors),
 
             OperationCanceledException => new ExceptionResult(
@@ -114,18 +96,14 @@ public sealed class GlobalExceptionHandler(
                 "The request was cancelled.",
                 EmptyErrors),
 
-            NotImplementedException => new ExceptionResult(
+            NotImplementedException ex => new ExceptionResult(
                 HttpStatusCode.NotImplemented,
-                isDevelopment
-                    ? exception.Message
-                    : "This feature is not implemented.",
+                isDevelopment ? ex.Message : "This feature is not implemented.",
                 EmptyErrors),
 
             _ => new ExceptionResult(
                 HttpStatusCode.InternalServerError,
-                isDevelopment
-                    ? exception.Message
-                    : "An unexpected error occurred.",
+                isDevelopment ? exception.Message : "An unexpected error occurred.",
                 EmptyErrors)
         };
     }
