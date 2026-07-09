@@ -3,14 +3,15 @@ using Microsoft.AspNetCore.Mvc;
 using VertexERP.API.Helper;
 using VertexERP.Application.Models.Authentication;
 using VertexERP.Application.Modules.Identity.Authentication.Login;
+using VertexERP.Application.Modules.Identity.Authentication.Refresh;
 using VertexERP.Shared.Results;
 
 namespace VertexERP.API.Controllers;
 
 public class AuthController : AppControllerBase
 {
-    [HttpPost("Login")]
-    [ProducesResponseType(typeof(Result<AccessTokenResponse>), StatusCodes.Status200OK)]
+    [HttpPost("login")]
+    [ProducesResponseType(typeof(Result<AuthenticationResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Login(LoginCommand command)
     {
         var response = await Mediator.Send(command);
@@ -25,11 +26,34 @@ public class AuthController : AppControllerBase
             HttpContext.Request.IsHttps
         );
 
-        var accessTokenResponse = response.Data.Adapt<AccessTokenResponse>();
+        var authenticationResponse = response.Data.Adapt<AuthenticationResponse>();
 
-        var result = Result<AccessTokenResponse>.Success(accessTokenResponse);
+        var result = Result<AuthenticationResponse>.Success(authenticationResponse);
 
         return ApiResponse(result);
+    }
+
+    [HttpPost("refresh-token")]
+    [ProducesResponseType(typeof(Result<AuthenticationResponse>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> Refresh()
+    {
+
+        var refreshToken = Request.Cookies[CookieHelper.RefreshTokenCookieName];
+
+        var result = await Mediator.Send(new RefreshCommand(refreshToken));
+
+        if (!result.IsSuccess || result.Data is null)
+            return ApiResponse(result);
+
+        CookieHelper.SetRefreshTokenCookie(
+            Response,
+            result.Data.RefreshToken,
+            result.Data.RefreshTokenExpiration,
+            Request.IsHttps);
+
+        return ApiResponse(
+            Result<AuthenticationResponse>.Success(
+                result.Data.Adapt<AuthenticationResponse>()));
     }
 
 }
