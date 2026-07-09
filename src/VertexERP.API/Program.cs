@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authorization;
+using VertexERP.API.Authorization;
 using VertexERP.API.Configuration;
 using VertexERP.API.Configurations;
 using VertexERP.API.Exceptions;
@@ -28,6 +30,15 @@ public class Program
         builder.Services.AddSwaggerConfiguration();
 
         builder.Services.AddHttpContextAccessor();
+        builder.Services.AddAuthorization();
+
+        builder.Services.AddSingleton<IAuthorizationHandler,
+               PermissionAuthorizationHandler>();
+
+        builder.Services.AddSingleton<IAuthorizationPolicyProvider,
+            PermissionPolicyProvider>();
+
+
 
         builder.Services.AddApplicationServices();
         builder.Services.AddInfrastructureServices(builder.Configuration);
@@ -50,6 +61,7 @@ public class Program
         app.UseCustomRequestLogging();
 
         // Configure the HTTP request pipeline.
+        app.UseAuthentication();
 
         app.UseAuthorization();
 
