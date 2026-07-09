@@ -21,7 +21,6 @@
 	
   <ItemGroup>
     <Folder Include="Persistence\Migrations\" />
-    <Folder Include="Persistence\Seeder\" />
   </ItemGroup>
   
 </Project>

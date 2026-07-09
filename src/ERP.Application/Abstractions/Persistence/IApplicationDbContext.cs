@@ -7,7 +7,7 @@ public interface IApplicationDbContext
 {
     public DbSet<User> Users { get; }
     public DbSet<RefreshToken> RefreshTokens { get; }
-    public DbSet<UserPermission> Permissions { get; }
+    public DbSet<Permission> Permissions { get; }
     public DbSet<UserPermission> UserPermissions { get; }
     public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

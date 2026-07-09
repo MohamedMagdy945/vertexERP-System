@@ -10,6 +10,7 @@ using VertexERP.Application.Abstractions.Authentication;
 using VertexERP.Application.Abstractions.Persistence;
 using VertexERP.Infrastructure.Authentication;
 using VertexERP.Infrastructure.Persistence;
+using VertexERP.Infrastructure.Persistence.Seeder;
 
 namespace VertexERP.Infrastructure;
 
@@ -33,6 +34,13 @@ public static class InfrastructureRegistrationService
         services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
 
         services.AddSingleton<IClientInfoProvider, ClientInfoProvider>();
+
+
+        services.AddScoped<PermissionSeeder>();
+        services.AddScoped<UserSeeder>();
+        services.AddScoped<DatabaseSeeder>();
+
+
 
         services.AddAuthentication(options =>
         {
