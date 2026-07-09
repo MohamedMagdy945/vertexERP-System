@@ -12,7 +12,7 @@ namespace VertexERP.Infrastructure.Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Permission",
+                name: "Permissions",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -22,7 +22,7 @@ namespace VertexERP.Infrastructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Permission", x => x.Id);
+                    table.PrimaryKey("PK_Permissions", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -76,7 +76,7 @@ namespace VertexERP.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserPermission",
+                name: "UserPermissions",
                 columns: table => new
                 {
                     UserId = table.Column<int>(type: "int", nullable: false),
@@ -86,15 +86,15 @@ namespace VertexERP.Infrastructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserPermission", x => new { x.UserId, x.PermissionId });
+                    table.PrimaryKey("PK_UserPermissions", x => new { x.UserId, x.PermissionId });
                     table.ForeignKey(
-                        name: "FK_UserPermission_Permission_PermissionId",
+                        name: "FK_UserPermissions_Permissions_PermissionId",
                         column: x => x.PermissionId,
-                        principalTable: "Permission",
+                        principalTable: "Permissions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserPermission_Users_UserId",
+                        name: "FK_UserPermissions_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -102,8 +102,8 @@ namespace VertexERP.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Permission_Name",
-                table: "Permission",
+                name: "IX_Permissions_Name",
+                table: "Permissions",
                 column: "Name",
                 unique: true);
 
@@ -119,8 +119,8 @@ namespace VertexERP.Infrastructure.Persistence.Migrations
                 columns: new[] { "UserId", "RevokedAt", "ExpiresAt" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserPermission_PermissionId",
-                table: "UserPermission",
+                name: "IX_UserPermissions_PermissionId",
+                table: "UserPermissions",
                 column: "PermissionId");
 
             migrationBuilder.CreateIndex(
@@ -137,10 +137,10 @@ namespace VertexERP.Infrastructure.Persistence.Migrations
                 name: "RefreshTokens");
 
             migrationBuilder.DropTable(
-                name: "UserPermission");
+                name: "UserPermissions");
 
             migrationBuilder.DropTable(
-                name: "Permission");
+                name: "Permissions");
 
             migrationBuilder.DropTable(
                 name: "Users");

@@ -42,7 +42,7 @@ namespace VertexERP.Infrastructure.Persistence.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Permission");
+                    b.ToTable("Permissions");
                 });
 
             modelBuilder.Entity("VertexERP.Domain.Module.Identity.Entities.RefreshToken", b =>
@@ -165,7 +165,7 @@ namespace VertexERP.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("PermissionId");
 
-                    b.ToTable("UserPermission");
+                    b.ToTable("UserPermissions");
                 });
 
             modelBuilder.Entity("VertexERP.Domain.Module.Identity.Entities.RefreshToken", b =>
