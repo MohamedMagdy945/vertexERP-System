@@ -11,5 +11,5 @@ public sealed record CreateUserCommand(
     string ConfirmPassword,
     List<int> PermissionIds,
     bool IsEnabled
-) : IRequest<Result<CreateUserResponse>>;
+) : IRequest<Result<CreateUserCommandResponse>>;
 

@@ -10,7 +10,7 @@ using VertexERP.Shared.Results;
 namespace VertexERP.Application.Modules.Identity.Users.Commands.CreateUser;
 
 public class CreateUserCommandHandler
-    : IRequestHandler<CreateUserCommand, Result<CreateUserResponse>>
+    : IRequestHandler<CreateUserCommand, Result<CreateUserCommandResponse>>
 {
     private readonly IApplicationDbContext _dbContext;
     private readonly ILogger<CreateUserCommandHandler> _logger;
@@ -26,7 +26,7 @@ public class CreateUserCommandHandler
         _passwordHasher = passwordHasher;
     }
 
-    public async Task<Result<CreateUserResponse>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+    public async Task<Result<CreateUserCommandResponse>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
         var email = request.Email.Trim().ToLowerInvariant();
 
@@ -34,7 +34,7 @@ public class CreateUserCommandHandler
                .AnyAsync(x => x.Email == email, cancellationToken);
 
         if (exists)
-            return Result<CreateUserResponse>.Failure("Email already exists.");
+            return Result<CreateUserCommandResponse>.Failure("Email already exists.");
 
 
 
@@ -60,8 +60,8 @@ public class CreateUserCommandHandler
         await _dbContext.SaveChangesAsync(cancellationToken);
 
 
-        return Result<CreateUserResponse>.Success(
-                  new CreateUserResponse(
+        return Result<CreateUserCommandResponse>.Success(
+                  new CreateUserCommandResponse(
                       user.Id,
                       user.FirstName,
                       user.LastName,
