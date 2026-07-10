@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using VertexERP.Domain.Module.Identity.Entities;
 
-namespace VertexERP.Infrastructure.Persistence.Configurations;
+namespace VertexERP.Infrastructure.Persistence.Configurations.Identity;
 
 public class UserPermissionConfiguration : IEntityTypeConfiguration<UserPermission>
 {
