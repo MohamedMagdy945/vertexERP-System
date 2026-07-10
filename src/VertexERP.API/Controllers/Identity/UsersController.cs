@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VertexERP.Application.Modules.Identity.Users.Commands.CreateUser;
+using VertexERP.Application.Modules.Identity.Users.Queries.GetUserById;
 using VertexERP.Application.Modules.Identity.Users.Queries.GetUsersQuery;
 using VertexERP.Shared.Constants;
 using VertexERP.Shared.Results;
@@ -17,6 +18,15 @@ public class UsersController : AppControllerBase
     public async Task<IActionResult> GetUsers([FromQuery] GetUsersQuery command, CancellationToken cancellationToken)
     {
         var response = await Mediator.Send(command, cancellationToken);
+        return ApiResponse(response);
+    }
+
+    [HttpGet("GetUserById/{id}")]
+    [Authorize(Policy = PermissionNames.Users.View)]
+    [ProducesResponseType(typeof(Result<GetUsersQueryResponse>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetUserById(int id, CancellationToken cancellationToken)
+    {
+        var response = await Mediator.Send(new GetUserByIdQuery(id), cancellationToken);
         return ApiResponse(response);
     }
 
