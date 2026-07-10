@@ -3,7 +3,7 @@
 public static class CookieHelper
 {
     public const string RefreshTokenCookieName = "refreshToken";
-    private const string CookiePath = "/api/auth";
+    private const string CookiePath = "/api/authentication";
 
     public static void SetRefreshTokenCookie(
         HttpResponse response,

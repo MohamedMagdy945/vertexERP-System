@@ -1,14 +1,14 @@
 ﻿using VertexERP.Domain.Common;
 
-namespace VertexERP.Domain.Modules.Inventory.Entities;
+namespace VertexERP.Domain.Module.Inventory.Entities;
 
 public class Product : BaseEntity
 {
     public string Name { get; set; } = string.Empty;
-    public string? Barcode { get; private set; }
-    public string? Description { get; private set; }
-    public string Code { get; private set; }
-    public decimal CostPrice { get; private set; }
+    public string? Barcode { get; set; }
+    public string? Description { get; set; }
+    public string Code { get; set; } = string.Empty;
+    public decimal CostPrice { get; set; }
     public int CategoryId { get; set; }
     public Category Category { get; set; } = default!;
     public bool IsAvailable { get; set; } = true;
