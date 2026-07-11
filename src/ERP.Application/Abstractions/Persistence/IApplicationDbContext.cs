@@ -16,7 +16,7 @@ public interface IApplicationDbContext
     public DbSet<Unit> Units { get; }
     public DbSet<Stock> Stocks { get; }
     public DbSet<Warehouse> Warehouses { get; }
-    public DbSet<StockMovement> StockMovements { get; }
+    public DbSet<InventoryTransaction> InventoryTransactions { get; }
     public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }
 

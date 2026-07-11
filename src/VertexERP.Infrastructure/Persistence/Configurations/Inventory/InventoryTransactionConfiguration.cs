@@ -4,13 +4,13 @@ using VertexERP.Domain.Module.Inventory.Entities;
 
 namespace VertexERP.Infrastructure.Persistence.Configurations.Inventory;
 
-public class StockMovementConfiguration : IEntityTypeConfiguration<StockMovement>
+public class InventoryTransactionConfiguration : IEntityTypeConfiguration<InventoryTransaction>
 {
-    public void Configure(EntityTypeBuilder<StockMovement> builder)
+    public void Configure(EntityTypeBuilder<InventoryTransaction> builder)
     {
-        builder.Property(x => x.MovementType)
-                .HasConversion<int>()
-                .IsRequired();
+        builder.Property(x => x.Type)
+            .HasConversion<int>()
+            .IsRequired();
 
         builder.HasOne(x => x.Product)
            .WithMany()

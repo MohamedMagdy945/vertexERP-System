@@ -11,5 +11,8 @@ public class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshToken>
         builder.HasIndex(rt => rt.TokenHash).IsUnique();
 
         builder.HasIndex(rt => new { rt.UserId, rt.RevokedAt, rt.ExpiresAt });
+
+        builder.Property(x => x.RowVersion)
+            .IsRowVersion();
     }
 }

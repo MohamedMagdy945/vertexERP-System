@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using VertexERP.Application.Abstractions.Authentication;
 using VertexERP.Application.Abstractions.Persistence;
 using VertexERP.Shared.Pagination;
 using VertexERP.Shared.Results;
@@ -13,10 +12,8 @@ public class GetUsersQueryHandler
 {
     private readonly IApplicationDbContext _dbContext;
     private readonly ILogger<GetUsersQueryHandler> _logger;
-    private readonly IPasswordHasher _passwordHasher;
     public GetUsersQueryHandler(
         IApplicationDbContext dbContext,
-        ITokenGenerator tokenGenerator,
         ILogger<GetUsersQueryHandler> logger)
     {
         _dbContext = dbContext;

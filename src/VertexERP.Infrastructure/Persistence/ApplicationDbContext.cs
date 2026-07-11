@@ -21,7 +21,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<Unit> Units { get; set; }
     public DbSet<Stock> Stocks { get; set; }
     public DbSet<Warehouse> Warehouses { get; set; }
-    public DbSet<StockMovement> StockMovements { get; set; }
+    public DbSet<InventoryTransaction> InventoryTransactions { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {

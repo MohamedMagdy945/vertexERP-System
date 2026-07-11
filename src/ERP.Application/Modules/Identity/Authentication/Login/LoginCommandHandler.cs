@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Mapster;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using VertexERP.Application.Abstractions.Authentication;
@@ -85,16 +86,7 @@ public class LoginCommandHandler
               "User {UserId} logged in successfully.",
               user.Id);
 
-        var loginResponse = new LoginResponse
-        {
-            UserId = user.Id,
-            AccessToken = tokenResponse.AccessToken,
-            RefreshToken = tokenResponse.RefreshToken,
-            RefreshTokenExpiration = tokenResponse.RefreshTokenExpiration,
-            AccessTokenExpiration = tokenResponse.AccessTokenExpiration
-        };
-
-        return Result<LoginResponse>.Success(loginResponse);
+        return Result<LoginResponse>.Success(tokenResponse.Adapt<LoginResponse>());
 
     }
 }

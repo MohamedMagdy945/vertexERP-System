@@ -12,7 +12,6 @@ public class GetUserByIdQueryHandler
 {
     private readonly IApplicationDbContext _dbContext;
     private readonly ILogger<GetUserByIdQueryHandler> _logger;
-    private readonly IPasswordHasher _passwordHasher;
     public GetUserByIdQueryHandler(
         IApplicationDbContext dbContext,
         ITokenGenerator tokenGenerator,

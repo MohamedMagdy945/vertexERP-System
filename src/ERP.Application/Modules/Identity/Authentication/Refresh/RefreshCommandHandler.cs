@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Mapster;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using VertexERP.Application.Abstractions.Authentication;
@@ -6,7 +7,7 @@ using VertexERP.Application.Abstractions.Persistence;
 using VertexERP.Domain.Module.Identity.Entities;
 using VertexERP.Shared.Results;
 
-namespace VertexERP.Application.Modules.Identity.Authentication.CreateUser;
+namespace VertexERP.Application.Modules.Identity.Authentication.Refresh;
 
 public class RefreshCommandHandler
     : IRequestHandler<RefreshCommand, Result<RefreshResponse>>
@@ -29,17 +30,14 @@ public class RefreshCommandHandler
 
     public async Task<Result<RefreshResponse>> Handle(RefreshCommand request, CancellationToken cancellationToken)
     {
-        var gracePeriodLimit = DateTime.UtcNow.AddMinutes(-1);
-
         var refreshTokenHash = _tokenGenerator.HashToken(request.RefreshToken);
 
         var existingToken = await _dbContext.RefreshTokens
             .FirstOrDefaultAsync(rt =>
                 rt.TokenHash == refreshTokenHash &&
                 rt.ExpiresAt > DateTime.UtcNow &&
-                (rt.RevokedAt == null || (rt.RevokedReason == "Replaced by new token" && rt.RevokedAt > gracePeriodLimit)),
+                rt.RevokedAt == null,
                 cancellationToken);
-
 
 
         if (existingToken is null)
@@ -72,33 +70,31 @@ public class RefreshCommandHandler
 
         var tokenResponse = _tokenGenerator.GenerateTokenPair(user, userData.Permissions);
 
-        if (existingToken.RevokedAt == null)
-        {
-            existingToken.RevokedAt = DateTime.UtcNow;
-            existingToken.RevokedReason = "Replaced by new token";
-        }
+        existingToken.RevokedAt = DateTime.UtcNow;
+        existingToken.RevokedReason = "Replaced by new token";
 
-        var refreToken = new RefreshToken
+        var newRefreshToken = new RefreshToken
         {
-            UserId = user.Id,
+            UserId = existingToken.UserId,
             TokenHash = _tokenGenerator.HashToken(tokenResponse.RefreshToken),
             ExpiresAt = tokenResponse.RefreshTokenExpiration,
             CreatedByIp = existingToken.CreatedByIp,
             DeviceInfo = existingToken.DeviceInfo
         };
 
-        await _dbContext.RefreshTokens.AddAsync(refreToken, cancellationToken);
+        await _dbContext.RefreshTokens.AddAsync(newRefreshToken, cancellationToken);
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
-
-        return Result<RefreshResponse>.Success(new RefreshResponse
+        try
         {
-            UserId = user.Id,
-            AccessToken = tokenResponse.AccessToken,
-            RefreshToken = tokenResponse.RefreshToken,
-            AccessTokenExpiration = tokenResponse.AccessTokenExpiration,
-            RefreshTokenExpiration = tokenResponse.RefreshTokenExpiration
-        });
+            await _dbContext.SaveChangesAsync(cancellationToken);
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            return Result<RefreshResponse>.Unauthorized(
+                "Invalid or expired refresh token.");
+        }
+
+        return Result<RefreshResponse>.Success(tokenResponse.Adapt<RefreshResponse>());
     }
 }
 

@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using VertexERP.API.Helper;
 using VertexERP.Application.Models.Authentication;
-using VertexERP.Application.Modules.Identity.Authentication.CreateUser;
 using VertexERP.Application.Modules.Identity.Authentication.Login;
 using VertexERP.Application.Modules.Identity.Authentication.Logout;
+using VertexERP.Application.Modules.Identity.Authentication.Refresh;
 using VertexERP.Shared.Results;
 
 namespace VertexERP.API.Controllers.Identity;
@@ -41,7 +41,7 @@ public class AuthenticationController : AppControllerBase
 
         var refreshToken = Request.Cookies[CookieHelper.RefreshTokenCookieName];
 
-        var result = await Mediator.Send(new RefreshCommand(refreshToken));
+        var result = await Mediator.Send(new RefreshCommand(refreshToken!));
 
         if (!result.IsSuccess || result.Data is null)
             return ApiResponse(result);

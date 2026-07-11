@@ -99,6 +99,7 @@ public sealed class GlobalExceptionHandler(
                 isDevelopment ? ex.Message : "This feature is not implemented.",
                 EmptyErrors),
 
+
             _ => new ExceptionResult(
                 HttpStatusCode.InternalServerError,
                 isDevelopment ? exception.Message : "An unexpected error occurred.",

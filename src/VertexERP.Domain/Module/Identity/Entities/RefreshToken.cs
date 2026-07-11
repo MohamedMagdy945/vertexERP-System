@@ -1,4 +1,6 @@
-﻿namespace VertexERP.Domain.Module.Identity.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace VertexERP.Domain.Module.Identity.Entities;
 
 public class RefreshToken : BaseIdentityEntity
 {
@@ -17,5 +19,8 @@ public class RefreshToken : BaseIdentityEntity
     public bool IsRevoked => RevokedAt != null;
     public bool IsActive => !IsRevoked && !IsExpired && !IsUsed;
     public User User { get; set; } = default!;
+
+    [Timestamp]
+    public byte[] RowVersion { get; set; } = default!;
 }
 
