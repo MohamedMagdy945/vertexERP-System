@@ -58,7 +58,7 @@ public class Program
 
         app.UseExceptionHandler();
 
-        app.UseCustomRequestLogging();
+        //app.UseCustomRequestLogging();
 
         // Configure the HTTP request pipeline.
         app.UseAuthentication();

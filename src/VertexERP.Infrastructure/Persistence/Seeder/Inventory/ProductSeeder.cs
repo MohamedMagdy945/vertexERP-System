@@ -32,7 +32,7 @@ public class ProductSeeder
                 Code = "PRD-001",
                 CostPrice = 25000m,
                 CategoryId = 1,
-                Unit = Unit.Piece,
+                Unit = UnitType.Piece,
                 IsAvailable = true
             },
             new Product
@@ -44,7 +44,7 @@ public class ProductSeeder
                 Code = "PRD-002",
                 CostPrice = 8500m,
                 CategoryId = 1,
-                Unit = Unit.Piece,
+                Unit = UnitType.Piece,
                 IsAvailable = true
             },
             new Product
@@ -56,7 +56,7 @@ public class ProductSeeder
                 Code = "PRD-003",
                 CostPrice = 250m,
                 CategoryId = 2,
-                Unit = Unit.Piece,
+                Unit = UnitType.Piece,
                 IsAvailable = true
             },
             new Product
@@ -68,7 +68,7 @@ public class ProductSeeder
                 Code = "PRD-004",
                 CostPrice = 900m,
                 CategoryId = 2,
-                Unit = Unit.Piece,
+                Unit = UnitType.Piece,
                 IsAvailable = true
             },
             new Product
@@ -80,7 +80,7 @@ public class ProductSeeder
                 Code = "PRD-005",
                 CostPrice = 3200m,
                 CategoryId = 3,
-                Unit = Unit.Piece,
+                Unit = UnitType.Piece,
                 IsAvailable = true
             }
         };

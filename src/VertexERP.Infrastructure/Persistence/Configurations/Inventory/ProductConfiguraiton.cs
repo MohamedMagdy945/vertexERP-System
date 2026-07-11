@@ -13,6 +13,12 @@ public class ProductConfiguraiton : IEntityTypeConfiguration<Product>
 
         builder.Property(x => x.Unit)
             .HasConversion<int>();
+
+        builder.Property(x => x.CostPrice)
+            .HasPrecision(18, 2);
+
+        builder.Property(x => x.SellingPrice)
+            .HasPrecision(18, 2);
     }
 }
 

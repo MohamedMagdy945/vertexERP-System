@@ -8,7 +8,7 @@ namespace VertexERP.API.Controllers.Inventory;
 
 
 [Tags("Inventory")]
-public class CategoryController : AppControllerBase
+public class CategorysController : AppControllerBase
 {
     [HttpPost("CreateCategory")]
     [ProducesResponseType(typeof(Result<CreateCategoryCommandResponse>), StatusCodes.Status200OK)]

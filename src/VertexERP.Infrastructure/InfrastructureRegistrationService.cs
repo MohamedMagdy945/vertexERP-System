@@ -8,11 +8,13 @@ using System.Security.Claims;
 using System.Text;
 using VertexERP.Application.Abstractions.Authentication;
 using VertexERP.Application.Abstractions.Persistence;
+using VertexERP.Application.Abstractions.Storage;
 using VertexERP.Infrastructure.Authentication;
 using VertexERP.Infrastructure.Persistence;
 using VertexERP.Infrastructure.Persistence.Seeder;
 using VertexERP.Infrastructure.Persistence.Seeder.Identity;
 using VertexERP.Infrastructure.Persistence.Seeder.Inventory;
+using VertexERP.Infrastructure.Storage;
 
 namespace VertexERP.Infrastructure;
 
@@ -24,7 +26,11 @@ public static class InfrastructureRegistrationService
         services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
         {
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
-            options.LogTo(Console.WriteLine, LogLevel.Information);
+
+            options.LogTo(
+                Console.WriteLine,
+                new[] { DbLoggerCategory.Database.Command.Name },
+                LogLevel.Information);
         });
 
         services.Configure<TokenPairSettings>(
@@ -37,6 +43,7 @@ public static class InfrastructureRegistrationService
 
         services.AddSingleton<IClientInfoProvider, ClientInfoProvider>();
 
+        services.AddSingleton<IFileStorage, LocalFileStorage>();
 
         services.AddScoped<PermissionSeeder>();
         services.AddScoped<UserSeeder>();

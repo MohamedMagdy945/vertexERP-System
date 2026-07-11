@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
+using System.Data.Common;
 using System.Net;
 using VertexERP.Shared.Exceptions;
 using VertexERP.Shared.Results;
@@ -56,13 +57,17 @@ public sealed class GlobalExceptionHandler(
         Exception exception,
         bool isDevelopment)
     {
-        return exception switch
+        var result = exception switch
         {
             ValidationAppException ex => new ExceptionResult(
                 HttpStatusCode.BadRequest,
                 "Validation failed.",
                 ex.Errors.ToArray()),
 
+            Microsoft.EntityFrameworkCore.DbUpdateException ex => new ExceptionResult(
+                HttpStatusCode.BadRequest,
+                ex.Message,
+                EmptyErrors),
 
             UnauthorizedAccessException ex => new ExceptionResult(
                 HttpStatusCode.Unauthorized,
@@ -99,12 +104,23 @@ public sealed class GlobalExceptionHandler(
                 isDevelopment ? ex.Message : "This feature is not implemented.",
                 EmptyErrors),
 
+            DbException ex => new ExceptionResult(
+                HttpStatusCode.InternalServerError,
+                isDevelopment ? ex.Message : "An error occurred while communicating with the database.",
+                EmptyErrors),
 
             _ => new ExceptionResult(
                 HttpStatusCode.InternalServerError,
                 isDevelopment ? exception.Message : "An unexpected error occurred.",
                 EmptyErrors)
         };
+
+        if (isDevelopment && exception.InnerException != null && result.Errors.Length == 0)
+        {
+            return result with { Errors = [exception.InnerException.Message] };
+        }
+
+        return result;
     }
 
     private sealed record ExceptionResult(

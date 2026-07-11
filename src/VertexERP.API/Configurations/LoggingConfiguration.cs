@@ -69,13 +69,11 @@ public static class LoggingConfiguration
     {
         return app.UseSerilogRequestLogging(options =>
         {
-            options.GetLevel = (ctx, _, ex) =>
-                ex != null ? LogEventLevel.Error :
-                ctx.Response.StatusCode >= 500 ? LogEventLevel.Error :
-                ctx.Response.StatusCode >= 400 ? LogEventLevel.Warning :
-                LogEventLevel.Information;
+            options.GetLevel = (_, _, _) => LogEventLevel.Information;
 
-            options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} -> {StatusCode} in {Elapsed:0.0000} ms";
+
+            options.MessageTemplate =
+                "HTTP {RequestMethod} {RequestPath} -> {StatusCode} in {Elapsed:0.0000} ms";
         });
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace VertexERP.Domain.Module.Inventory.Enums;
 
-public enum Unit
+public enum UnitType
 {
     Piece = 1,
     Box = 2,

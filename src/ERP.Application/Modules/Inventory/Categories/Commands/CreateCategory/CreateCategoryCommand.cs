@@ -3,7 +3,7 @@ using VertexERP.Shared.Results;
 
 namespace VertexERP.Application.Modules.Inventory.Categories.Commands.CreateCategory;
 
-public sealed record CreateCategoryCommand(
+public record CreateCategoryCommand(
     string Name,
     string Description
 ) : IRequest<Result<CreateCategoryCommandResponse>>;
