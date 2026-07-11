@@ -1,6 +1,8 @@
 ﻿using FluentValidation;
+using Mapster;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using VertexERP.Application.Common;
 
 namespace VertexERP.Application;
 
@@ -18,6 +20,8 @@ public static class ApplicationRegistrationService
 
 
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+        TypeAdapterConfig.GlobalSettings.Scan(typeof(ApplicationAssemblyMarker).Assembly);
 
         return services;
     }

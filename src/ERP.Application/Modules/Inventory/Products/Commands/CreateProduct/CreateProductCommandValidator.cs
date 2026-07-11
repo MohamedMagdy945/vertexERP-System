@@ -1,12 +1,10 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Http;
-using VertexERP.Application.Abstractions.Persistence;
 
 namespace VertexERP.Application.Modules.Inventory.Products.Commands.CreateProduct;
 
 public class CreateProductCommandValidator : AbstractValidator<CreateProductCommand>
 {
-    private readonly IApplicationDbContext _context;
 
     public CreateProductCommandValidator()
     {
