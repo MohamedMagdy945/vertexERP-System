@@ -8,8 +8,8 @@ public class ProductConfiguraiton : IEntityTypeConfiguration<Product>
 {
     public void Configure(EntityTypeBuilder<Product> builder)
     {
-        builder.Property(x => x.CostPrice)
-            .HasPrecision(18, 2);
+
+        builder.HasIndex(x => x.Name);
 
         builder.Property(x => x.Unit)
             .HasConversion<int>();
@@ -19,6 +19,10 @@ public class ProductConfiguraiton : IEntityTypeConfiguration<Product>
 
         builder.Property(x => x.SellingPrice)
             .HasPrecision(18, 2);
+
+
+        builder.HasIndex(x => x.Code)
+            .IsUnique();
     }
 }
 

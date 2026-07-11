@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using VertexERP.Application.Modules.Inventory.Products.Commands.CreateProduct;
+using VertexERP.Application.Modules.Inventory.Products.Queries.GetProducts;
+using VertexERP.Shared.Pagination;
 using VertexERP.Shared.Results;
 
 namespace VertexERP.API.Controllers.Inventory;
@@ -17,12 +19,12 @@ public class ProductsController : AppControllerBase
         return ApiResponse(response);
     }
 
-    //[HttpGet("GetProducts")]
-    //[ProducesResponseType(typeof(Result<PagedResult<GetProductsQueryResponse>>), StatusCodes.Status200OK)]
-    //public async Task<IActionResult> GetProducts([FromQuery] GetProductsQuery query)
-    //{
-    //    var response = await Mediator.Send(query);
+    [HttpGet("GetProducts")]
+    [ProducesResponseType(typeof(Result<PagedResult<GetProductsQueryResponse>>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetProducts([FromQuery] GetProductsQuery query)
+    {
+        var response = await Mediator.Send(query);
 
-    //    return ApiResponse(response);
-    //}
+        return ApiResponse(response);
+    }
 }

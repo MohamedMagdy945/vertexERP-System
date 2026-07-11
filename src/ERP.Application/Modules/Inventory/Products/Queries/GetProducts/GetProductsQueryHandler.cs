@@ -23,7 +23,7 @@ public class GetProductsQueryHandler
     public async Task<Result<PagedResult<GetProductsQueryResponse>>> Handle(GetProductsQuery request, CancellationToken cancellationToken)
     {
 
-        var query = _dbContext.Categories
+        var query = _dbContext.Products
             .AsNoTracking();
 
         var totalCount = await query.CountAsync(cancellationToken);
@@ -36,7 +36,10 @@ public class GetProductsQueryHandler
             {
                 Id = x.Id,
                 Name = x.Name,
-                Description = x.Description
+                Description = x.Description,
+                ImageUrl = x.ImageUrl,
+                Code = x.Code,
+                SellingPrice = x.SellingPrice
             })
             .ToListAsync(cancellationToken);
 
