@@ -42,7 +42,6 @@ public static class InfrastructureRegistrationService
         services.AddScoped<UserSeeder>();
         services.AddScoped<DatabaseSeeder>();
         services.AddScoped<CategorySeeder>();
-        services.AddScoped<UnitSeeder>();
         services.AddScoped<ProductSeeder>();
         services.AddScoped<WarehouseSeeder>();
         services.AddScoped<StockSeeder>();

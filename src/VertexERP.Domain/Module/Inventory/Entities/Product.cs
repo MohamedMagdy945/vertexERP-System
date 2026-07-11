@@ -1,4 +1,5 @@
 ﻿using VertexERP.Domain.Common;
+using VertexERP.Domain.Module.Inventory.Enums;
 
 namespace VertexERP.Domain.Module.Inventory.Entities;
 
@@ -11,8 +12,7 @@ public class Product : BaseEntity
     public string Code { get; set; } = string.Empty;
     public decimal CostPrice { get; set; }
     public int CategoryId { get; set; }
-    public int UnitId { get; set; }
-    public Unit Unit { get; set; } = default!;
+    public Unit Unit { get; set; }
     public Category Category { get; set; } = default!;
     public bool IsAvailable { get; set; } = true;
     public ICollection<Stock> Stocks { get; set; } = new List<Stock>();

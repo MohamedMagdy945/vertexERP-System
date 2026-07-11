@@ -13,7 +13,6 @@ public interface IApplicationDbContext
 
     public DbSet<Product> Products { get; }
     public DbSet<Category> Categories { get; }
-    public DbSet<Unit> Units { get; }
     public DbSet<Stock> Stocks { get; }
     public DbSet<Warehouse> Warehouses { get; }
     public DbSet<InventoryTransaction> InventoryTransactions { get; }

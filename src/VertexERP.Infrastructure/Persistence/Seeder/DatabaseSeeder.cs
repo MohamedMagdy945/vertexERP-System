@@ -9,7 +9,6 @@ public class DatabaseSeeder
     private readonly UserSeeder _userSeeder;
 
     private readonly CategorySeeder _categorySeeder;
-    private readonly UnitSeeder _unitSeeder;
     private readonly ProductSeeder _productSeeder;
     private readonly WarehouseSeeder _warehouseSeeder;
     private readonly StockSeeder _stockSeeder;
@@ -19,7 +18,6 @@ public class DatabaseSeeder
         PermissionSeeder permissionSeeder,
         UserSeeder userSeeder,
         CategorySeeder categorySeeder,
-        UnitSeeder unitSeeder,
         ProductSeeder productSeeder,
         WarehouseSeeder warehouseSeeder,
         StockSeeder stockSeeder,
@@ -28,7 +26,6 @@ public class DatabaseSeeder
         _permissionSeeder = permissionSeeder;
         _userSeeder = userSeeder;
         _categorySeeder = categorySeeder;
-        _unitSeeder = unitSeeder;
         _productSeeder = productSeeder;
         _warehouseSeeder = warehouseSeeder;
         _stockSeeder = stockSeeder;
@@ -41,7 +38,6 @@ public class DatabaseSeeder
         await _userSeeder.SeedAsync();
 
         await _categorySeeder.SeedAsync();
-        await _unitSeeder.SeedAsync();
         await _productSeeder.SeedAsync();
         await _warehouseSeeder.SeedAsync();
         await _stockSeeder.SeedAsync();
