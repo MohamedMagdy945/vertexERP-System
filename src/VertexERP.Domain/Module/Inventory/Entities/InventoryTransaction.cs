@@ -1,9 +1,10 @@
-﻿using VertexERP.Domain.Module.Identity.Entities;
+﻿using VertexERP.Domain.Common;
+using VertexERP.Domain.Module.Identity.Entities;
 using VertexERP.Domain.Module.Inventory.Enums;
 
 namespace VertexERP.Domain.Module.Inventory.Entities;
 
-public class InventoryTransaction
+public class InventoryTransaction : BaseEntity
 {
     public InventoryTransactionType Type { get; set; }
 

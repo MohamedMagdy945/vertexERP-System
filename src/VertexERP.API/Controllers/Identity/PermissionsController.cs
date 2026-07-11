@@ -6,9 +6,10 @@ using VertexERP.Shared.Results;
 
 namespace VertexERP.API.Controllers.Identity;
 
-
+[Tags("Identity")]
 public class PermissionsController : AppControllerBase
 {
+    [Tags("Authentication")]
     [HttpGet("GetAllPermissions")]
     [Authorize(Policy = PermissionNames.Permissions.View)]
     [ProducesResponseType(typeof(Result<List<GetAllPermissionsQueryResponse>>), StatusCodes.Status200OK)]

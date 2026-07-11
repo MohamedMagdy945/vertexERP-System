@@ -8,6 +8,7 @@ using VertexERP.Shared.Results;
 
 namespace VertexERP.API.Controllers.Identity;
 
+[Tags("Identity")]
 public class UsersController : AppControllerBase
 {
 

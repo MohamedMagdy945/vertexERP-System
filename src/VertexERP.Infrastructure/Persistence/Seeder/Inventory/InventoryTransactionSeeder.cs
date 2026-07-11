@@ -56,7 +56,6 @@ public class InventoryTransactionSeeder
             },
             new()
             {
-                Id = 4,
                 Type = InventoryTransactionType.Issue,
                 WarehouseId = 1,
                 ProductId = 1,
@@ -103,7 +102,7 @@ public class InventoryTransactionSeeder
             {
                 Type = InventoryTransactionType.Adjustment,
                 WarehouseId = 3,
-                ProductId = 6,
+                ProductId = 5,
                 Quantity = 4,
                 ReceivedByUserId = 1,
                 TransactionDate = DateTime.UtcNow.AddDays(-6),
@@ -112,7 +111,6 @@ public class InventoryTransactionSeeder
             },
             new()
             {
-                Id = 9,
                 Type = InventoryTransactionType.Receipt,
                 WarehouseId = 1,
                 ProductId = 5,
@@ -127,7 +125,7 @@ public class InventoryTransactionSeeder
             {
                 Type = InventoryTransactionType.Receipt,
                 WarehouseId = 3,
-                ProductId = 6,
+                ProductId = 3,
                 Quantity = 12,
                 ReceivedByUserId = 2,
                 TransactionDate = DateTime.UtcNow.AddDays(-2),

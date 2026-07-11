@@ -36,7 +36,6 @@ public class StockSeeder
             },
             new()
             {
-                Id = 3,
                 ProductId = 3,
                 WarehouseId = 1,
                 Quantity = 40,
