@@ -17,7 +17,6 @@ public class CreateUserCommandHandler
     private readonly IPasswordHasher _passwordHasher;
     public CreateUserCommandHandler(
         IApplicationDbContext dbContext,
-        ITokenGenerator tokenGenerator,
         IPasswordHasher passwordHasher,
         ILogger<CreateUserCommandHandler> logger)
     {

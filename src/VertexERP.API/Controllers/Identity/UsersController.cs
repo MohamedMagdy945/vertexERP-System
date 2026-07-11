@@ -12,7 +12,6 @@ namespace VertexERP.API.Controllers.Identity;
 public class UsersController : AppControllerBase
 {
 
-
     [HttpGet("GetUsers")]
     [Authorize(Policy = PermissionNames.Users.View)]
     [ProducesResponseType(typeof(Result<List<GetUsersQueryResponse>>), StatusCodes.Status200OK)]

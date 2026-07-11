@@ -10,7 +10,7 @@ using VertexERP.Shared.Results;
 namespace VertexERP.API.Controllers.Identity;
 
 
-[Tags("Authentication")]
+[Tags("Identity")]
 public class AuthenticationController : AppControllerBase
 {
     [HttpPost("login")]
