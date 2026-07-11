@@ -1,8 +1,6 @@
-﻿using VertexERP.Domain.Common;
+﻿namespace VertexERP.Domain.Module.Inventory.Entities;
 
-namespace VertexERP.Domain.Module.Inventory.Entities;
-
-public class Stock : BaseEntity
+public class Stock
 {
     public int ProductId { get; set; }
     public Product Product { get; set; } = null!;

@@ -4,7 +4,7 @@ using VertexERP.Application.Abstractions.Persistence;
 using VertexERP.Domain.Module.Identity.Entities;
 using VertexERP.Shared.Constants;
 
-namespace VertexERP.Infrastructure.Persistence.Seeder;
+namespace VertexERP.Infrastructure.Persistence.Seeder.Identity;
 
 public class UserSeeder
 {

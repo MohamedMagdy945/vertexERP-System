@@ -11,6 +11,8 @@ using VertexERP.Application.Abstractions.Persistence;
 using VertexERP.Infrastructure.Authentication;
 using VertexERP.Infrastructure.Persistence;
 using VertexERP.Infrastructure.Persistence.Seeder;
+using VertexERP.Infrastructure.Persistence.Seeder.Identity;
+using VertexERP.Infrastructure.Persistence.Seeder.Inventory;
 
 namespace VertexERP.Infrastructure;
 
@@ -39,7 +41,12 @@ public static class InfrastructureRegistrationService
         services.AddScoped<PermissionSeeder>();
         services.AddScoped<UserSeeder>();
         services.AddScoped<DatabaseSeeder>();
-
+        services.AddScoped<CategorySeeder>();
+        services.AddScoped<UnitSeeder>();
+        services.AddScoped<ProductSeeder>();
+        services.AddScoped<WarehouseSeeder>();
+        services.AddScoped<StockSeeder>();
+        services.AddScoped<InventoryTransactionSeeder>();
 
 
         services.AddAuthentication(options =>

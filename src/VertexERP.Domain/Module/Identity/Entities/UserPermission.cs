@@ -1,6 +1,6 @@
 ﻿namespace VertexERP.Domain.Module.Identity.Entities;
 
-public class UserPermission : BaseIdentityEntity
+public class UserPermission
 {
     public int UserId { get; set; }
     public User User { get; set; } = default!;

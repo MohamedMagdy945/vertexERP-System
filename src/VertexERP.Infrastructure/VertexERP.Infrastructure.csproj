@@ -5,6 +5,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="Persistence\Seeder\Inventory\WarehouseSeeder.cs" />
+  </ItemGroup>
 	
     <ItemGroup>
 		<ProjectReference Include="..\ERP.Application\VertexERP.Application.csproj" />
