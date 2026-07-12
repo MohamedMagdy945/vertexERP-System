@@ -21,10 +21,10 @@ public class GetUserByIdQueryHandler
         _logger = logger;
     }
 
-    public async Task<Result<GetUserByIdQueryResponse>> Handle(
-        GetUserByIdQuery request,
-        CancellationToken cancellationToken)
+    public async Task<Result<GetUserByIdQueryResponse>> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
     {
+        var result = Result<GetUserByIdQueryResponse>.Create();
+
         var user = await _dbContext.Users
             .AsNoTracking()
             .Where(x => x.Id == request.Id)
@@ -39,10 +39,10 @@ public class GetUserByIdQueryHandler
 
         if (user is null)
         {
-            return Result<GetUserByIdQueryResponse>.NotFound("User not found.");
+            return result.NotFound("User not found.");
         }
 
-        return Result<GetUserByIdQueryResponse>.Success(user);
+        return result.Success(user);
     }
 }
 

@@ -30,6 +30,8 @@ public class RefreshCommandHandler
 
     public async Task<Result<RefreshResponse>> Handle(RefreshCommand request, CancellationToken cancellationToken)
     {
+        var result = Result<RefreshResponse>.Create();
+
         var refreshTokenHash = _tokenGenerator.HashToken(request.RefreshToken);
 
         var existingToken = await _dbContext.RefreshTokens
@@ -41,7 +43,7 @@ public class RefreshCommandHandler
 
 
         if (existingToken is null)
-            return Result<RefreshResponse>.Unauthorized("Invalid or expired refresh token.");
+            return result.Unauthorized("Invalid or expired refresh token.");
 
         var userData = await _dbContext.Users
             .AsNoTracking()
@@ -59,7 +61,7 @@ public class RefreshCommandHandler
             .FirstOrDefaultAsync(cancellationToken);
 
         if (userData is null || !userData.IsEnabled)
-            return Result<RefreshResponse>.Unauthorized("User account not found.");
+            return result.Unauthorized("User account not found.");
 
         var user = new User
         {
@@ -90,11 +92,10 @@ public class RefreshCommandHandler
         }
         catch (DbUpdateConcurrencyException)
         {
-            return Result<RefreshResponse>.Unauthorized(
-                "Invalid or expired refresh token.");
+            return result.Unauthorized("Invalid or expired refresh token.");
         }
 
-        return Result<RefreshResponse>.Success(tokenResponse.Adapt<RefreshResponse>());
+        return result.Success(tokenResponse.Adapt<RefreshResponse>());
     }
 }
 

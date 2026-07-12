@@ -27,17 +27,14 @@ public class CreateUserCommandHandler
 
     public async Task<Result<CreateUserCommandResponse>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
+        var result = Result<CreateUserCommandResponse>.Create();
+
         var email = request.Email.Trim().ToLowerInvariant();
 
-        var exists = await _dbContext.Users
-               .AnyAsync(x => x.Email == email, cancellationToken);
+        var exists = await _dbContext.Users.AnyAsync(x => x.Email == email, cancellationToken);
 
         if (exists)
-            return Result<CreateUserCommandResponse>.Failure("Email already exists.");
-
-
-
-
+            return result.Failure("Email already exists.");
 
         var permissions = await _dbContext.Permissions
            .Where(x => request.PermissionIds.Contains(x.Id))
@@ -58,15 +55,7 @@ public class CreateUserCommandHandler
         await _dbContext.Users.AddAsync(user, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-
-        return Result<CreateUserCommandResponse>.Success(
-                  new CreateUserCommandResponse(
-                      user.Id,
-                      user.FirstName,
-                      user.LastName,
-                      user.FullName,
-                      user.Email,
-                      user.IsEnabled));
+        return result.Created(user.Adapt<CreateUserCommandResponse>());
     }
 }
 

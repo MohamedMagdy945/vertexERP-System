@@ -27,6 +27,7 @@ public class CreateProductCommandHandler
 
     public async Task<Result<CreateProductCommandResponse>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
+        var result = Result<CreateProductCommandResponse>.Create();
 
         string? imageUrl = null;
         if (request.Image is not null && request.Image.Length > 0)
@@ -37,7 +38,7 @@ public class CreateProductCommandHandler
                 request.Image.ContentType, "products", cancellationToken);
 
             if (imageUrl == null)
-                return Result<CreateProductCommandResponse>.Failure("Image upload failed");
+                return result.Failure("Image upload failed");
         }
 
         var product = request.Adapt<Product>();
@@ -46,9 +47,7 @@ public class CreateProductCommandHandler
         await _dbContext.Products.AddAsync(product, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return Result<CreateProductCommandResponse>.
-            Success(product.Adapt<CreateProductCommandResponse>(), "Product created successfully");
-
+        return result.Created(product.Adapt<CreateProductCommandResponse>());
     }
 }
 

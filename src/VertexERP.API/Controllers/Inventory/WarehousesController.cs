@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using VertexERP.Application.Modules.Inventory.Warehouses.Commands.CreateWarehouse;
+using VertexERP.Application.Modules.Inventory.Warehouses.Commands.DeleteWarehouseById;
 using VertexERP.Application.Modules.Inventory.Warehouses.Commands.UpdateWarehouse;
 using VertexERP.Application.Modules.Inventory.Warehouses.Queries.GetWarehouseById;
 using VertexERP.Application.Modules.Inventory.Warehouses.Queries.GetWarehouses;
@@ -22,7 +23,7 @@ public class WarehousesController : AppControllerBase
     }
 
     [HttpGet("GetWarehouses")]
-    [ProducesResponseType(typeof(Result<PagedResult<GetWarehousesQueryResponse>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Result<Page<GetWarehousesQueryResponse>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetWarehouses([FromQuery] GetWarehousesQuery query)
     {
         var response = await Mediator.Send(query);
@@ -48,12 +49,13 @@ public class WarehousesController : AppControllerBase
         return ApiResponse(response);
     }
 
-    //[HttpPost("DeleteWarehouseById/{id}")]
-    //[ProducesResponseType(typeof(Result<DeleteWarehouseByIdCommandResponse>), StatusCodes.Status200OK)]
-    //public async Task<IActionResult> DeleteWarehouseById(int id)
-    //{
-    //    var response = await Mediator.Send(new DeleteWarehouseByIdCommand(id));
+    [HttpPost("DeleteWarehouseById/{id}")]
+    [ProducesResponseType(typeof(Result<DeleteWarehouseByIdCommandResponse>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> DeleteWarehouseById(int id)
+    {
+        var response = await Mediator.Send(new DeleteWarehouseByIdCommand(id));
 
-    //    return ApiResponse(response);
+        return ApiResponse(response);
+    }
 }
 

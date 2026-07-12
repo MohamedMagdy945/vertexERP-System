@@ -26,6 +26,7 @@ public class GetAllPermissionsQueryHandler
 
     public async Task<Result<List<GetAllPermissionsQueryResponse>>> Handle(GetAllPermissionsQuery request, CancellationToken cancellationToken)
     {
+        var result = Result<List<GetAllPermissionsQueryResponse>>.Create();
 
         var permissions = await _dbContext.Permissions
             .Select(x => new GetAllPermissionsQueryResponse
@@ -35,9 +36,7 @@ public class GetAllPermissionsQueryHandler
             })
             .ToListAsync(cancellationToken);
 
-
-        return Result<List<GetAllPermissionsQueryResponse>>
-            .Success(permissions, "Permissions retrieved successfully");
+        return result.Success(permissions, "Permissions retrieved successfully");
 
 
     }

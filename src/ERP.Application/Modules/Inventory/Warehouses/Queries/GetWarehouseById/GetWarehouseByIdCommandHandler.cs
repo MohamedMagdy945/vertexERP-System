@@ -22,15 +22,15 @@ public class GetWarehouseByIdCommandHandler
 
     public async Task<Result<GetWarehouseByIdCommandResponse>> Handle(GetWarehouseByIdCommand request, CancellationToken cancellationToken)
     {
+        var response = Result<GetWarehouseByIdCommandResponse>.Create();
+
         var warehosue = await _dbContext.Warehouses.FindAsync(request.Id, cancellationToken);
 
         if (warehosue == null)
-        {
-            return Result<GetWarehouseByIdCommandResponse>.NotFound($"Warehouse with Id {request.Id} not found.");
-        }
+            return response.NotFound($"Warehouse with Id {request.Id} not found.");
 
-        return Result<GetWarehouseByIdCommandResponse>.Success(
-            warehosue.Adapt<GetWarehouseByIdCommandResponse>(), "Warehouse found successfully.");
+
+        return response.Success(warehosue.Adapt<GetWarehouseByIdCommandResponse>(), "Warehouse found successfully.");
 
     }
 }

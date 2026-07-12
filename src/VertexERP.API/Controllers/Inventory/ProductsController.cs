@@ -23,7 +23,7 @@ public class ProductsController : AppControllerBase
     }
 
     [HttpGet("GetProducts")]
-    [ProducesResponseType(typeof(Result<PagedResult<GetProductsQueryResponse>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Result<Page<GetProductsQueryResponse>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetProducts([FromQuery] GetProductsQuery query)
     {
         var response = await Mediator.Send(query);

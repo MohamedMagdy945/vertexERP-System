@@ -8,7 +8,7 @@ using VertexERP.Shared.Results;
 namespace VertexERP.Application.Modules.Inventory.Products.Queries.GetProducts;
 
 public class GetProductsQueryHandler
-    : IRequestHandler<GetProductsQuery, Result<PagedResult<GetProductsQueryResponse>>>
+    : IRequestHandler<GetProductsQuery, Result<Page<GetProductsQueryResponse>>>
 {
     private readonly IApplicationDbContext _dbContext;
     private readonly ILogger<GetProductsQueryHandler> _logger;
@@ -20,11 +20,11 @@ public class GetProductsQueryHandler
         _logger = logger;
     }
 
-    public async Task<Result<PagedResult<GetProductsQueryResponse>>> Handle(GetProductsQuery request, CancellationToken cancellationToken)
+    public async Task<Result<Page<GetProductsQueryResponse>>> Handle(GetProductsQuery request, CancellationToken cancellationToken)
     {
+        var result = Result<Page<GetProductsQueryResponse>>.Create();
 
-        var query = _dbContext.Products
-            .AsNoTracking();
+        var query = _dbContext.Products.AsNoTracking();
 
         var totalCount = await query.CountAsync(cancellationToken);
 
@@ -43,10 +43,10 @@ public class GetProductsQueryHandler
             })
             .ToListAsync(cancellationToken);
 
-        var result = PagedResult<GetProductsQueryResponse>.Create(
+        var page = Page<GetProductsQueryResponse>.Create(
          products, totalCount, request.PageNumber, request.PageSize);
 
-        return Result<PagedResult<GetProductsQueryResponse>>.Success(result);
+        return result.Success(page);
     }
 }
 

@@ -26,11 +26,12 @@ public class UpdateProductCommandHandler
 
     public async Task<Result<UpdateProductCommandResponse>> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
+        var result = Result<UpdateProductCommandResponse>.Create();
 
         var existingProduct = await _dbContext.Products.FindAsync(request.Id, cancellationToken);
 
         if (existingProduct == null)
-            return Result<UpdateProductCommandResponse>.NotFound($"Product with Id {request.Id} not found");
+            return result.NotFound($"Product with Id {request.Id} not found");
 
         string? imageUrl = null;
 
@@ -47,7 +48,7 @@ public class UpdateProductCommandHandler
                 request.Image.ContentType, "products", cancellationToken);
 
             if (imageUrl == null)
-                return Result<UpdateProductCommandResponse>.Failure("Image upload failed");
+                return result.Failure("Image upload failed");
         }
 
         request.Adapt(existingProduct);
@@ -59,8 +60,7 @@ public class UpdateProductCommandHandler
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return Result<UpdateProductCommandResponse>.Success(
-            existingProduct.Adapt<UpdateProductCommandResponse>(), "Product updated successfully");
+        return result.Updated(existingProduct.Adapt<UpdateProductCommandResponse>());
     }
 }
 

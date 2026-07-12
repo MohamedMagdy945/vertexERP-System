@@ -26,16 +26,15 @@ public class GetProductByIdCommandHandler
 
     public async Task<Result<GetProductByIdCommandResponse>> Handle(GetProductByIdCommand request, CancellationToken cancellationToken)
     {
+        var result = Result<GetProductByIdCommandResponse>.Create();
+
         var product = await _dbContext.Products.FindAsync(request.Id, cancellationToken);
 
         if (product == null)
-        {
-            return Result<GetProductByIdCommandResponse>.NotFound($"Product with Id {request.Id} not found.");
-        }
+            return result.NotFound($"Product with Id {request.Id} not found.");
 
-        return Result<GetProductByIdCommandResponse>.Success(
-            product.Adapt<GetProductByIdCommandResponse>(), "Product found successfully.");
 
+        return result.Success(product.Adapt<GetProductByIdCommandResponse>());
     }
 }
 

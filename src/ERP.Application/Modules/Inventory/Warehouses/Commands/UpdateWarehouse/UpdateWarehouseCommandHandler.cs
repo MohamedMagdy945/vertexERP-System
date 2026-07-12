@@ -26,19 +26,19 @@ public class UpdateWarehouseCommandHandler
 
     public async Task<Result<UpdateWarehouseCommandResponse>> Handle(UpdateWarehouseCommand request, CancellationToken cancellationToken)
     {
-
+        var result = Result<UpdateWarehouseCommandResponse>.Create();
 
         var existingWarehouse = await _dbContext.Warehouses.FindAsync(request.Id, cancellationToken);
 
         if (existingWarehouse == null)
-            return Result<UpdateWarehouseCommandResponse>.NotFound($"Warehouse with Id {request.Id} not found");
+            return result.NotFound($"Warehouse with Id {request.Id} not found");
 
 
         request.Adapt(existingWarehouse);
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return Result<UpdateWarehouseCommandResponse>.Success(
+        return result.Success(
             existingWarehouse.Adapt<UpdateWarehouseCommandResponse>(), "Product updated successfully");
     }
 }

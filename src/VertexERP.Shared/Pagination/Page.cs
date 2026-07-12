@@ -1,6 +1,6 @@
 ﻿namespace VertexERP.Shared.Pagination;
 
-public class PagedResult<T>
+public class Page<T>
 {
     public IReadOnlyList<T> Items { get; init; } = [];
 
@@ -17,13 +17,13 @@ public class PagedResult<T>
 
     public bool HasNextPage => PageNumber < TotalPages;
 
-    public static PagedResult<T> Create(
+    public static Page<T> Create(
       IReadOnlyList<T> items,
       int totalCount,
       int pageNumber,
       int pageSize)
     {
-        return new PagedResult<T>
+        return new Page<T>
         {
             Items = items,
             TotalCount = totalCount,

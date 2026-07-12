@@ -17,7 +17,7 @@ public sealed class GlobalExceptionHandler(
         Exception exception,
         CancellationToken cancellationToken)
     {
-
+        var response = Result<string>.Create();
 
         var result = MapException(exception, environment.IsDevelopment());
 
@@ -26,7 +26,7 @@ public sealed class GlobalExceptionHandler(
         context.Response.StatusCode = (int)result.StatusCode;
 
         await context.Response.WriteAsJsonAsync(
-            Result<string>.Failure(
+            response.Failure(
                result.Message, result.Errors),
             cancellationToken);
 

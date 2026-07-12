@@ -7,4 +7,4 @@ namespace VertexERP.Application.Modules.Inventory.Warehouses.Queries.GetWarehous
 public record GetWarehousesQuery(
     int PageNumber = 1,
     int PageSize = 10
-) : IRequest<Result<PagedResult<GetWarehousesQueryResponse>>>;
+) : IRequest<Result<Page<GetWarehousesQueryResponse>>>;

@@ -7,4 +7,4 @@ namespace VertexERP.Application.Modules.Identity.Users.Queries.GetUsersQuery;
 public record GetUsersQuery(
     int PageNumber = 1,
     int PageSize = 10
-) : IRequest<Result<PagedResult<GetUsersQueryResponse>>>;
+) : IRequest<Result<Page<GetUsersQueryResponse>>>;

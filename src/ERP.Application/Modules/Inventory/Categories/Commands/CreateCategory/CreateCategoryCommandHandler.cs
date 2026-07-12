@@ -24,20 +24,19 @@ public class CreateCategoryCommandHandler
 
     public async Task<Result<CreateCategoryCommandResponse>> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
     {
+        var result = Result<CreateCategoryCommandResponse>.Create();
+
         var exists = await _dbContext.Categories
                .AnyAsync(x => x.Name == request.Name, cancellationToken);
 
         if (exists)
-            return Result<CreateCategoryCommandResponse>
-                .Failure($"Category with name '{request.Name}' already exists.");
+            return result.Failure($"Category with name '{request.Name}' already exists.");
 
         var category = request.Adapt<Category>();
         await _dbContext.Categories.AddAsync(category, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return Result<CreateCategoryCommandResponse>.Success(
-            category.Adapt<CreateCategoryCommandResponse>(),
-            "Category created successfully.");
+        return result.Created(category.Adapt<CreateCategoryCommandResponse>());
     }
 }
 

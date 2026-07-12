@@ -9,7 +9,7 @@ using VertexERP.Shared.Results;
 namespace VertexERP.Application.Modules.Inventory.Categories.Queries.GetCategories;
 
 public class GetCategoriesQueryHandler
-    : IRequestHandler<GetCategoriesQuery, Result<PagedResult<GetCategoriesQueryResponse>>>
+    : IRequestHandler<GetCategoriesQuery, Result<Page<GetCategoriesQueryResponse>>>
 {
     private readonly IApplicationDbContext _dbContext;
     private readonly ILogger<GetCategoriesQueryHandler> _logger;
@@ -21,11 +21,11 @@ public class GetCategoriesQueryHandler
         _logger = logger;
     }
 
-    public async Task<Result<PagedResult<GetCategoriesQueryResponse>>> Handle(GetCategoriesQuery request, CancellationToken cancellationToken)
+    public async Task<Result<Page<GetCategoriesQueryResponse>>> Handle(GetCategoriesQuery request, CancellationToken cancellationToken)
     {
+        var response = Result<Page<GetCategoriesQueryResponse>>.Create();
 
-        var query = _dbContext.Categories
-            .AsNoTracking();
+        var query = _dbContext.Categories.AsNoTracking();
 
         var totalCount = await query.CountAsync(cancellationToken);
 
@@ -41,10 +41,10 @@ public class GetCategoriesQueryHandler
             })
             .ToListAsync(cancellationToken);
 
-        var result = PagedResult<GetCategoriesQueryResponse>.Create(
-            categories, totalCount, request.PageNumber, request.PageSize);
+        var pagedResult = Page<GetCategoriesQueryResponse>.Create(categories, totalCount,
+            request.PageNumber, request.PageSize);
 
-        return Result<PagedResult<GetCategoriesQueryResponse>>.Success(result);
+        return response.Success(pagedResult);
     }
 }
 

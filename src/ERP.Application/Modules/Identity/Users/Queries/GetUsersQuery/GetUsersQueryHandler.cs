@@ -8,7 +8,7 @@ using VertexERP.Shared.Results;
 namespace VertexERP.Application.Modules.Identity.Users.Queries.GetUsersQuery;
 
 public class GetUsersQueryHandler
-    : IRequestHandler<GetUsersQuery, Result<PagedResult<GetUsersQueryResponse>>>
+    : IRequestHandler<GetUsersQuery, Result<Page<GetUsersQueryResponse>>>
 {
     private readonly IApplicationDbContext _dbContext;
     private readonly ILogger<GetUsersQueryHandler> _logger;
@@ -20,11 +20,12 @@ public class GetUsersQueryHandler
         _logger = logger;
     }
 
-    public async Task<Result<PagedResult<GetUsersQueryResponse>>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
+    public async Task<Result<Page<GetUsersQueryResponse>>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
     {
 
-        var query = _dbContext.Users
-            .AsNoTracking();
+        var result = Result<Page<GetUsersQueryResponse>>.Create();
+
+        var query = _dbContext.Users.AsNoTracking();
 
         var totalCount = await query.CountAsync(cancellationToken);
 
@@ -41,15 +42,9 @@ public class GetUsersQueryHandler
             })
             .ToListAsync(cancellationToken);
 
-        var result = new PagedResult<GetUsersQueryResponse>
-        {
-            Items = users,
-            TotalCount = totalCount,
-            PageNumber = request.PageNumber,
-            PageSize = request.PageSize
-        };
+        var pagedData = Page<GetUsersQueryResponse>.Create(users, totalCount, request.PageNumber, request.PageSize);
 
-        return Result<PagedResult<GetUsersQueryResponse>>.Success(result);
+        return result.Success(pagedData);
     }
 }
 

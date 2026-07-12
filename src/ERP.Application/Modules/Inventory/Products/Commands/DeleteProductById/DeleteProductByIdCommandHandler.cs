@@ -25,19 +25,18 @@ public class DeleteProductByIdCommandHandler
 
     public async Task<Result<DeleteProductByIdCommandResponse>> Handle(DeleteProductByIdCommand request, CancellationToken cancellationToken)
     {
+        var result = Result<DeleteProductByIdCommandResponse>.Create();
+
         var product = await _dbContext.Products.FindAsync(request.Id, cancellationToken);
         if (product == null)
         {
-            return Result<DeleteProductByIdCommandResponse>.NotFound($"Product with Id {request.Id} not found.");
+            return result.NotFound($"Product with Id {request.Id} not found.");
         }
 
         _dbContext.Products.Remove(product);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return Result<DeleteProductByIdCommandResponse>.Success(new DeleteProductByIdCommandResponse
-        {
-            Id = product.Id,
-        }, "Product deleted successfully.");
+        return result.Success(new DeleteProductByIdCommandResponse { Id = product.Id, });
 
     }
 }

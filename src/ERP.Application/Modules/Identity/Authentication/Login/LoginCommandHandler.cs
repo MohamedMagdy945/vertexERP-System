@@ -33,6 +33,8 @@ public class LoginCommandHandler
 
     public async Task<Result<LoginResponse>> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
+        var result = Result<LoginResponse>.Create();
+
         var email = request.Email.Trim().ToLowerInvariant();
 
         var userData = await _dbContext.Users
@@ -58,7 +60,7 @@ public class LoginCommandHandler
         if (userData is null || !userData.IsEnabled || !passwordValid)
         {
             _logger.LogWarning("Failed login attempt for email: {Email}", email);
-            return Result<LoginResponse>.Unauthorized("Invalid email or password.");
+            return result.Unauthorized("Invalid email or password.");
         }
 
         var user = new User
@@ -86,8 +88,7 @@ public class LoginCommandHandler
               "User {UserId} logged in successfully.",
               user.Id);
 
-        return Result<LoginResponse>.Success(tokenResponse.Adapt<LoginResponse>());
-
+        return result.Success(tokenResponse.Adapt<LoginResponse>());
     }
 }
 

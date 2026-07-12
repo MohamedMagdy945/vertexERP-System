@@ -28,7 +28,7 @@ public class LogoutCommandHandler
 
     public async Task<Result<LogoutResponse>> Handle(LogoutCommand request, CancellationToken cancellationToken)
     {
-
+        var result = Result<LogoutResponse>.Create();
 
         var refreshTokenHash = _tokenGenerator.HashToken(request.RefreshToken);
 
@@ -39,14 +39,14 @@ public class LogoutCommandHandler
 
 
         if (refreshToken is null || refreshToken.RevokedAt is not null)
-            return Result<LogoutResponse>.Success(new LogoutResponse());
+            return result.Success(new LogoutResponse());
 
         refreshToken.RevokedAt = DateTime.UtcNow;
         refreshToken.RevokedReason = "User logged out.";
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return Result<LogoutResponse>.Success(new LogoutResponse());
+        return result.Success(new LogoutResponse());
     }
 }
 

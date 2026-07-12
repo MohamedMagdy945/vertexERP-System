@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using VertexERP.Application.Abstractions.Authentication;
 using VertexERP.Application.Abstractions.Persistence;
@@ -30,13 +29,13 @@ public class RegisterCommandHandler
     public async Task<Result<RegisterResponse>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
-        var user = await _dbContext.Users
-                    .AsNoTracking().FirstOrDefaultAsync(cancellationToken);
-        if (user != null)
-        {
-            return Result<RegisterResponse>.
-                Failure("Email already exists");
-        }
+        //var user = await _dbContext.Users
+        //            .AsNoTracking().FirstOrDefaultAsync(cancellationToken);
+        //if (user != null)
+        //{
+        //    return Result<RegisterResponse>.
+        //        Failure("Email already exists");
+        //}
 
         var newUser = new User
         {

@@ -2,61 +2,118 @@
 
 namespace VertexERP.Shared.Results;
 
-public sealed class Result<T>
+public class Result<T>
 {
-    public bool IsSuccess { get; init; }
-    public string Message { get; init; } = string.Empty;
-    public string[] Errors { get; init; } = Array.Empty<string>();
-    public T? Data { get; init; }
-    public int StatusCode { get; init; }
+    public bool IsSuccess { get; private set; }
+    public string Message { get; private set; } = string.Empty;
+    public string[] Errors { get; private set; } = [];
+    public T? Data { get; private set; }
+    public int StatusCode { get; private set; }
 
     private Result() { }
 
-    public static Result<T> Success(T data, string message = "Request successful", int statusCode = StatusCodes.Status200OK)
+    public static Result<T> Create() => new();
+
+    public Result<T> Success(T data, string message = "Request successful",
+        int statusCode = StatusCodes.Status200OK)
     {
-        return new Result<T>
-        {
-            IsSuccess = true,
-            Data = data,
-            Message = message,
-            StatusCode = statusCode
-        };
+        IsSuccess = true;
+        Data = data;
+        Message = message;
+        Errors = [];
+        StatusCode = statusCode;
+
+        return this;
     }
 
-    public static Result<T> Failure(
-     string message = "Bad request",
-     string[]? errors = null,
-     int statusCode = StatusCodes.Status400BadRequest)
+    public Result<T> Created(
+        T data, string message = "Resource created successfully")
     {
-        return new Result<T>
-        {
-            IsSuccess = false,
-            Message = message,
-            Errors = errors ?? Array.Empty<string>(),
-            StatusCode = statusCode,
-        };
+        return Success(data, message, StatusCodes.Status201Created);
+    }
+    public Result<T> Updated(
+       T data, string message = "Resource updated successfully")
+    {
+        return Success(data, message, StatusCodes.Status200OK);
     }
 
-    public static Result<T> NotFound(
-        string message = "Resource not found",
+
+    public Result<T> Deleted(string message = "Resource deleted successfully")
+    {
+        IsSuccess = true;
+        Data = default;
+        Message = message;
+        Errors = [];
+        StatusCode = StatusCodes.Status200OK;
+
+        return this;
+    }
+
+    public Result<T> Failure(string message = "Bad request", string[]? errors = null,
+        int statusCode = StatusCodes.Status400BadRequest)
+    {
+        IsSuccess = false;
+        Data = default;
+        Message = message;
+        Errors = errors ?? [];
+        StatusCode = statusCode;
+
+        return this;
+    }
+
+    public Result<T> NotFound(string message = "Resource not found",
         string[]? errors = null)
     {
-        return new Result<T>
-        {
-            IsSuccess = false,
-            Message = message,
-            Errors = errors ?? Array.Empty<string>(),
-            StatusCode = StatusCodes.Status404NotFound
-        };
+        IsSuccess = false;
+        Data = default;
+        Message = message;
+        Errors = errors ?? [];
+        StatusCode = StatusCodes.Status404NotFound;
+
+        return this;
     }
 
-    public static Result<T> Unauthorized(string message = "Unauthorized")
+    public Result<T> Unauthorized(string message = "Unauthorized")
     {
-        return new Result<T>
-        {
-            IsSuccess = false,
-            Message = message,
-            StatusCode = StatusCodes.Status401Unauthorized
-        };
+        IsSuccess = false;
+        Data = default;
+        Message = message;
+        Errors = [];
+        StatusCode = StatusCodes.Status401Unauthorized;
+
+        return this;
+    }
+
+    public Result<T> Forbidden(string message = "Forbidden")
+    {
+        IsSuccess = false;
+        Data = default;
+        Message = message;
+        Errors = [];
+        StatusCode = StatusCodes.Status403Forbidden;
+
+        return this;
+    }
+
+    public Result<T> Conflict(string message = "Conflict", string[]? errors = null)
+    {
+        IsSuccess = false;
+        Data = default;
+        Message = message;
+        Errors = errors ?? [];
+        StatusCode = StatusCodes.Status409Conflict;
+
+        return this;
+    }
+
+    public Result<T> NoContent()
+    {
+        IsSuccess = true;
+        Data = default;
+        Message = string.Empty;
+        Errors = [];
+        StatusCode = StatusCodes.Status204NoContent;
+
+        return this;
     }
 }

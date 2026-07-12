@@ -8,7 +8,7 @@ using VertexERP.Shared.Results;
 namespace VertexERP.Application.Modules.Inventory.Warehouses.Queries.GetWarehouses;
 
 public class GetWarehousesQueryHandler
-    : IRequestHandler<GetWarehousesQuery, Result<PagedResult<GetWarehousesQueryResponse>>>
+    : IRequestHandler<GetWarehousesQuery, Result<Page<GetWarehousesQueryResponse>>>
 {
     private readonly IApplicationDbContext _dbContext;
     private readonly ILogger<GetWarehousesQueryHandler> _logger;
@@ -20,11 +20,11 @@ public class GetWarehousesQueryHandler
         _logger = logger;
     }
 
-    public async Task<Result<PagedResult<GetWarehousesQueryResponse>>> Handle(GetWarehousesQuery request, CancellationToken cancellationToken)
+    public async Task<Result<Page<GetWarehousesQueryResponse>>> Handle(GetWarehousesQuery request, CancellationToken cancellationToken)
     {
+        var response = Result<Page<GetWarehousesQueryResponse>>.Create();
 
-        var query = _dbContext.Warehouses
-            .AsNoTracking();
+        var query = _dbContext.Warehouses.AsNoTracking();
 
         var totalCount = await query.CountAsync(cancellationToken);
 
@@ -41,10 +41,10 @@ public class GetWarehousesQueryHandler
             })
             .ToListAsync(cancellationToken);
 
-        var result = PagedResult<GetWarehousesQueryResponse>.Create(
+        var page = Page<GetWarehousesQueryResponse>.Create(
             warehouses, totalCount, request.PageNumber, request.PageSize);
 
-        return Result<PagedResult<GetWarehousesQueryResponse>>.Success(result);
+        return response.Success(page);
     }
 }
 

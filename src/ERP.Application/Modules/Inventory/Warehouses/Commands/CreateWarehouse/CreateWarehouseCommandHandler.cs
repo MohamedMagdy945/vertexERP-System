@@ -27,7 +27,7 @@ public class CreateWarehouseCommandHandler
 
     public async Task<Result<CreateWarehouseCommandResponse>> Handle(CreateWarehouseCommand request, CancellationToken cancellationToken)
     {
-
+        var response = Result<CreateWarehouseCommandResponse>.Create();
 
         var warehouse = request.Adapt<Warehouse>();
 
@@ -35,8 +35,7 @@ public class CreateWarehouseCommandHandler
         await _dbContext.Warehouses.AddAsync(warehouse, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return Result<CreateWarehouseCommandResponse>.
-            Success(warehouse.Adapt<CreateWarehouseCommandResponse>(), "Warehouse created successfully");
+        return response.Created(warehouse.Adapt<CreateWarehouseCommandResponse>());
 
     }
 }

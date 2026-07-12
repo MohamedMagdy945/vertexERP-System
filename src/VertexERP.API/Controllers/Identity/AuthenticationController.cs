@@ -17,29 +17,31 @@ public class AuthenticationController : AppControllerBase
     [ProducesResponseType(typeof(Result<AuthenticationResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Login(LoginCommand command)
     {
-        var response = await Mediator.Send(command);
 
-        if (!response.IsSuccess || response.Data is null)
-            return ApiResponse(response);
+        var response = Result<AuthenticationResponse>.Create();
+
+        var result = await Mediator.Send(command);
+
+        if (!result.IsSuccess || result.Data is null)
+            return ApiResponse(result);
 
         CookieHelper.SetRefreshTokenCookie(
             Response,
-            response.Data.RefreshToken,
-            response.Data.RefreshTokenExpiration,
+            result.Data.RefreshToken,
+            result.Data.RefreshTokenExpiration,
             HttpContext.Request.IsHttps
         );
 
-        var authenticationResponse = response.Data.Adapt<AuthenticationResponse>();
+        var authenticationResponse = result.Data.Adapt<AuthenticationResponse>();
 
-        var result = Result<AuthenticationResponse>.Success(authenticationResponse);
-
-        return ApiResponse(result);
+        return ApiResponse(response.Success(authenticationResponse));
     }
 
     [HttpPost("refresh-token")]
     [ProducesResponseType(typeof(Result<AuthenticationResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Refresh()
     {
+        var response = Result<AuthenticationResponse>.Create();
 
         var refreshToken = Request.Cookies[CookieHelper.RefreshTokenCookieName];
 
@@ -54,9 +56,9 @@ public class AuthenticationController : AppControllerBase
             result.Data.RefreshTokenExpiration,
             Request.IsHttps);
 
-        return ApiResponse(
-            Result<AuthenticationResponse>.Success(
-                result.Data.Adapt<AuthenticationResponse>()));
+        var authenticationResponse = result.Data.Adapt<AuthenticationResponse>();
+
+        return ApiResponse(response.Success(authenticationResponse));
     }
 
     [HttpPost("logout")]

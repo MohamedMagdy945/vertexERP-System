@@ -20,7 +20,7 @@ public class CategorysController : AppControllerBase
     }
 
     [HttpGet("GetCategories")]
-    [ProducesResponseType(typeof(Result<PagedResult<GetCategoriesQueryResponse>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Result<Page<GetCategoriesQueryResponse>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetCategories([FromQuery] GetCategoriesQuery query)
     {
         var response = await Mediator.Send(query);
