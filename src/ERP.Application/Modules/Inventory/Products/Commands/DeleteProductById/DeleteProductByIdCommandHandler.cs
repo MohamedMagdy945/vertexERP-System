@@ -4,18 +4,18 @@ using VertexERP.Application.Abstractions.Persistence;
 using VertexERP.Application.Abstractions.Storage;
 using VertexERP.Shared.Results;
 
-namespace VertexERP.Application.Modules.Inventory.Products.Commands.DeletProduct;
+namespace VertexERP.Application.Modules.Inventory.Products.Commands.DeleteProductById;
 
 
-public class DeletProductCommandHandler
-    : IRequestHandler<DeletProductCommand, Result<DeletProductCommandResponse>>
+public class DeleteProductByIdCommandHandler
+    : IRequestHandler<DeleteProductByIdCommand, Result<DeleteProductByIdCommandResponse>>
 {
     private readonly IApplicationDbContext _dbContext;
-    private readonly ILogger<DeletProductCommandHandler> _logger;
+    private readonly ILogger<DeleteProductByIdCommandHandler> _logger;
     private readonly IFileStorage _fileStorage;
-    public DeletProductCommandHandler(
+    public DeleteProductByIdCommandHandler(
         IApplicationDbContext dbContext,
-        ILogger<DeletProductCommandHandler> logger,
+        ILogger<DeleteProductByIdCommandHandler> logger,
         IFileStorage fileStorage)
     {
         _dbContext = dbContext;
@@ -23,18 +23,18 @@ public class DeletProductCommandHandler
         _fileStorage = fileStorage;
     }
 
-    public async Task<Result<DeletProductCommandResponse>> Handle(DeletProductCommand request, CancellationToken cancellationToken)
+    public async Task<Result<DeleteProductByIdCommandResponse>> Handle(DeleteProductByIdCommand request, CancellationToken cancellationToken)
     {
         var product = await _dbContext.Products.FindAsync(request.Id, cancellationToken);
         if (product == null)
         {
-            return Result<DeletProductCommandResponse>.NotFound($"Product with Id {request.Id} not found.");
+            return Result<DeleteProductByIdCommandResponse>.NotFound($"Product with Id {request.Id} not found.");
         }
 
         _dbContext.Products.Remove(product);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return Result<DeletProductCommandResponse>.Success(new DeletProductCommandResponse
+        return Result<DeleteProductByIdCommandResponse>.Success(new DeleteProductByIdCommandResponse
         {
             Id = product.Id,
         }, "Product deleted successfully.");
