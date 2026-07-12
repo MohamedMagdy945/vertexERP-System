@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using Microsoft.AspNetCore.Http;
 
 namespace VertexERP.Application.Modules.Inventory.Warehouses.Commands.UpdateWarehouse;
 
@@ -12,28 +11,18 @@ public class UpdateWarehouseCommandValidator : AbstractValidator<UpdateWarehouse
         RuleFor(x => x.Id)
             .GreaterThan(0).WithMessage("Product ID must be greater than 0.");
 
+        RuleFor(x => x.Name)
+            .NotEmpty().WithMessage("Name cannot be empty")
+            .MaximumLength(20).WithMessage("Name max length is 20");
 
+        RuleFor(x => x.Code)
+          .NotEmpty().WithMessage("Code cannot be empty")
+          .MaximumLength(20).WithMessage("Code max length is 20");
 
-        When(x => x.Image != null, () =>
-        {
-            RuleFor(x => x.Image!)
-                .Must(HaveValidSize).WithMessage("Image size must be less than 5 MB.")
-                .Must(HaveValidExtension).WithMessage("Only JPG, JPEG, and PNG images are allowed.");
-        });
+        RuleFor(x => x.Location)
+          .NotEmpty().WithMessage("Location cannot be empty")
+          .MaximumLength(20).WithMessage("Location max length is 20");
+
     }
 
-
-
-    private bool HaveValidSize(IFormFile file)
-    {
-        const int maxBytes = 5 * 1024 * 1024;
-        return file.Length <= maxBytes;
-    }
-
-    private bool HaveValidExtension(IFormFile file)
-    {
-        var allowedExtensions = new[] { ".jpg", ".jpeg", ".png" };
-        var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
-        return allowedExtensions.Contains(extension);
-    }
 }

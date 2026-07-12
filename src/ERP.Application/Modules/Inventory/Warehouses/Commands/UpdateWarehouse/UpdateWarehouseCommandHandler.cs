@@ -27,40 +27,19 @@ public class UpdateWarehouseCommandHandler
     public async Task<Result<UpdateWarehouseCommandResponse>> Handle(UpdateWarehouseCommand request, CancellationToken cancellationToken)
     {
 
-        var existingProduct = await _dbContext.Products.FindAsync(request.Id, cancellationToken);
 
-        if (existingProduct == null)
-            return Result<UpdateWarehouseCommandResponse>.NotFound($"Product with Id {request.Id} not found");
+        var existingWarehouse = await _dbContext.Warehouses.FindAsync(request.Id, cancellationToken);
 
-        string? imageUrl = null;
+        if (existingWarehouse == null)
+            return Result<UpdateWarehouseCommandResponse>.NotFound($"Warehouse with Id {request.Id} not found");
 
-        if (request.Image is not null && request.Image.Length > 0)
-        {
-            if (!string.IsNullOrEmpty(existingProduct.ImageUrl))
-            {
-                await _fileStorage.DeleteAsync(existingProduct.ImageUrl, cancellationToken);
-            }
 
-            using var stream = request.Image.OpenReadStream();
-
-            imageUrl = await _fileStorage.UploadAsync(stream, request.Image.FileName,
-                request.Image.ContentType, "products", cancellationToken);
-
-            if (imageUrl == null)
-                return Result<UpdateWarehouseCommandResponse>.Failure("Image upload failed");
-        }
-
-        request.Adapt(existingProduct);
-
-        if (imageUrl is not null)
-        {
-            existingProduct.ImageUrl = imageUrl;
-        }
+        request.Adapt(existingWarehouse);
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         return Result<UpdateWarehouseCommandResponse>.Success(
-            existingProduct.Adapt<UpdateWarehouseCommandResponse>(), "Product updated successfully");
+            existingWarehouse.Adapt<UpdateWarehouseCommandResponse>(), "Product updated successfully");
     }
 }
 

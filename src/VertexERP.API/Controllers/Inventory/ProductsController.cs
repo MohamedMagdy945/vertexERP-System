@@ -14,7 +14,7 @@ namespace VertexERP.API.Controllers.Inventory;
 public class ProductsController : AppControllerBase
 {
     [HttpGet("GetProductById/{id}")]
-    [ProducesResponseType(typeof(Result<DeleteProductByIdCommandResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Result<GetProductByIdCommandResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetProductById(int id)
     {
         var response = await Mediator.Send(new GetProductByIdCommand(id));

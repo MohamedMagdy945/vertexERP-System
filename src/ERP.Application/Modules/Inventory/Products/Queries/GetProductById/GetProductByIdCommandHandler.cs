@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Mapster;
+using MediatR;
 using Microsoft.Extensions.Logging;
 using VertexERP.Application.Abstractions.Persistence;
 using VertexERP.Application.Abstractions.Storage;
@@ -26,20 +27,14 @@ public class GetProductByIdCommandHandler
     public async Task<Result<GetProductByIdCommandResponse>> Handle(GetProductByIdCommand request, CancellationToken cancellationToken)
     {
         var product = await _dbContext.Products.FindAsync(request.Id, cancellationToken);
+
         if (product == null)
         {
             return Result<GetProductByIdCommandResponse>.NotFound($"Product with Id {request.Id} not found.");
         }
 
-        return Result<GetProductByIdCommandResponse>.Success(new GetProductByIdCommandResponse
-        {
-            Id = product.Id,
-            Name = product.Name,
-            Code = product.Code,
-            Description = product.Description,
-            SellingPrice = product.SellingPrice,
-            ImageUrl = product.ImageUrl,
-        }, "Product found successfully.");
+        return Result<GetProductByIdCommandResponse>.Success(
+            product.Adapt<GetProductByIdCommandResponse>(), "Product found successfully.");
 
     }
 }

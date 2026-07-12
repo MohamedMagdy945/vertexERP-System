@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using VertexERP.Application.Modules.Inventory.Warehouses.Commands.CreateWarehouse;
+using VertexERP.Application.Modules.Inventory.Warehouses.Commands.UpdateWarehouse;
+using VertexERP.Application.Modules.Inventory.Warehouses.Queries.GetWarehouseById;
 using VertexERP.Application.Modules.Inventory.Warehouses.Queries.GetWarehouses;
 using VertexERP.Shared.Pagination;
 using VertexERP.Shared.Results;
@@ -10,14 +12,14 @@ namespace VertexERP.API.Controllers.Inventory;
 [Tags("Inventory")]
 public class WarehousesController : AppControllerBase
 {
-    //[HttpGet("GetWarehouseById/{id}")]
-    //[ProducesResponseType(typeof(Result<DeleteProductByIdCommandRe sponse>), StatusCodes.Status200OK)]
-    //public async Task<IActionResult> GetWarehouseById(int id)
-    //{
-    //    var response = await Mediator.Send(new GetWarehouseByIdCommand(id));
+    [HttpGet("GetWarehouseById/{id}")]
+    [ProducesResponseType(typeof(Result<GetWarehousesQueryResponse>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetWarehouseById(int id)
+    {
+        var response = await Mediator.Send(new GetWarehouseByIdCommand(id));
 
-    //    return ApiResponse(response);
-    //}
+        return ApiResponse(response);
+    }
 
     [HttpGet("GetWarehouses")]
     [ProducesResponseType(typeof(Result<PagedResult<GetWarehousesQueryResponse>>), StatusCodes.Status200OK)]
@@ -37,14 +39,14 @@ public class WarehousesController : AppControllerBase
         return ApiResponse(response);
     }
 
-    //[HttpPost("UpdateWarehouse")]
-    //[ProducesResponseType(typeof(Result<UpdateWarehouseCommandResponse>), StatusCodes.Status200OK)]
-    //public async Task<IActionResult> UpdateWarehouse([FromForm] UpdateWarehouseCommand command)
-    //{
-    //    var response = await Mediator.Send(command);
+    [HttpPost("UpdateWarehouse")]
+    [ProducesResponseType(typeof(Result<UpdateWarehouseCommandResponse>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> UpdateWarehouse(UpdateWarehouseCommand command)
+    {
+        var response = await Mediator.Send(command);
 
-    //    return ApiResponse(response);
-    //}
+        return ApiResponse(response);
+    }
 
     //[HttpPost("DeleteWarehouseById/{id}")]
     //[ProducesResponseType(typeof(Result<DeleteWarehouseByIdCommandResponse>), StatusCodes.Status200OK)]
