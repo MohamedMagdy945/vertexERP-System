@@ -12,8 +12,8 @@ public record UpdateProductCommand(
     string? Barcode,
     string? Description,
     string? Code,
-    decimal CostPrice,
-    decimal SellingPrice,
+    decimal? CostPrice,
+    decimal? SellingPrice,
     int CategoryId,
     UnitType Unit
 ) : IRequest<Result<UpdateProductCommandResponse>>;

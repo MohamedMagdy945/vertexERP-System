@@ -1,10 +1,9 @@
-﻿namespace VertexERP.Application.Modules.Inventory.Products.Commands.UpdateProduct;
+﻿namespace VertexERP.Application.Modules.Inventory.Products.Commands.CreateProduct;
 
-public record UpdateProductCommandResponse
+public record CreateProductCommandResponse
 {
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public string Code { get; set; } = string.Empty;
     public string? ImageUrl { get; set; }
-    public decimal SellingPrice { get; set; }
 }
