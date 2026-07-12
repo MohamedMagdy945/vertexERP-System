@@ -28,7 +28,7 @@ public class GetProductsQueryHandler
 
         var totalCount = await query.CountAsync(cancellationToken);
 
-        var categories = await query
+        var products = await query
             .OrderBy(x => x.Id)
             .Skip((request.PageNumber - 1) * request.PageSize)
             .Take(request.PageSize)
@@ -43,13 +43,8 @@ public class GetProductsQueryHandler
             })
             .ToListAsync(cancellationToken);
 
-        var result = new PagedResult<GetProductsQueryResponse>
-        {
-            Items = categories,
-            TotalCount = totalCount,
-            PageNumber = request.PageNumber,
-            PageSize = request.PageSize
-        };
+        var result = PagedResult<GetProductsQueryResponse>.Create(
+         products, totalCount, request.PageNumber, request.PageSize);
 
         return Result<PagedResult<GetProductsQueryResponse>>.Success(result);
     }

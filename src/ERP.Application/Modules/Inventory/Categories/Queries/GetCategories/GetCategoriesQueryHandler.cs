@@ -2,10 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using VertexERP.Application.Abstractions.Persistence;
+using VertexERP.Application.Modules.Identity.Users.Queries.GetCategories;
 using VertexERP.Shared.Pagination;
 using VertexERP.Shared.Results;
 
-namespace VertexERP.Application.Modules.Identity.Users.Queries.GetCategories;
+namespace VertexERP.Application.Modules.Inventory.Categories.Queries.GetCategories;
 
 public class GetCategoriesQueryHandler
     : IRequestHandler<GetCategoriesQuery, Result<PagedResult<GetCategoriesQueryResponse>>>
@@ -40,13 +41,8 @@ public class GetCategoriesQueryHandler
             })
             .ToListAsync(cancellationToken);
 
-        var result = new PagedResult<GetCategoriesQueryResponse>
-        {
-            Items = categories,
-            TotalCount = totalCount,
-            PageNumber = request.PageNumber,
-            PageSize = request.PageSize
-        };
+        var result = PagedResult<GetCategoriesQueryResponse>.Create(
+            categories, totalCount, request.PageNumber, request.PageSize);
 
         return Result<PagedResult<GetCategoriesQueryResponse>>.Success(result);
     }

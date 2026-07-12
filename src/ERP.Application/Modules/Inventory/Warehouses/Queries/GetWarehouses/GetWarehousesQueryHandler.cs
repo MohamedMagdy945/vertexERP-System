@@ -23,12 +23,12 @@ public class GetWarehousesQueryHandler
     public async Task<Result<PagedResult<GetWarehousesQueryResponse>>> Handle(GetWarehousesQuery request, CancellationToken cancellationToken)
     {
 
-        var query = _dbContext.Products
+        var query = _dbContext.Warehouses
             .AsNoTracking();
 
         var totalCount = await query.CountAsync(cancellationToken);
 
-        var categories = await query
+        var warehouses = await query
             .OrderBy(x => x.Id)
             .Skip((request.PageNumber - 1) * request.PageSize)
             .Take(request.PageSize)
@@ -36,20 +36,13 @@ public class GetWarehousesQueryHandler
             {
                 Id = x.Id,
                 Name = x.Name,
-                Description = x.Description,
-                ImageUrl = x.ImageUrl,
                 Code = x.Code,
-                SellingPrice = x.SellingPrice
+                Location = x.Location,
             })
             .ToListAsync(cancellationToken);
 
-        var result = new PagedResult<GetWarehousesQueryResponse>
-        {
-            Items = categories,
-            TotalCount = totalCount,
-            PageNumber = request.PageNumber,
-            PageSize = request.PageSize
-        };
+        var result = PagedResult<GetWarehousesQueryResponse>.Create(
+            warehouses, totalCount, request.PageNumber, request.PageSize);
 
         return Result<PagedResult<GetWarehousesQueryResponse>>.Success(result);
     }
