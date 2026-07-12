@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using VertexERP.Application.Modules.Inventory.Products.Commands.CreateProduct;
+using VertexERP.Application.Modules.Inventory.Products.Commands.DeletProduct;
 using VertexERP.Application.Modules.Inventory.Products.Commands.UpdateProduct;
 using VertexERP.Application.Modules.Inventory.Products.Queries.GetProducts;
 using VertexERP.Shared.Pagination;
@@ -33,6 +34,15 @@ public class ProductsController : AppControllerBase
     public async Task<IActionResult> UpdateProduct([FromForm] UpdateProductCommand command)
     {
         var response = await Mediator.Send(command);
+
+        return ApiResponse(response);
+    }
+
+    [HttpPost("DeletProductById/{id}")]
+    [ProducesResponseType(typeof(Result<DeletProductByIdCommandResponse>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> DeletProductById(int id)
+    {
+        var response = await Mediator.Send(new DeletProductByIdCommand(id));
 
         return ApiResponse(response);
     }

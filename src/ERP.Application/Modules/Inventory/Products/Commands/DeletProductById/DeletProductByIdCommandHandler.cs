@@ -37,9 +37,6 @@ public class DeletProductCommandHandler
         return Result<DeletProductCommandResponse>.Success(new DeletProductCommandResponse
         {
             Id = product.Id,
-            Name = product.Name,
-            Code = product.Code,
-            ImageUrl = product.ImageUrl
         }, "Product deleted successfully.");
 
     }
