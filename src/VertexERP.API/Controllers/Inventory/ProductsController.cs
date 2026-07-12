@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using VertexERP.Application.Modules.Inventory.Products.Commands.CreateProduct;
-using VertexERP.Application.Modules.Inventory.Products.Commands.DeletProduct;
+using VertexERP.Application.Modules.Inventory.Products.Commands.DeleteProductById;
 using VertexERP.Application.Modules.Inventory.Products.Commands.UpdateProduct;
+using VertexERP.Application.Modules.Inventory.Products.Queries.GetProductById;
 using VertexERP.Application.Modules.Inventory.Products.Queries.GetProducts;
 using VertexERP.Shared.Pagination;
 using VertexERP.Shared.Results;
@@ -12,6 +13,15 @@ namespace VertexERP.API.Controllers.Inventory;
 [Tags("Inventory")]
 public class ProductsController : AppControllerBase
 {
+    [HttpGet("GetProductById/{id}")]
+    [ProducesResponseType(typeof(Result<DeleteProductByIdCommandResponse>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetProductById(int id)
+    {
+        var response = await Mediator.Send(new GetProductByIdCommand(id));
+
+        return ApiResponse(response);
+    }
+
     [HttpGet("GetProducts")]
     [ProducesResponseType(typeof(Result<PagedResult<GetProductsQueryResponse>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetProducts([FromQuery] GetProductsQuery query)
@@ -38,11 +48,11 @@ public class ProductsController : AppControllerBase
         return ApiResponse(response);
     }
 
-    [HttpPost("DeletProductById/{id}")]
-    [ProducesResponseType(typeof(Result<DeletProductByIdCommandResponse>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> DeletProductById(int id)
+    [HttpPost("DeleteProductById/{id}")]
+    [ProducesResponseType(typeof(Result<DeleteProductByIdCommandResponse>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> DeleteProductById(int id)
     {
-        var response = await Mediator.Send(new DeletProductByIdCommand(id));
+        var response = await Mediator.Send(new DeleteProductByIdCommand(id));
 
         return ApiResponse(response);
     }
