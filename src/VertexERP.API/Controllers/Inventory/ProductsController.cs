@@ -58,13 +58,11 @@ public class ProductsController : AppControllerBase
         return ApiResponse(response);
     }
 
-    [HttpPut("{Id}/image")]
-    public async Task<IActionResult> UpdateImage([FromRoute] int Id, [FromForm] IFormFile Image)
+    [HttpPost("update-image")]
+    public async Task<IActionResult> UpdateImage([FromForm] UpdateProductImageCommand command)
     {
-
-        var result = await Mediator.Send(new UpdateProductImageCommand(Id, Image));
+        var result = await Mediator.Send(command);
 
         return ApiResponse(result);
-
     }
 }
