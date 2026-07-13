@@ -41,7 +41,7 @@ public class ProductsController : AppControllerBase
     }
     [HttpPost("UpdateProduct")]
     [ProducesResponseType(typeof(Result<UpdateProductCommandResponse>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> UpdateProduct([FromForm] UpdateProductCommand command)
+    public async Task<IActionResult> UpdateProduct(UpdateProductCommand command)
     {
         var response = await Mediator.Send(command);
 

@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using VertexERP.Application.Abstractions.Persistence;
 using VertexERP.Application.Abstractions.Storage;
@@ -26,41 +27,25 @@ public class UpdateProductCommandHandler
 
     public async Task<Result<UpdateProductCommandResponse>> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
-        var result = Result<UpdateProductCommandResponse>.Create();
+        var response = Result<UpdateProductCommandResponse>.Create();
 
-        var existingProduct = await _dbContext.Products.FindAsync(request.Id, cancellationToken);
 
-        if (existingProduct == null)
-            return result.NotFound($"Product with Id {request.Id} not found");
+        var rowsAffected = await _dbContext.Products
+          .Where(x => x.Id == request.Id)
+          .ExecuteUpdateAsync(x => x
+              .SetProperty(p => p.Name, request.Name)
+              .SetProperty(p => p.SellingPrice, request.SellingPrice)
+              .SetProperty(p => p.CostPrice, request.CostPrice)
+              .SetProperty(p => p.Barcode, request.Barcode)
+              .SetProperty(p => p.Code, request.Code)
+              .SetProperty(p => p.Description, request.Description)
+              .SetProperty(p => p.Unit, request.Unit)
+              .SetProperty(p => p.CategoryId, request.CategoryId), cancellationToken);
 
-        string? imageUrl = null;
+        if (rowsAffected == 0)
+            return response.NotFound();
 
-        if (request.Image is not null && request.Image.Length > 0)
-        {
-            if (!string.IsNullOrEmpty(existingProduct.ImageUrl))
-            {
-                await _fileStorage.DeleteAsync(existingProduct.ImageUrl, cancellationToken);
-            }
-
-            using var stream = request.Image.OpenReadStream();
-
-            imageUrl = await _fileStorage.UploadAsync(stream, request.Image.FileName,
-                request.Image.ContentType, "products", cancellationToken);
-
-            if (imageUrl == null)
-                return result.Failure("Image upload failed");
-        }
-
-        request.Adapt(existingProduct);
-
-        if (imageUrl is not null)
-        {
-            existingProduct.ImageUrl = imageUrl;
-        }
-
-        await _dbContext.SaveChangesAsync(cancellationToken);
-
-        return result.Updated(existingProduct.Adapt<UpdateProductCommandResponse>());
+        return response.Updated(request.Adapt<UpdateProductCommandResponse>());
     }
 }
 
