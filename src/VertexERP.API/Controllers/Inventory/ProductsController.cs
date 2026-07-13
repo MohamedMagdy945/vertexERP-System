@@ -2,6 +2,7 @@
 using VertexERP.Application.Modules.Inventory.Products.Commands.CreateProduct;
 using VertexERP.Application.Modules.Inventory.Products.Commands.DeleteProductById;
 using VertexERP.Application.Modules.Inventory.Products.Commands.UpdateProduct;
+using VertexERP.Application.Modules.Inventory.Products.Commands.UpdateProductImage;
 using VertexERP.Application.Modules.Inventory.Products.Queries.GetProductById;
 using VertexERP.Application.Modules.Inventory.Products.Queries.GetProducts;
 using VertexERP.Shared.Pagination;
@@ -57,9 +58,13 @@ public class ProductsController : AppControllerBase
         return ApiResponse(response);
     }
 
-    [HttpPut("{productId}/image")]
-    public async Task<IActionResult> UpdateImage([FromRoute] int productId, [FromForm] IFormFile newImage)
+    [HttpPut("{Id}/image")]
+    public async Task<IActionResult> UpdateImage([FromRoute] int Id, [FromForm] IFormFile Image)
     {
+
+        var result = await Mediator.Send(new UpdateProductImageCommand(Id, Image));
+
+        return ApiResponse(result);
 
     }
 }
