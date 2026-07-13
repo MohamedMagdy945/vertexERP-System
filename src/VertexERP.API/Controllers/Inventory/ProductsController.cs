@@ -57,5 +57,9 @@ public class ProductsController : AppControllerBase
         return ApiResponse(response);
     }
 
+    [HttpPut("{productId}/image")]
+    public async Task<IActionResult> UpdateImage([FromRoute] int productId, [FromForm] IFormFile newImage)
+    {
 
+    }
 }
