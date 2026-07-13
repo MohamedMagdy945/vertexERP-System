@@ -12,8 +12,8 @@ using VertexERP.Infrastructure.Persistence;
 namespace VertexERP.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260711121042_add-discription-column-in-categoryt-table")]
-    partial class adddiscriptioncolumnincategoryttable
+    [Migration("20260713090542_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -265,7 +265,7 @@ namespace VertexERP.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("CostPrice")
                         .HasPrecision(18, 2)
@@ -277,27 +277,58 @@ namespace VertexERP.Infrastructure.Persistence.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("UnitId")
+                    b.Property<decimal>("SellingPrice")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Unit")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("UnitId");
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.HasIndex("Name");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("VertexERP.Domain.Module.Inventory.Entities.ProductImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AltText")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsPrimary")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductImages");
                 });
 
             modelBuilder.Entity("VertexERP.Domain.Module.Inventory.Entities.Stock", b =>
@@ -319,30 +350,6 @@ namespace VertexERP.Infrastructure.Persistence.Migrations
                     b.HasIndex("WarehouseId");
 
                     b.ToTable("Stocks");
-                });
-
-            modelBuilder.Entity("VertexERP.Domain.Module.Inventory.Entities.Unit", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Symbol")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Units");
                 });
 
             modelBuilder.Entity("VertexERP.Domain.Module.Inventory.Entities.Warehouse", b =>
@@ -444,15 +451,18 @@ namespace VertexERP.Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("VertexERP.Domain.Module.Inventory.Entities.Unit", "Unit")
-                        .WithMany()
-                        .HasForeignKey("UnitId")
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("VertexERP.Domain.Module.Inventory.Entities.ProductImage", b =>
+                {
+                    b.HasOne("VertexERP.Domain.Module.Inventory.Entities.Product", "Product")
+                        .WithMany("Images")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Category");
-
-                    b.Navigation("Unit");
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("VertexERP.Domain.Module.Inventory.Entities.Stock", b =>
@@ -493,6 +503,8 @@ namespace VertexERP.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("VertexERP.Domain.Module.Inventory.Entities.Product", b =>
                 {
+                    b.Navigation("Images");
+
                     b.Navigation("Stocks");
                 });
 

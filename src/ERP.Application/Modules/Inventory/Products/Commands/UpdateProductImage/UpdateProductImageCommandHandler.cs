@@ -26,6 +26,8 @@ public class UpdateProductImageCommandHandler
 
     public async Task<Result<UpdateProductImageCommandResponse>> Handle(UpdateProductImageCommand request, CancellationToken cancellationToken)
     {
+        throw new NotImplementedException();
+
         var response = Result<UpdateProductImageCommandResponse>.Create();
 
         var product = await _dbContext.Products.FindAsync(new object[] { request.Id }, cancellationToken);
@@ -33,23 +35,23 @@ public class UpdateProductImageCommandHandler
         if (product == null)
             return response.NotFound();
 
-        if (request.Image is not null && request.Image.Length > 0)
-        {
-            if (!string.IsNullOrEmpty(product.ImageUrl))
-            {
-                await _fileStorage.DeleteAsync(product.ImageUrl, cancellationToken);
-            }
+        //if (request.Image is not null && request.Image.Length > 0)
+        //{
+        //    if (!string.IsNullOrEmpty(product.ImageUrl))
+        //    {
+        //        await _fileStorage.DeleteAsync(product.ImageUrl, cancellationToken);
+        //    }
 
-            using var stream = request.Image.OpenReadStream();
+        //    using var stream = request.Image.OpenReadStream();
 
-            var newImageUrl = await _fileStorage.UploadAsync(stream, request.Image.FileName
-                , request.Image.ContentType, "products", cancellationToken);
+        //    var newImageUrl = await _fileStorage.UploadAsync(stream, request.Image.FileName
+        //        , request.Image.ContentType, "products", cancellationToken);
 
-            if (string.IsNullOrEmpty(newImageUrl))
-                return response.Failure("Image upload failed");
+        //    if (string.IsNullOrEmpty(newImageUrl))
+        //        return response.Failure("Image upload failed");
 
-            product.ImageUrl = newImageUrl;
-        }
+        //    product.ImageUrl = newImageUrl;
+        //}
 
         var rowsAffected = await _dbContext.SaveChangesAsync(cancellationToken);
 

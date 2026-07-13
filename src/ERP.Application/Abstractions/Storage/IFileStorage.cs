@@ -1,9 +1,11 @@
-﻿namespace VertexERP.Application.Abstractions.Storage;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace VertexERP.Application.Abstractions.Storage;
 
 public interface IFileStorage
 {
 
-    Task<string> UploadAsync(Stream stream, string fileName, string contentType, string directory,
+    Task<string> UploadAsync(IFormFile file, string directory,
         CancellationToken cancellationToken = default);
 
     Task DeleteAsync(string filePath,

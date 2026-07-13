@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using VertexERP.Application.Abstractions.Persistence;
 using VertexERP.Shared.Pagination;
@@ -22,31 +21,33 @@ public class GetProductsQueryHandler
 
     public async Task<Result<Page<GetProductsQueryResponse>>> Handle(GetProductsQuery request, CancellationToken cancellationToken)
     {
+        throw new NotImplementedException();
+
         var result = Result<Page<GetProductsQueryResponse>>.Create();
 
-        var query = _dbContext.Products.AsNoTracking();
+        //var query = _dbContext.Products.AsNoTracking();
 
-        var totalCount = await query.CountAsync(cancellationToken);
+        //var totalCount = await query.CountAsync(cancellationToken);
 
-        var products = await query
-            .OrderBy(x => x.Id)
-            .Skip((request.PageNumber - 1) * request.PageSize)
-            .Take(request.PageSize)
-            .Select(x => new GetProductsQueryResponse
-            {
-                Id = x.Id,
-                Name = x.Name,
-                Description = x.Description,
-                ImageUrl = x.ImageUrl,
-                Code = x.Code,
-                SellingPrice = x.SellingPrice
-            })
-            .ToListAsync(cancellationToken);
+        //var products = await query
+        //    .OrderBy(x => x.Id)
+        //    .Skip((request.PageNumber - 1) * request.PageSize)
+        //    .Take(request.PageSize)
+        //    .Select(x => new GetProductsQueryResponse
+        //    {
+        //        Id = x.Id,
+        //        Name = x.Name,
+        //        Description = x.Description,
+        //        ImageUrl = x.ImageUrl,
+        //        Code = x.Code,
+        //        SellingPrice = x.SellingPrice
+        //    })
+        //    .ToListAsync(cancellationToken);
 
-        var page = Page<GetProductsQueryResponse>.Create(
-         products, totalCount, request.PageNumber, request.PageSize);
+        //var page = Page<GetProductsQueryResponse>.Create(
+        //products, totalCount, request.PageNumber, request.PageSize);
 
-        return result.Success(page);
+        //return result.Success(page);
     }
 }
 

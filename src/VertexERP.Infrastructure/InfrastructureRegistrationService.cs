@@ -11,9 +11,6 @@ using VertexERP.Application.Abstractions.Persistence;
 using VertexERP.Application.Abstractions.Storage;
 using VertexERP.Infrastructure.Authentication;
 using VertexERP.Infrastructure.Persistence;
-using VertexERP.Infrastructure.Persistence.Seeder;
-using VertexERP.Infrastructure.Persistence.Seeder.Identity;
-using VertexERP.Infrastructure.Persistence.Seeder.Inventory;
 using VertexERP.Infrastructure.Storage;
 
 namespace VertexERP.Infrastructure;
@@ -45,14 +42,14 @@ public static class InfrastructureRegistrationService
 
         services.AddSingleton<IFileStorage, LocalFileStorage>();
 
-        services.AddScoped<PermissionSeeder>();
-        services.AddScoped<UserSeeder>();
-        services.AddScoped<DatabaseSeeder>();
-        services.AddScoped<CategorySeeder>();
-        services.AddScoped<ProductSeeder>();
-        services.AddScoped<WarehouseSeeder>();
-        services.AddScoped<StockSeeder>();
-        services.AddScoped<InventoryTransactionSeeder>();
+        //services.AddScoped<PermissionSeeder>();
+        //services.AddScoped<UserSeeder>();
+        //services.AddScoped<DatabaseSeeder>();
+        //services.AddScoped<CategorySeeder>();
+        ////services.AddScoped<ProductSeeder>();
+        //services.AddScoped<WarehouseSeeder>();
+        //services.AddScoped<StockSeeder>();
+        //services.AddScoped<InventoryTransactionSeeder>();
 
 
         services.AddAuthentication(options =>

@@ -6,7 +6,6 @@ using VertexERP.API.Exceptions;
 using VertexERP.API.middlewares;
 using VertexERP.Application;
 using VertexERP.Infrastructure;
-using VertexERP.Infrastructure.Persistence.Seeder;
 
 namespace VertexERP.API;
 
@@ -46,11 +45,11 @@ public class Program
         var app = builder.Build();
 
 
-        using (var scope = app.Services.CreateScope())
-        {
-            var seeder = scope.ServiceProvider.GetRequiredService<DatabaseSeeder>();
-            await seeder.SeedAsync();
-        }
+        //using (var scope = app.Services.CreateScope())
+        //{
+        //    //var seeder = scope.ServiceProvider.GetRequiredService<DatabaseSeeder>();
+        //    //await seeder.SeedAsync();
+        //}
 
         app.UseSwaggerDocumentation();
 

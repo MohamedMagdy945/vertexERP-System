@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using VertexERP.Application.Abstractions.Persistence;
 using VertexERP.Application.Abstractions.Storage;
 using VertexERP.Domain.Module.Inventory.Entities;
+using VertexERP.Domain.Module.Inventory.Enums;
 using VertexERP.Shared.Results;
 
 namespace VertexERP.Application.Modules.Inventory.Products.Commands.CreateProduct;
@@ -12,7 +13,7 @@ namespace VertexERP.Application.Modules.Inventory.Products.Commands.CreateProduc
 public class CreateProductCommandHandler
     : IRequestHandler<CreateProductCommand, Result<CreateProductCommandResponse>>
 {
-    private readonly IApplicationDbContext _dbContext;
+    private readonly IApplicationDbContext _context;
     private readonly ILogger<CreateProductCommandHandler> _logger;
     private readonly IFileStorage _fileStorage;
     public CreateProductCommandHandler(
@@ -20,34 +21,51 @@ public class CreateProductCommandHandler
         ILogger<CreateProductCommandHandler> logger,
         IFileStorage fileStorage)
     {
-        _dbContext = dbContext;
+        _context = dbContext;
         _logger = logger;
         _fileStorage = fileStorage;
     }
 
     public async Task<Result<CreateProductCommandResponse>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
-        var result = Result<CreateProductCommandResponse>.Create();
+        var response = Result<CreateProductCommandResponse>.Create();
 
-        string? imageUrl = null;
-        if (request.Image is not null && request.Image.Length > 0)
+        using var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
+
+        try
         {
-            using var stream = request.Image.OpenReadStream();
+            var product = request.Adapt<Product>();
+            product.Unit = (UnitType)request.Unit;
 
-            imageUrl = await _fileStorage.UploadAsync(stream, request.Image.FileName,
-                request.Image.ContentType, "products", cancellationToken);
+            await _context.Products.AddAsync(product, cancellationToken);
 
-            if (imageUrl == null)
-                return result.Failure("Image upload failed");
+            if (request.Images is not null && request.Images.Count > 0)
+            {
+                var directory = $"products/{request.Code}";
+
+                var uploadTasks = request.Images.Select(async image =>
+                {
+                    var imageUrl = await _fileStorage.UploadAsync(image, directory, cancellationToken);
+                    return new ProductImage { Url = imageUrl };
+                });
+
+                var productImages = await Task.WhenAll(uploadTasks);
+                product.Images = productImages.ToList();
+            }
+
+            await _context.SaveChangesAsync(cancellationToken);
+
+            await transaction.CommitAsync(cancellationToken);
+
+            var productResponse = product.Adapt<CreateProductCommandResponse>();
+            productResponse.ImagesUrl = product.Images.Select(img => img.Url).ToList();
+
+            return response.Created(productResponse);
         }
-
-        var product = request.Adapt<Product>();
-        product.ImageUrl = imageUrl;
-
-        await _dbContext.Products.AddAsync(product, cancellationToken);
-        await _dbContext.SaveChangesAsync(cancellationToken);
-
-        return result.Created(product.Adapt<CreateProductCommandResponse>());
+        catch (Exception)
+        {
+            throw;
+        }
     }
 }
 

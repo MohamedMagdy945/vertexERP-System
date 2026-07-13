@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using VertexERP.Application.Abstractions.Storage;
 
 namespace VertexERP.Infrastructure.Storage;
@@ -12,26 +13,22 @@ public class LocalFileStorage : IFileStorage
         _environment = environment;
     }
 
-    public async Task<string> UploadAsync(Stream stream, string fileName, string contentType,
-        string directory,
-        CancellationToken cancellationToken = default)
+    public async Task<string> UploadAsync(IFormFile file, string directory, CancellationToken cancellationToken = default)
     {
-        var uploadPath = Path.Combine(
-            _environment.WebRootPath,
-            directory);
+        var uploadPath = Path.Combine(_environment.WebRootPath, directory);
 
         Directory.CreateDirectory(uploadPath);
 
-        var extension = Path.GetExtension(fileName);
+        var extension = Path.GetExtension(file.FileName);
         var uniqueName = $"{Guid.NewGuid()}{extension}";
 
         var fullPath = Path.Combine(uploadPath, uniqueName);
 
         await using var fileStream = new FileStream(fullPath, FileMode.Create);
+        await file.CopyToAsync(fileStream, cancellationToken);
 
-        await stream.CopyToAsync(fileStream, cancellationToken);
-
-        return $"/{directory.Replace("\\", "/")}/{uniqueName}";
+        var webPath = directory.Replace("\\", "/").Trim('/');
+        return $"/{webPath}/{uniqueName}";
     }
 
     public Task DeleteAsync(string filePath, CancellationToken cancellationToken = default)

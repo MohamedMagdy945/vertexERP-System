@@ -4,7 +4,7 @@ using VertexERP.Domain.Module.Inventory.Entities;
 
 namespace VertexERP.Infrastructure.Persistence.Configurations.Inventory;
 
-public class ProductConfiguraiton : IEntityTypeConfiguration<Product>
+public class ProductConfiguration : IEntityTypeConfiguration<Product>
 {
     public void Configure(EntityTypeBuilder<Product> builder)
     {

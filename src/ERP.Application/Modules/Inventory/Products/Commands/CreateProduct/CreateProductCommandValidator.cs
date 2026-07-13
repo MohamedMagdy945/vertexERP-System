@@ -17,6 +17,7 @@ public class CreateProductCommandValidator : AbstractValidator<CreateProductComm
             .NotEmpty().WithMessage("Product code is required.")
             .MaximumLength(50).WithMessage("Product code must not exceed 50 characters.");
 
+
         RuleFor(x => x.CostPrice)
             .GreaterThan(0).WithMessage("Cost price must be greater than 0.");
 
@@ -27,14 +28,18 @@ public class CreateProductCommandValidator : AbstractValidator<CreateProductComm
         RuleFor(x => x.CategoryId)
             .GreaterThan(0).WithMessage("A valid category must be selected.");
 
-        RuleFor(x => x.Unit)
-            .IsInEnum().WithMessage("The selected unit type is invalid.");
 
-        When(x => x.Image != null, () =>
+        RuleFor(x => x.Images)
+        .Must(images => images == null || images.Count <= 5)
+        .WithMessage("You can upload maximum 5 images.");
+
+        When(x => x.Images != null && x.Images.Count > 0, () =>
         {
-            RuleFor(x => x.Image!)
-                .Must(HaveValidSize).WithMessage("Image size must be less than 5 MB.")
-                .Must(HaveValidExtension).WithMessage("Only JPG, JPEG, and PNG images are allowed.");
+            RuleForEach(x => x.Images!)
+                .Must(HaveValidSize)
+                .WithMessage("Each image size must be less than 5 MB.")
+                .Must(HaveValidExtension)
+                .WithMessage("Only JPG, JPEG, and PNG images are allowed.");
         });
     }
 

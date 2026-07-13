@@ -1,18 +1,17 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
-using VertexERP.Domain.Module.Inventory.Enums;
 using VertexERP.Shared.Results;
 
 namespace VertexERP.Application.Modules.Inventory.Products.Commands.CreateProduct;
 
 public record CreateProductCommand(
     string Name,
-    IFormFile? Image,
+    IReadOnlyList<IFormFile>? Images,
     string? Barcode,
     string? Description,
     string Code,
     decimal CostPrice,
     decimal SellingPrice,
-    int CategoryId,
-    UnitType Unit
+    int Unit,
+    int CategoryId
 ) : IRequest<Result<CreateProductCommandResponse>>;
