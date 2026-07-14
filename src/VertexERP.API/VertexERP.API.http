@@ -1,6 +1,0 @@
-@VertexERP.API_HostAddress = http://localhost:5259
-
-GET {{VertexERP.API_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
