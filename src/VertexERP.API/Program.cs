@@ -1,6 +1,5 @@
 using Serilog;
 using VertexERP.API.Configurations;
-using VertexERP.API.middleware;
 using VertexERP.API.Middlewares;
 
 namespace VertexERP.API;
@@ -19,7 +18,7 @@ public class Program
 
             // Add services to the container.
             builder.AddSerilogLogging();
-
+            builder.Services.AddSwaggerConfiguration();
             builder.Services.AddControllers();
 
             builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
@@ -28,10 +27,13 @@ public class Program
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            app.UseMiddleware<CustomRequestLoggingMiddleware>();
+            app.UseSwaggerDocumentation();
+
+            app.UseMiddleware<CorrelationIdMiddleware>();
 
             app.UseExceptionHandler();
 
+            app.UseMiddleware<RequestResponseLoggingMiddleware>();
 
             app.UseAuthorization();
 

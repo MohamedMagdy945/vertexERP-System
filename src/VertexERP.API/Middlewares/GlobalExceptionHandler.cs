@@ -7,21 +7,25 @@ public sealed class GlobalExceptionHandler(
     ILogger<GlobalExceptionHandler> logger)
     : IExceptionHandler
 {
+    private const string CorrelationIdKey = "CorrelationId";
+
     public async ValueTask<bool> TryHandleAsync(
         HttpContext httpContext,
         Exception exception,
         CancellationToken cancellationToken)
     {
-        var correlationId = httpContext.Items["CorrelationId"]?.ToString()
-                            ?? httpContext.TraceIdentifier;
+        var correlationId =
+            httpContext.Items[CorrelationIdKey]?.ToString()
+            ?? httpContext.TraceIdentifier;
 
         var (statusCode, title, detail, logLevel) = MapException(exception);
 
-        logger.Log(logLevel, exception,
-            "Unhandled exception while processing {Method} {Path}",
-            httpContext.Request.Method,
-            httpContext.Request.Path
-            );
+        logger.Log(
+             logLevel,
+             exception,
+             "Unhandled exception while processing {Method} {Path}",
+             httpContext.Request.Method,
+             httpContext.Request.Path);
 
         httpContext.Response.StatusCode = statusCode;
         httpContext.Response.ContentType = "application/problem+json";
@@ -58,8 +62,9 @@ public sealed class GlobalExceptionHandler(
                 "The requested resource was not found.",
                 LogLevel.Information),
 
-
-            InvalidOperationException => (StatusCodes.Status409Conflict, "Conflict",
+            InvalidOperationException => (
+                StatusCodes.Status409Conflict,
+                "Conflict",
                 "The requested operation cannot be completed.",
                 LogLevel.Warning),
 

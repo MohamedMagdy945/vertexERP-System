@@ -14,7 +14,6 @@ namespace VertexERP.API.Controllers
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
-            throw new NotImplementedException();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
