@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\VertexERP.Domain\VertexERP.Domain.csproj" />
+    <ProjectReference Include="..\VertexERP.Shared\VertexERP.Shared.csproj" />
+  </ItemGroup>
+
 </Project>
