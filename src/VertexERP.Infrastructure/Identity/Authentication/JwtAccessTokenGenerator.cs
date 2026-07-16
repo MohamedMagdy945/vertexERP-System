@@ -6,11 +6,11 @@ using VertexERP.Application.Common.Abstractions.Identity;
 using VertexERP.Application.Common.Models.Identity;
 using VertexERP.Infrastructure.Identity.Settings;
 
-namespace VertexERP.Infrastructure.Identity.Authorization;
+namespace VertexERP.Infrastructure.Identity.Authentication;
 
-public class JwtAccessTokenGenerator(IOptions<AccessTokenSettings> accessTokenSettings) : IAccessTokenGenerator
+public class JwtAccessTokenGenerator(IOptions<JwtSettings> accessTokenSettings) : IAccessTokenGenerator
 {
-    private readonly AccessTokenSettings _accessTokenSettings = accessTokenSettings.Value;
+    private readonly JwtSettings _accessTokenSettings = accessTokenSettings.Value;
     private static readonly JsonWebTokenHandler TokenHandler = new();
 
     public string GenerateAccessToken(UserTokenClaims userClaims)

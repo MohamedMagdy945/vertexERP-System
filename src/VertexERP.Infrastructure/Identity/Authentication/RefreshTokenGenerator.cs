@@ -2,7 +2,7 @@
 using System.Text;
 using VertexERP.Application.Common.Abstractions.Identity;
 
-namespace VertexERP.Infrastructure.Identity.Authorization;
+namespace VertexERP.Infrastructure.Identity.Authentication;
 
 public class RefreshTokenGenerator : IRefreshTokenGenerator
 {

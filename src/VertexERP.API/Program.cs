@@ -1,12 +1,15 @@
+using Microsoft.AspNetCore.Authorization;
 using Serilog;
+using VertexERP.API.Authorization;
 using VertexERP.API.Configurations;
 using VertexERP.API.Middlewares;
+using VertexERP.Infrastructure;
 
 namespace VertexERP.API;
 
 public class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         LoggingConfiguration.ConfigureBootstrapLogger();
 
@@ -23,6 +26,14 @@ public class Program
 
             builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
             builder.Services.AddProblemDetails();
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddSingleton<IAuthorizationHandler,
+             PermissionAuthorizationHandler>();
+
+            builder.Services.AddSingleton<IAuthorizationPolicyProvider,
+                PermissionPolicyProvider>();
+
+            builder.Services.AddInfrastructureServices(builder.Configuration);
 
             var app = builder.Build();
 

@@ -7,12 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Common\Abstractions\Identity\IRefreshTokenGenerator.cs" />
+    <None Include="Common\Abstractions\Identity\IAccessTokenGenerator.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Common\Abstractions\Identity\IRefreshTokenGenerator.cs" />
-    <None Include="Common\Abstractions\Identity\IAccessTokenGenerator.cs" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="10.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.10" />
   </ItemGroup>
 
   <ItemGroup>

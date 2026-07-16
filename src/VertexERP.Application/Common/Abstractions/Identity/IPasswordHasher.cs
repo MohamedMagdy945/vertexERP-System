@@ -1,6 +1,6 @@
 ﻿namespace VertexERP.Application.Common.Abstractions.Identity;
 
-public interface IPasswordHasherService
+public interface IPasswordHasher
 {
     public string Hash(string password);
 

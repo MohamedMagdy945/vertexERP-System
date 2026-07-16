@@ -1,18 +1,18 @@
 ﻿using Serilog.Context;
+using VertexERP.Infrastructure.Common.Constants;
 
 namespace VertexERP.API.Middlewares;
 
-public sealed class CorrelationIdMiddleware(RequestDelegate next)
+public class CorrelationIdMiddleware(RequestDelegate next)
 {
     public const string HeaderName = "X-Correlation-Id";
-    public const string ItemKey = "CorrelationId";
 
     public async Task InvokeAsync(HttpContext context)
     {
         var correlationId = context.Request.Headers[HeaderName].FirstOrDefault()
                             ?? Guid.NewGuid().ToString("N");
 
-        context.Items[ItemKey] = correlationId;
+        context.Items[HttpContextItemKeys.CorrelationId] = correlationId;
 
         context.Response.OnStarting(() =>
         {
