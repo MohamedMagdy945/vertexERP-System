@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="Common\Abstraction\Identity\ITokenService.cs" />
+    <None Include="Common\Abstractions\Identity\ITokenService.cs" />
   </ItemGroup>
 
   <ItemGroup>
