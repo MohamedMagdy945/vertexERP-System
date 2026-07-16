@@ -3,7 +3,7 @@ using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using System.Text;
-using VertexERP.Application.Common.Abstraction.Identity;
+using VertexERP.Application.Common.Abstractions.Identity;
 using VertexERP.Application.Common.Models.Identity;
 using VertexERP.Infrastructure.Identity.Settings;
 

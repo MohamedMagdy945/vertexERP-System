@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="Common\Abstraction\Identity\ITokenService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\VertexERP.Domain\VertexERP.Domain.csproj" />
     <ProjectReference Include="..\VertexERP.Shared\VertexERP.Shared.csproj" />
   </ItemGroup>

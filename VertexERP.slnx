@@ -6,4 +6,5 @@
     <Project Path="src/VertexERP.Infrastructure/VertexERP.Infrastructure.csproj" Id="dfba2719-052c-4c76-b4ed-ebc06e01e204" />
     <Project Path="src/VertexERP.Shared/VertexERP.Shared.csproj" />
   </Folder>
+  <Folder Name="/tests/" />
 </Solution>

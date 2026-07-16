@@ -1,7 +1,7 @@
 ﻿using VertexERP.Application.Common.Models.Identity;
 
 
-namespace VertexERP.Application.Common.Abstraction.Identity;
+namespace VertexERP.Application.Common.Abstractions.Identity;
 
 public interface ITokenService
 {
