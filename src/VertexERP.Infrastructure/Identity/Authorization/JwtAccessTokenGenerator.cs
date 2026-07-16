@@ -1,26 +1,17 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
-using System.Security.Cryptography;
 using System.Text;
 using VertexERP.Application.Common.Abstractions.Identity;
 using VertexERP.Application.Common.Models.Identity;
 using VertexERP.Infrastructure.Identity.Settings;
 
-namespace VertexERP.Infrastructure.Identity.Services;
+namespace VertexERP.Infrastructure.Identity.Authorization;
 
-public class TokenService(IOptions<AccessTokenSettings> accessTokenSettings) : ITokenService
+public class JwtAccessTokenGenerator(IOptions<AccessTokenSettings> accessTokenSettings) : IAccessTokenGenerator
 {
     private readonly AccessTokenSettings _accessTokenSettings = accessTokenSettings.Value;
     private static readonly JsonWebTokenHandler TokenHandler = new();
-    public string GenerateRefreshToken()
-    {
-        Span<byte> bytes = stackalloc byte[32];
-
-        RandomNumberGenerator.Fill(bytes);
-
-        return Convert.ToBase64String(bytes);
-    }
 
     public string GenerateAccessToken(UserTokenClaims userClaims)
     {
@@ -51,11 +42,6 @@ public class TokenService(IOptions<AccessTokenSettings> accessTokenSettings) : I
 
         return TokenHandler.CreateToken(tokenDescriptor);
     }
-    public string HashRefreshToken(string refreshToken)
-    {
-        return Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(refreshToken)));
-    }
-
 
 }
 

@@ -3,9 +3,7 @@
 
 namespace VertexERP.Application.Common.Abstractions.Identity;
 
-public interface ITokenService
+public interface IAccessTokenGenerator
 {
-    string GenerateRefreshToken();
     string GenerateAccessToken(UserTokenClaims userClaims);
-    string HashRefreshToken(string refreshToken);
 }

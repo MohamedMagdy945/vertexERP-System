@@ -7,7 +7,6 @@ public class Role : BaseEntity
     public string Name { get; private set; } = default!;
     public string? Description { get; private set; }
 
-
     public ICollection<UserRole> UserRoles { get; } = [];
     public ICollection<RolePermission> RolePermissions { get; } = [];
     private Role() { }

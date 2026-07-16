@@ -7,7 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="Common\Abstractions\Identity\ITokenService.cs" />
+    <Compile Remove="Common\Abstractions\Identity\IRefreshTokenGenerator.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Common\Abstractions\Identity\IRefreshTokenGenerator.cs" />
+    <None Include="Common\Abstractions\Identity\IAccessTokenGenerator.cs" />
   </ItemGroup>
 
   <ItemGroup>

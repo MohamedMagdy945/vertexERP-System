@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using VertexERP.Application.Common.Abstractions.System;
 
-namespace VertexERP.Infrastructure.System.Services;
+namespace VertexERP.Infrastructure.Services;
 
 public sealed class ClientInfoProvider(IHttpContextAccessor httpContextAccessor)
     : IClientInfoProvider

@@ -12,7 +12,7 @@ public class User : BaseEntity
 
     public string PhoneNumber { get; private set; } = default!;
     public ICollection<UserRole> UserRoles { get; } = [];
-
+    public ICollection<RefreshToken> RefreshTokens { get; } = [];
 
     public User(string firstName, string lastName, string email, string passwordHash)
     {
@@ -45,6 +45,17 @@ public class User : BaseEntity
     public void RemoveRole(UserRole userRole)
     {
         UserRoles.Remove(userRole);
+    }
+    public void AddRefreshToken(RefreshToken refreshToken)
+    {
+        RefreshTokens.Add(refreshToken);
+    }
+    public void RevokeAllRefreshTokens()
+    {
+        foreach (var token in RefreshTokens.Where(t => t.IsActive))
+        {
+            token.Revoke();
+        }
     }
 }
 

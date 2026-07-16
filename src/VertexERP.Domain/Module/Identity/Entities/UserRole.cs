@@ -1,8 +1,6 @@
-﻿using VertexERP.Domain.Common;
+﻿namespace VertexERP.Domain.Module.Identity.Entities;
 
-namespace VertexERP.Domain.Module.Identity.Entities;
-
-public sealed class UserRole : BaseEntity
+public sealed class UserRole
 {
     public Guid UserId { get; private set; }
     public Guid RoleId { get; private set; }

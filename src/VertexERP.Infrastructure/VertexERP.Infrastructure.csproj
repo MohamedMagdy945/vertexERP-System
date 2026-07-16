@@ -17,4 +17,8 @@
     <ProjectReference Include="..\VertexERP.Application\VertexERP.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Identity\Authentication\" />
+  </ItemGroup>
+
 </Project>
