@@ -4,7 +4,7 @@ public enum ResultStatus
 {
     Success = 0,
     Failure = 1,
-    Validation = 2,
+    ValidationFailed = 2,
     NotFound = 3,
     Unauthorized = 4,
     Forbidden = 5,

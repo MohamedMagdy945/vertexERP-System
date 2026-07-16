@@ -37,7 +37,7 @@ public class Result<T>
         };
     }
 
-    public static Result<T> Validation(params string[] errors)
+    public static Result<T> ValidationFailed(params string[] errors)
     {
         return new()
         {
