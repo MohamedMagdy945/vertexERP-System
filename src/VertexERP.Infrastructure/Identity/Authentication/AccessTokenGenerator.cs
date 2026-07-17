@@ -4,11 +4,11 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using VertexERP.Application.Common.Abstractions.Identity;
 using VertexERP.Application.Common.Models.Identity;
-using VertexERP.Infrastructure.Identity.Settings;
+using VertexERP.Infrastructure.Identity.Configuration;
 
 namespace VertexERP.Infrastructure.Identity.Authentication;
 
-public class JwtAccessTokenGenerator(IOptions<JwtSettings> accessTokenSettings) : IAccessTokenGenerator
+public class AccessTokenGenerator(IOptions<JwtSettings> accessTokenSettings) : IAccessTokenGenerator
 {
     private readonly JwtSettings _accessTokenSettings = accessTokenSettings.Value;
     private static readonly JsonWebTokenHandler TokenHandler = new();

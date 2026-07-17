@@ -37,16 +37,15 @@ public class Result<T>
         };
     }
 
-    public static Result<T> ValidationFailed(params string[] errors)
+    public static Result<T> ValidationFailed(IReadOnlyList<string> errors)
     {
         return new()
         {
-            Status = ResultStatus.Validation,
+            Status = ResultStatus.ValidationFailed,
             Message = "The request contains validation errors.",
             Errors = errors
         };
     }
-
     public static Result<T> NotFound(string message = "The requested resource was not found.")
     {
         return new()

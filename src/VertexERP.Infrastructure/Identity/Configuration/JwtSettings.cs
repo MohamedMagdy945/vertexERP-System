@@ -1,4 +1,4 @@
-﻿namespace VertexERP.Infrastructure.Identity.Settings;
+﻿namespace VertexERP.Infrastructure.Identity.Configuration;
 
 public class JwtSettings
 {

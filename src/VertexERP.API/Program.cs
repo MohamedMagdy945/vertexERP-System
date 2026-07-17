@@ -3,6 +3,7 @@ using Serilog;
 using VertexERP.API.Authorization;
 using VertexERP.API.Configurations;
 using VertexERP.API.Middlewares;
+using VertexERP.Application;
 using VertexERP.Infrastructure;
 
 namespace VertexERP.API;
@@ -32,6 +33,8 @@ public class Program
 
             builder.Services.AddSingleton<IAuthorizationPolicyProvider,
                 PermissionPolicyProvider>();
+
+            builder.Services.AddApplicationServices();
 
             builder.Services.AddInfrastructureServices(builder.Configuration);
 

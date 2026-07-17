@@ -1,14 +1,19 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using VertexERP.Application.Common.Abstractions.Identity;
 using VertexERP.Application.Common.Abstractions.Persistence;
 using VertexERP.Application.Common.Abstractions.System;
+using VertexERP.Infrastructure.Constants;
+using VertexERP.Infrastructure.Http.Extensions;
+using VertexERP.Infrastructure.Http.Services;
 using VertexERP.Infrastructure.Identity.Authentication;
-using VertexERP.Infrastructure.Identity.Http;
-using VertexERP.Infrastructure.Identity.Settings;
+using VertexERP.Infrastructure.Identity.Configuration;
 using VertexERP.Infrastructure.Persistence;
 
 namespace VertexERP.Infrastructure;
@@ -25,10 +30,11 @@ public static class InfrastructureRegistration
         services.Configure<JwtSettings>(
             configuration.GetRequiredSection(nameof(JwtSettings)));
 
-        services.AddSingleton<IAccessTokenGenerator, JwtAccessTokenGenerator>();
+        services.AddSingleton<IAccessTokenGenerator, AccessTokenGenerator>();
         services.AddSingleton<IRefreshTokenGenerator, RefreshTokenGenerator>();
-        services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
+        services.AddSingleton<IPasswordHasher, PasswordHasher>();
         services.AddSingleton<IClientInfoProvider, ClientInfoProvider>();
+
         var jwtSettings = configuration
             .GetRequiredSection(nameof(JwtSettings))
             .Get<JwtSettings>();
@@ -37,47 +43,64 @@ public static class InfrastructureRegistration
         .AddJwtBearer(options =>
         {
 
+            if (jwtSettings == null)
+                throw new InvalidOperationException("JWT settings are not configured properly.");
 
-            //if (jwtSettings == null)
-            //    throw new InvalidOperationException("JWT settings are not configured properly.");
-
-            //options.TokenValidationParameters = new TokenValidationParameters
-            //{
-            //    ValidateIssuer = true,
-            //    ValidateAudience = true,
-            //    ValidateLifetime = true,
-            //    ValidateIssuerSigningKey = true,
-            //    ValidIssuer = jwtSettings.Issuer,
-            //    ValidAudience = jwtSettings.Audience,
-            //    IssuerSigningKey = new SymmetricSecurityKey(
-            //        Encoding.UTF8.GetBytes(jwtSettings.SecretKey))
-            //};
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = jwtSettings.Issuer,
+                ValidAudience = jwtSettings.Audience,
+                IssuerSigningKey = new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(jwtSettings.SecretKey)
+                )
+            };
 
             options.Events = new JwtBearerEvents
             {
-                OnChallenge = async context =>
+                OnChallenge = context =>
                 {
                     context.HandleResponse();
 
-                    await ProblemDetailsWriter.WriteAsync(
-                        context.HttpContext,
-                        StatusCodes.Status401Unauthorized,
-                        "Unauthorized",
-                        "Authentication token is missing or invalid.",
-                        context.HttpContext.RequestAborted
+                    var problem = CreateProblemDetails(
+                        context.HttpContext, StatusCodes.Status401Unauthorized,
+                        "Unauthorized", "Authentication is required to access this resource."
+                    );
+
+                    return context.HttpContext.WriteProblemDetailsAsync(
+                        problem, context.HttpContext.RequestAborted
                     );
                 },
 
-                OnForbidden = context => ProblemDetailsWriter.WriteAsync(
-                    context.HttpContext,
-                    StatusCodes.Status403Forbidden,
-                    "Forbidden",
-                    "You do not have permission to access this resource.",
-                    context.HttpContext.RequestAborted
-                )
+                OnForbidden = context =>
+                {
+                    var problem = CreateProblemDetails(
+                        context.HttpContext, StatusCodes.Status403Forbidden,
+                        "Forbidden", "You do not have permission to access this resource.");
+
+                    return context.HttpContext.WriteProblemDetailsAsync(
+                        problem, context.HttpContext.RequestAborted);
+                }
             };
         });
 
         return services;
+    }
+    private static ProblemDetails CreateProblemDetails(HttpContext httpContext, int statusCode, string title, string detail)
+    {
+        var problem = new ProblemDetails
+        {
+            Title = title,
+            Status = statusCode,
+            Detail = detail,
+            Instance = httpContext.Request.Path
+        };
+
+        problem.Extensions[HttpContextItemKeys.CorrelationId] = httpContext.GetCorrelationId();
+
+        return problem;
     }
 }

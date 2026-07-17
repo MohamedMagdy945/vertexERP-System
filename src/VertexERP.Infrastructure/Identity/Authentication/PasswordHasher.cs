@@ -1,7 +1,7 @@
 ﻿using VertexERP.Application.Common.Abstractions.Identity;
 namespace VertexERP.Infrastructure.Identity.Authentication;
 
-public sealed class BCryptPasswordHasher : IPasswordHasher
+public sealed class PasswordHasher : IPasswordHasher
 {
     public string Hash(string password)
     {

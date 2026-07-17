@@ -1,5 +1,5 @@
 ﻿using Serilog.Context;
-using VertexERP.Infrastructure.Common.Constants;
+using VertexERP.Infrastructure.Constants;
 
 namespace VertexERP.API.Middlewares;
 
