@@ -1,41 +1,44 @@
 ﻿using FluentValidation;
 using Mediator;
-using VertexERP.Shared.Results;
+using VertexERP.Shared.Exceptions;
 
-namespace VertexERP.Application.Common.Behaviour;
-
-public sealed class GenericValidationBehavior<TRequest, TValue>(
-    IEnumerable<IValidator<TRequest>> validators)
-    : IPipelineBehavior<TRequest, Result<TValue>>
-    where TRequest : IMessage
+public sealed class ValidationBehavior<TRequest, TResponse>
+    : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : IRequest<TResponse>
 {
-    public async ValueTask<Result<TValue>> Handle(
-        TRequest message,
-        MessageHandlerDelegate<TRequest, Result<TValue>> next,
+    private readonly IEnumerable<IValidator<TRequest>> _validators;
+
+    public ValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
+    {
+        _validators = validators;
+    }
+
+    public async ValueTask<TResponse> Handle(
+        TRequest request,
+        MessageHandlerDelegate<TRequest, TResponse> next,
         CancellationToken cancellationToken)
     {
-        if (!validators.Any())
+        if (!_validators.Any())
         {
-            return await next(message, cancellationToken);
+            return await next(request, cancellationToken);
         }
 
-        var context = new ValidationContext<TRequest>(message);
+        var context = new ValidationContext<TRequest>(request);
 
         var validationResults = await Task.WhenAll(
-            validators.Select(v => v.ValidateAsync(context, cancellationToken)));
+            _validators.Select(v => v.ValidateAsync(context, cancellationToken)));
 
-        var errors = validationResults
+        var failures = validationResults
             .SelectMany(r => r.Errors)
             .Where(f => f is not null)
             .Select(f => f.ErrorMessage)
-            .Distinct()
             .ToArray();
 
-        if (errors.Length > 0)
+        if (failures.Length > 0)
         {
-            return Result<TValue>.ValidationFailed(errors);
+            throw new AppValidationException(failures);
         }
 
-        return await next(message, cancellationToken);
+        return await next(request, cancellationToken);
     }
 }
