@@ -1,13 +1,15 @@
 ﻿namespace VertexERP.Shared.Results;
 
+
 public enum ResultStatus
 {
     Success = 0,
-    Failure = 1,
-    ValidationFailed = 2,
-    NotFound = 3,
-    Unauthorized = 4,
-    Forbidden = 5,
-    Conflict = 6,
-    NoContent = 7,
+    Created = 1,
+    Failure = 2,
+    ValidationFailed = 3,
+    NotFound = 4,
+    Unauthorized = 5,
+    Forbidden = 6,
+    Conflict = 7,
+    NoContent = 8
 }

@@ -22,18 +22,19 @@ public static class SwaggerConfiguration
                     Email = "mohamedmagdy000022@gmail.com"
                 }
             });
+            options.SwaggerDoc("v2", new OpenApiInfo
+            {
+                Title = "Vertex ERP API",
+                Version = "v2",
+                Description = "Vertex ERP REST API",
+                Contact = new OpenApiContact
+                {
+                    Name = "Mohamed Magdy",
+                    Email = "mohamedmagdy000022@gmail.com"
+                }
+            });
 
             const string scheme = "Bearer";
-
-            options.AddSecurityDefinition(scheme, new OpenApiSecurityScheme
-            {
-                Type = SecuritySchemeType.Http,
-                Scheme = "bearer",
-                BearerFormat = "JWT",
-                In = ParameterLocation.Header,
-                Name = "Authorization",
-                Description = "Enter: Bearer {your JWT token}"
-            });
 
             options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
             {
@@ -54,7 +55,6 @@ public static class SwaggerConfiguration
         app.UseSwaggerUI(options =>
         {
             options.SwaggerEndpoint("/swagger/v1/swagger.json", "Vertex ERP API v1");
-
             options.RoutePrefix = string.Empty;
             options.DisplayRequestDuration();
             options.EnablePersistAuthorization();

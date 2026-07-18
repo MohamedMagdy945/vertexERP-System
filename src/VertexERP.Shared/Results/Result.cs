@@ -4,7 +4,9 @@ public class Result<T>
 {
     public ResultStatus Status { get; protected init; }
 
-    public bool IsSuccess => Status is ResultStatus.Success or ResultStatus.NoContent;
+    public bool IsSuccess => Status is ResultStatus.Success
+                                or ResultStatus.Created
+                                or ResultStatus.NoContent;
 
     public string Message { get; protected init; } = string.Empty;
 
@@ -88,6 +90,15 @@ public class Result<T>
         {
             Status = ResultStatus.NoContent,
             Message = message
+        };
+    }
+    public static Result<T> Created(T data, string message = "Resource created successfully.")
+    {
+        return new()
+        {
+            Status = ResultStatus.Created,
+            Message = message,
+            Data = data
         };
     }
 }

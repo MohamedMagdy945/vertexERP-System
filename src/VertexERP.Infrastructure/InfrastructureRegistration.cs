@@ -30,6 +30,9 @@ public static class InfrastructureRegistration
         services.Configure<JwtSettings>(
             configuration.GetRequiredSection(nameof(JwtSettings)));
 
+        services.Configure<RefreshTokenSettings>(
+            configuration.GetRequiredSection(nameof(RefreshTokenSettings)));
+
         services.AddSingleton<IAccessTokenGenerator, AccessTokenGenerator>();
         services.AddSingleton<IRefreshTokenGenerator, RefreshTokenGenerator>();
         services.AddSingleton<IPasswordHasher, PasswordHasher>();

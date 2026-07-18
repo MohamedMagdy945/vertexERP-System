@@ -5,5 +5,6 @@ namespace VertexERP.Application.Common.Abstractions.Identity;
 
 public interface IAccessTokenGenerator
 {
-    string GenerateAccessToken(UserTokenClaims userClaims);
+    string Generate(UserTokenClaims userClaims);
+    DateTime GetExpirationTime();
 }

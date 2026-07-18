@@ -2,7 +2,9 @@
 
 public interface IRefreshTokenGenerator
 {
-    string GenerateRefreshToken();
+    string Generate();
 
-    string HashRefreshToken(string refreshToken);
+    string Hash(string refreshToken);
+    public DateTime GetExpirationTime();
+
 }
