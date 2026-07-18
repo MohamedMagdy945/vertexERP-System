@@ -32,7 +32,7 @@ public sealed class RefreshToken : BaseEntity
 
     private RefreshToken() { }
 
-    public RefreshToken(string tokenHash, Guid userId, DateTime expiresAt, string? createdByIp = null,
+    public RefreshToken(Guid userId, string tokenHash, DateTime expiresAt, string? createdByIp = null,
         string? deviceInfo = null)
     {
         TokenHash = tokenHash;

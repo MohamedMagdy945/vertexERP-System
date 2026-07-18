@@ -9,16 +9,16 @@ using VertexERP.Infrastructure.Identity.Configuration;
 
 namespace VertexERP.Infrastructure.Identity.Authentication;
 
-public sealed class TokenGenerator(IOptions<TokenSettings> options) : ITokenGenerator
+public sealed class TokenPairGenerator(IOptions<TokenPairSettings> options) : ITokenPairGenerator
 {
     private const string PermissionsClaim = "permissions";
     private const int RefreshTokenSize = 32;
 
     private static readonly JsonWebTokenHandler TokenHandler = new();
 
-    private readonly TokenSettings _settings = options.Value;
+    private readonly TokenPairSettings _settings = options.Value;
 
-    public TokenPair GenerateTokenPair(UserTokenClaims claims)
+    public TokenPair Generate(UserTokenClaims claims)
     {
         var accessTokenExpiresAt = DateTime.UtcNow.AddMinutes(_settings.AccessTokenExpirationInMinutes);
         var refreshTokenExpiresAt = DateTime.UtcNow.AddDays(_settings.RefreshTokenExpirationInDays);

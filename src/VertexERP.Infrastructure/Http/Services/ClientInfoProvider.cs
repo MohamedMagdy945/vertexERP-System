@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using VertexERP.Application.Common.Abstractions.System;
+using VertexERP.Application.Common.Abstractions.Http;
 
 namespace VertexERP.Infrastructure.Http.Services;
 

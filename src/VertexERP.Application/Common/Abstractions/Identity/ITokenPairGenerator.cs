@@ -2,7 +2,7 @@
 
 namespace VertexERP.Application.Common.Abstractions.Identity;
 
-public interface ITokenGenerator
+public interface ITokenPairGenerator
 {
-    TokenPair GenerateTokenPair(UserTokenClaims claims);
+    TokenPair Generate(UserTokenClaims claims);
 }

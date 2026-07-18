@@ -4,5 +4,5 @@ namespace VertexERP.Application.Common.Abstractions.Identity;
 
 public interface IAuthenticationService
 {
-    public TokenPair CreateSessionAsync(UserTokenClaims claims, CancellationToken cancellationToken);
+    Task<TokenPair> CreateSessionAsync(UserTokenClaims claims, CancellationToken cancellationToken);
 }

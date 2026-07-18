@@ -1,6 +1,6 @@
 ﻿namespace VertexERP.Infrastructure.Identity.Configuration;
 
-public class TokenSettings
+public class TokenPairSettings
 {
     public required string SecretKey { get; init; }
     public required string Audience { get; init; }

@@ -6,9 +6,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using VertexERP.Application.Common.Abstractions.Http;
 using VertexERP.Application.Common.Abstractions.Identity;
 using VertexERP.Application.Common.Abstractions.Persistence;
-using VertexERP.Application.Common.Abstractions.System;
 using VertexERP.Infrastructure.Constants;
 using VertexERP.Infrastructure.Http.Extensions;
 using VertexERP.Infrastructure.Http.Services;
@@ -27,20 +27,20 @@ public static class InfrastructureRegistration
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
         });
 
-        services.Configure<JwtSettings>(
-            configuration.GetRequiredSection(nameof(JwtSettings)));
+        services.Configure<TokenPairSettings>(
+            configuration.GetRequiredSection(nameof(TokenPairSettings)));
 
-        services.Configure<RefreshTokenSettings>(
-            configuration.GetRequiredSection(nameof(RefreshTokenSettings)));
 
-        services.AddSingleton<IAccessTokenGenerator, AccessTokenGenerator>();
-        services.AddSingleton<IRefreshTokenGenerator, RefreshTokenGenerator>();
+
+        services.AddSingleton<ITokenPairGenerator, TokenPairGenerator>();
+
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
+
         services.AddSingleton<IClientInfoProvider, ClientInfoProvider>();
 
         var jwtSettings = configuration
-            .GetRequiredSection(nameof(JwtSettings))
-            .Get<JwtSettings>();
+            .GetRequiredSection(nameof(TokenPairSettings))
+            .Get<TokenPairSettings>();
         services
         .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(options =>
@@ -57,9 +57,8 @@ public static class InfrastructureRegistration
                 ValidateIssuerSigningKey = true,
                 ValidIssuer = jwtSettings.Issuer,
                 ValidAudience = jwtSettings.Audience,
-                IssuerSigningKey = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(jwtSettings.SecretKey)
-                )
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey)),
+                ClockSkew = TimeSpan.Zero
             };
 
             options.Events = new JwtBearerEvents

@@ -1,4 +1,4 @@
-﻿namespace VertexERP.Application.Common.Abstractions.System;
+﻿namespace VertexERP.Application.Common.Abstractions.Http;
 
 public interface IClientInfoProvider
 {
