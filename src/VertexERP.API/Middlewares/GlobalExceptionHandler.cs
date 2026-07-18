@@ -7,50 +7,64 @@ using VertexERP.Shared.Results;
 
 namespace VertexERP.API.Middlewares;
 
-public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger)
+public sealed class GlobalExceptionHandler(
+    ILogger<GlobalExceptionHandler> logger)
     : IExceptionHandler
 {
-    public async ValueTask<bool> TryHandleAsync(HttpContext httpContext,
-        Exception exception, CancellationToken cancellationToken)
+    public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception,
+        CancellationToken cancellationToken)
     {
-        switch (exception)
+        var (statusCode, logLevel, errors) = MapException(exception);
+
+        switch (statusCode)
         {
-            case AppValidationException { Errors: var errors }:
+            case StatusCodes.Status400BadRequest:
+
+                logger.LogWarning("Validation failed for request {Path}. Errors: {@Errors}",
+                                  httpContext.Request.Path, errors);
+
+                var correlationId = httpContext.GetCorrelationId();
+                httpContext.Response.Headers["X-Correlation-Id"] = correlationId;
 
                 var validationResult = Result<object>.ValidationFailed(errors);
 
-                await httpContext.WriteResponseAsync(
-                    validationResult,
-                    StatusCodes.Status400BadRequest,
-                    cancellationToken);
+                await httpContext.WriteResponseAsync(validationResult, statusCode, cancellationToken);
 
                 break;
 
             default:
-
                 logger.LogError(exception, "Unhandled exception while processing {Method} {Path}",
                     httpContext.Request.Method, httpContext.Request.Path);
 
-                var problem = CreateInternalServerError(httpContext);
-
-                await httpContext.WriteProblemDetailsAsync(problem, cancellationToken);
+                await httpContext.WriteProblemDetailsAsync(CreateInternalServerProblem(httpContext), cancellationToken);
 
                 break;
         }
 
         return true;
     }
-    private static ProblemDetails CreateInternalServerError(HttpContext context)
+
+    private static (int StatusCode, LogLevel LogLevel, IReadOnlyList<string> Errors) MapException(Exception exception)
+    {
+        return exception switch
+        {
+            AppValidationException validationException => (StatusCodes.Status400BadRequest, LogLevel.Warning, validationException.Errors),
+
+            _ => (StatusCodes.Status500InternalServerError, LogLevel.Error, Array.Empty<string>())
+        };
+    }
+
+    private static ProblemDetails CreateInternalServerProblem(HttpContext httpContext)
     {
         var problem = new ProblemDetails
         {
             Title = "Internal Server Error",
             Status = StatusCodes.Status500InternalServerError,
             Detail = "An unexpected error occurred.",
-            Instance = context.Request.Path
+            Instance = httpContext.Request.Path
         };
 
-        problem.Extensions[HttpContextItemKeys.CorrelationId] = context.GetCorrelationId();
+        problem.Extensions[HttpContextItemKeys.CorrelationId] = httpContext.GetCorrelationId();
 
         return problem;
     }

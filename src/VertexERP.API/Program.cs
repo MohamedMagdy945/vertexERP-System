@@ -24,6 +24,7 @@ public class Program
             builder.AddSerilogLogging();
             builder.Services.AddSwaggerConfiguration();
             builder.Services.AddControllers();
+            builder.Services.AddApiVersioningConfiguration();
 
             builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
             builder.Services.AddProblemDetails();
