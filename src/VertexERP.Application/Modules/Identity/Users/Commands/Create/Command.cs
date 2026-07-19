@@ -4,5 +4,7 @@ using VertexERP.Shared.Results;
 namespace VertexERP.Application.Modules.Identity.Users.Commands.Create;
 
 public sealed record Command(
-    string Name,
-    string Email) : IRequest<Result<Guid>>;
+    string FirstName,
+    string LastName,
+    string Email,
+    string Password) : IRequest<Result<Response>>;

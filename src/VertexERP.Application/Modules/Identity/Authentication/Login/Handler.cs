@@ -1,4 +1,5 @@
-﻿using Mediator;
+﻿using Mapster;
+using Mediator;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using VertexERP.Application.Common.Abstractions.Identity;
@@ -9,7 +10,7 @@ using VertexERP.Application.Services;
 using VertexERP.Shared.Results;
 
 public sealed class Handler(
-    IApplicationDbContext context,
+    IApplicationDbContext dbContext,
     IPasswordHasher passwordHasher,
     ILogger<Handler> logger,
     AuthenticationService authenticationService)
@@ -18,7 +19,7 @@ public sealed class Handler(
     public async ValueTask<Result<Response>> Handle(Command request,
         CancellationToken cancellationToken)
     {
-        var loginData = await context.Users.Where(x => x.Email == request.Email)
+        var loginData = await dbContext.Users.Where(x => x.Email == request.Email)
             .ToLoginData().FirstOrDefaultAsync(cancellationToken);
 
         if (loginData is null || !loginData.IsActive || !passwordHasher.Verify(request.Password, loginData.PasswordHash))
@@ -33,6 +34,6 @@ public sealed class Handler(
 
         logger.LogInformation("User {UserId} logged in successfully.", loginData.Id);
 
-        return Result<Response>.Success(tokenPair.Adpat<Response>());
+        return Result<Response>.Success(tokenPair.Adapt<Response>());
     }
 }

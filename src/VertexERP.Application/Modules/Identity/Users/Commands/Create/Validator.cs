@@ -2,17 +2,25 @@
 
 namespace VertexERP.Application.Modules.Identity.Users.Commands.Create;
 
-public sealed class CreateUserCommandValidator
-    : AbstractValidator<Command>
+public sealed class Validator : AbstractValidator<Command>
 {
-    public CreateUserCommandValidator()
+    public Validator()
     {
-        RuleFor(x => x.Name)
+        RuleFor(x => x.FirstName)
             .NotEmpty()
-            .MinimumLength(3);
+            .MaximumLength(100);
+
+        RuleFor(x => x.LastName)
+            .NotEmpty()
+            .MaximumLength(100);
 
         RuleFor(x => x.Email)
             .NotEmpty()
             .EmailAddress();
+
+        RuleFor(x => x.Password)
+            .NotEmpty()
+            .MinimumLength(8);
     }
+}
 }
