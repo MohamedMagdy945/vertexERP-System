@@ -2,10 +2,10 @@
 
 namespace VertexERP.Application.Modules.Identity.Authentication.Login;
 
-public class LoginCommandValidator
+public class Validator
      : AbstractValidator<Command>
 {
-    public LoginCommandValidator()
+    public Validator()
     {
         RuleFor(x => x.Email)
             .NotEmpty().WithMessage("Email is required")

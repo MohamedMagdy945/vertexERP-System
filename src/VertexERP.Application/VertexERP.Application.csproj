@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="Common\Abstractions\Identity\IAccessTokenGenerator.cs" />
+    <None Include="Common\Abstractions\Identity\ITokenPairGenerator.cs" />
   </ItemGroup>
 
   <ItemGroup>

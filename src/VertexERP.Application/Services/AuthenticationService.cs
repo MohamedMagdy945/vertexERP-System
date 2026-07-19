@@ -26,7 +26,7 @@ public sealed class AuthenticationService(IApplicationDbContext context,
         await context.RefreshTokens.AddAsync(refreshToken, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
 
-        return tokenPair;
+        return tokenPair with { RefreshTokenHash = string.Empty };
     }
 
 }
