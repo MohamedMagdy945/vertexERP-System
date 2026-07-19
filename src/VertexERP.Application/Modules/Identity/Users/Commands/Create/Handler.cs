@@ -8,7 +8,6 @@ using VertexERP.Shared.Results;
 
 namespace VertexERP.Application.Modules.Identity.Users.Commands.Create;
 
-
 public sealed class Handler(
     IApplicationDbContext dbContext,
     IPasswordHasher passwordHasher)
@@ -28,6 +27,6 @@ public sealed class Handler(
         await dbContext.Users.AddAsync(user, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return Result<Response>.Success(user.Adapt<Response>());
+        return Result<Response>.Created(user.Adapt<Response>());
     }
 }

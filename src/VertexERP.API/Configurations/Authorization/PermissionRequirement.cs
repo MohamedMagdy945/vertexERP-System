@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace VertexERP.API.Authorization;
+namespace VertexERP.API.Configurations.Authorization;
 
 public class PermissionRequirement : IAuthorizationRequirement
 {

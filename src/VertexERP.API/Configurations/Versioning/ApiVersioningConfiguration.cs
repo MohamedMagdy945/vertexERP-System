@@ -1,6 +1,6 @@
 ﻿using Asp.Versioning;
 
-namespace VertexERP.API.Configurations;
+namespace VertexERP.API.Configurations.Versioning;
 
 public static class ApiVersioningConfiguration
 {

@@ -23,4 +23,3 @@ public sealed class Validator : AbstractValidator<Command>
             .MinimumLength(8);
     }
 }
-}

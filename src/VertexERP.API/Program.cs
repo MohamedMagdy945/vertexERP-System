@@ -1,7 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Serilog;
-using VertexERP.API.Authorization;
-using VertexERP.API.Configurations;
+using VertexERP.API.Configurations.Authorization;
+using VertexERP.API.Configurations.Logging;
+using VertexERP.API.Configurations.Swagger;
+using VertexERP.API.Configurations.Versioning;
+using VertexERP.API.Extensions;
 using VertexERP.API.Middlewares;
 using VertexERP.Application;
 using VertexERP.Infrastructure;
@@ -52,8 +55,7 @@ public class Program
 
             app.UseAuthorization();
 
-
-            app.MapControllers();
+            app.MapEndpoints();
 
             app.Run();
         }

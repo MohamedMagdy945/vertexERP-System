@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 
-namespace VertexERP.API.Authorization;
+namespace VertexERP.API.Configurations.Authorization;
 
 public class PermissionPolicyProvider
 : DefaultAuthorizationPolicyProvider

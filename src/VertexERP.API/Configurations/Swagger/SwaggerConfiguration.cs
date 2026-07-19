@@ -1,7 +1,7 @@
 ﻿using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
-namespace VertexERP.API.Configurations;
+namespace VertexERP.API.Configurations.Swagger;
 
 public static class SwaggerConfiguration
 {
@@ -55,6 +55,7 @@ public static class SwaggerConfiguration
         app.UseSwaggerUI(options =>
         {
             options.SwaggerEndpoint("/swagger/v1/swagger.json", "Vertex ERP API v1");
+            options.SwaggerEndpoint("/swagger/v2/swagger.json", "Vertex ERP API v2");
             options.RoutePrefix = string.Empty;
             options.DisplayRequestDuration();
             options.EnablePersistAuthorization();

@@ -1,6 +1,6 @@
 ﻿using Serilog;
 
-namespace VertexERP.API.Configurations;
+namespace VertexERP.API.Configurations.Logging;
 
 public static class LoggingConfiguration
 {

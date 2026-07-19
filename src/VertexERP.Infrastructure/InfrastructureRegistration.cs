@@ -29,6 +29,7 @@ public static class InfrastructureRegistration
 
         services.AddSingleton<IClientInfoProvider, ClientInfoProvider>();
 
+
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
 
 
