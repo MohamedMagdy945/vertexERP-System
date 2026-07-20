@@ -8,6 +8,7 @@ namespace VertexERP.Application.Services;
 
 public sealed class AuthenticationService(IApplicationDbContext context,
     ITokenPairGenerator tokenPairGenerator,
+    IRefreshTokenHasher refreshTokenHasher,
     IClientInfoProvider clientInfoProvider)
 {
     public async Task<TokenPair> CreateSessionAsync(UserTokenClaims claims, CancellationToken cancellationToken)
@@ -16,7 +17,7 @@ public sealed class AuthenticationService(IApplicationDbContext context,
 
         var refreshToken = new RefreshToken
         (
-            tokenHash: tokenPair.RefreshTokenHash,
+            tokenHash: refreshTokenHasher.Hash(tokenPair.RefreshToken),
             userId: claims.UserId,
             expiresAt: tokenPair.RefreshTokenExpiresAt,
             createdByIp: clientInfoProvider.GetIpAddress(),
@@ -24,9 +25,8 @@ public sealed class AuthenticationService(IApplicationDbContext context,
         );
 
         await context.RefreshTokens.AddAsync(refreshToken, cancellationToken);
-        await context.SaveChangesAsync(cancellationToken);
 
-        return tokenPair with { RefreshTokenHash = string.Empty };
+        return tokenPair;
     }
 
 }

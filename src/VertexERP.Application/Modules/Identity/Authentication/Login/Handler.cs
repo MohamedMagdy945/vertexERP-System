@@ -5,9 +5,10 @@ using Microsoft.Extensions.Logging;
 using VertexERP.Application.Common.Abstractions.Identity;
 using VertexERP.Application.Common.Abstractions.Persistence;
 using VertexERP.Application.Common.Models.Identity;
-using VertexERP.Application.Modules.Identity.Authentication.Login;
 using VertexERP.Application.Services;
 using VertexERP.Shared.Results;
+
+namespace VertexERP.Application.Modules.Identity.Authentication.Login;
 
 public sealed class Handler(
     IApplicationDbContext dbContext,
@@ -30,6 +31,7 @@ public sealed class Handler(
         var claims = new UserTokenClaims(loginData.Id, loginData.Email, loginData.Permissions);
 
         var tokenPair = await authenticationService.CreateSessionAsync(claims, cancellationToken);
+        await dbContext.SaveChangesAsync();
 
         logger.LogInformation("User {UserId} logged in successfully.", loginData.Id);
 

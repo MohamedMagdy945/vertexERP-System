@@ -29,7 +29,6 @@ public sealed class TokenPairGenerator(IOptions<TokenPairSettings> options) : IT
             AccessToken: GenerateAccessToken(claims, accessTokenExpiresAt),
             AccessTokenExpiresAt: accessTokenExpiresAt,
             RefreshToken: refreshToken,
-            RefreshTokenHash: HashRefreshToken(refreshToken),
             RefreshTokenExpiresAt: refreshTokenExpiresAt);
     }
 
@@ -67,12 +66,4 @@ public sealed class TokenPairGenerator(IOptions<TokenPairSettings> options) : IT
         return Convert.ToBase64String(bytes);
     }
 
-    private string HashRefreshToken(string refreshToken)
-    {
-        int byteCount = Encoding.UTF8.GetByteCount(refreshToken);
-        Span<byte> buffer = stackalloc byte[byteCount];
-        Encoding.UTF8.GetBytes(refreshToken, buffer);
-
-        return Convert.ToHexString(SHA256.HashData(buffer));
-    }
 }

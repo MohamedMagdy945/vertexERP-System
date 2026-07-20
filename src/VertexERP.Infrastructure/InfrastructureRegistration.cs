@@ -26,6 +26,7 @@ public static class InfrastructureRegistration
         services.AddSingleton<ITokenPairGenerator, TokenPairGenerator>();
 
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
+        services.AddSingleton<IRefreshTokenHasher, RefreshTokenHasher>();
 
         services.AddSingleton<IClientInfoProvider, ClientInfoProvider>();
 

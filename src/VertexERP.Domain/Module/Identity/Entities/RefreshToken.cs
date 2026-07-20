@@ -11,8 +11,6 @@ public sealed class RefreshToken : BaseEntity
     public DateTime? RevokedAt { get; private set; }
     public string? RevokedReason { get; private set; }
 
-    public bool IsUsed { get; private set; }
-
     public string? CreatedByIp { get; private set; }
     public string? RevokedByIp { get; private set; }
     public string? DeviceInfo { get; private set; }
@@ -28,7 +26,7 @@ public sealed class RefreshToken : BaseEntity
 
     public bool IsExpired => DateTime.UtcNow >= ExpiresAt;
     public bool IsRevoked => RevokedAt.HasValue;
-    public bool IsActive => !IsExpired && !IsRevoked && !IsUsed;
+    public bool IsActive => !IsExpired && !IsRevoked;
 
     private RefreshToken() { }
 
@@ -42,10 +40,7 @@ public sealed class RefreshToken : BaseEntity
         DeviceInfo = deviceInfo;
     }
 
-    public void MarkAsUsed()
-    {
-        IsUsed = true;
-    }
+
 
     public void Revoke(string? reason = null, string? revokedByIp = null, string? replacedByTokenHash = null)
     {

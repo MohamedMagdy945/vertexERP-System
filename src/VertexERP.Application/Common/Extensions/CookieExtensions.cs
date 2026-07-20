@@ -5,13 +5,16 @@ namespace VertexERP.Application.Common.Extensions;
 public static class CookieExtensions
 {
     public const string RefreshTokenCookieName = "refreshToken";
-    private const string CookiePath = "/api/authentication";
+    private const string CookiePath = "/api/v1/authentication";
 
-    public static void SetRefreshTokenCookie(
-        this HttpResponse response,
-        string refreshToken,
-        DateTime expires,
-        bool isSecure = true)
+    public static string? GetRefreshToken(this HttpRequest request)
+    {
+        request.Cookies.TryGetValue(RefreshTokenCookieName, out var token);
+        return token;
+    }
+
+    public static void SetRefreshTokenCookie(this HttpResponse response, string refreshToken
+        , DateTime expires, bool isSecure = true)
     {
         response.Cookies.Append(RefreshTokenCookieName, refreshToken, new CookieOptions
         {
@@ -23,9 +26,7 @@ public static class CookieExtensions
         });
     }
 
-    public static void DeleteRefreshTokenCookie(
-        this HttpResponse response,
-        bool isSecure = true)
+    public static void DeleteRefreshTokenCookie(this HttpResponse response, bool isSecure = true)
     {
         response.Cookies.Delete(RefreshTokenCookieName, new CookieOptions
         {
