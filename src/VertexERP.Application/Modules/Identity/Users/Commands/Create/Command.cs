@@ -6,5 +6,4 @@ namespace VertexERP.Application.Modules.Identity.Users.Commands.Create;
 public sealed record Command(
     string FirstName,
     string LastName,
-    string Email,
-    string Password) : IRequest<Result<Response>>;
+    string Email) : IRequest<Result<Response>>;

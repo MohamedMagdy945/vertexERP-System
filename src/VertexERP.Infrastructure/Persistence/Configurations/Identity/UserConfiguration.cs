@@ -13,15 +13,15 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.FirstName)
-            .HasMaxLength(20)
+            .HasMaxLength(25)
             .IsRequired();
 
         builder.Property(x => x.LastName)
-            .HasMaxLength(20)
+            .HasMaxLength(25)
             .IsRequired();
 
         builder.Property(x => x.Email)
-            .HasMaxLength(25)
+            .HasMaxLength(50)
             .IsRequired();
 
         builder.Property(x => x.PasswordHash)

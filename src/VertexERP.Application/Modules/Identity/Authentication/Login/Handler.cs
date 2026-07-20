@@ -16,8 +16,7 @@ public sealed class Handler(
     AuthenticationService authenticationService)
     : IRequestHandler<Command, Result<Response>>
 {
-    public async ValueTask<Result<Response>> Handle(Command request,
-        CancellationToken cancellationToken)
+    public async ValueTask<Result<Response>> Handle(Command request, CancellationToken cancellationToken)
     {
         var loginData = await dbContext.Users.Where(x => x.Email == request.Email)
             .ToLoginData().FirstOrDefaultAsync(cancellationToken);

@@ -9,8 +9,6 @@ public class User : BaseEntity
     public string Email { get; private set; } = default!;
     public string PasswordHash { get; private set; } = default!;
     public bool IsActive { get; private set; }
-
-    public string PhoneNumber { get; private set; } = default!;
     public ICollection<UserRole> UserRoles { get; } = [];
     public ICollection<RefreshToken> RefreshTokens { get; } = [];
 
@@ -26,7 +24,6 @@ public class User : BaseEntity
     {
         FirstName = firstName;
         LastName = lastName;
-        PhoneNumber = phoneNumber;
     }
 
     public void Activate()

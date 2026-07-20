@@ -6,4 +6,4 @@ public record TokenPair(
     string RefreshToken,
     DateTime RefreshTokenExpiresAt,
     string RefreshTokenHash
-    );
+);

@@ -9,14 +9,28 @@ public static class MinimalResultExtensions
     {
         return result.Status switch
         {
-            ResultStatus.Success => Results.Ok(result.Data),
-            ResultStatus.Created => Results.StatusCode(StatusCodes.Status201Created),
+            ResultStatus.Success => Results.Ok(result),
+
+            ResultStatus.Created => Results.Created(string.Empty, result),
+
             ResultStatus.NoContent => Results.NoContent(),
-            ResultStatus.ValidationFailed => Results.BadRequest(result.Errors),
-            ResultStatus.NotFound => Results.NotFound(result.Errors),
-            ResultStatus.Unauthorized => Results.Unauthorized(),
-            ResultStatus.Forbidden => Results.Forbid(),
-            ResultStatus.Conflict => Results.Conflict(result.Errors),
+
+            ResultStatus.ValidationFailed => Results.BadRequest(result),
+
+            ResultStatus.Unauthorized => Results.Json(result, statusCode: StatusCodes.Status401Unauthorized),
+
+            ResultStatus.Forbidden => Results.Json(result, statusCode: StatusCodes.Status403Forbidden),
+
+            ResultStatus.NotFound => Results.NotFound(result),
+
+            ResultStatus.Conflict => Results.Conflict(result),
+
+            ResultStatus.Unprocessable => Results.UnprocessableEntity(result),
+
+            ResultStatus.TooManyRequests => Results.Json(result, statusCode: StatusCodes.Status429TooManyRequests),
+
+            ResultStatus.Failure => Results.Json(result, statusCode: StatusCodes.Status500InternalServerError),
+
             _ => Results.Problem()
         };
     }

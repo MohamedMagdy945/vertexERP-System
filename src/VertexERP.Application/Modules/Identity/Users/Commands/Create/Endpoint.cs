@@ -18,7 +18,6 @@ public sealed class Endpoint : IEndpoint
             return result.ToMinimalResult();
         })
         .MapToApiVersion(2, 0)
-        .RequireAuthorization()
         .WithTags("Users");
     }
 }

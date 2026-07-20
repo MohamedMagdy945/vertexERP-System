@@ -3,6 +3,6 @@
 public sealed record Response(
     string AccessToken,
     string RefreshToken,
-    DateTime AccessTokenExpiration,
-    DateTime RefreshTokenExpiration
+    DateTime AccessTokenExpiresAt,
+    DateTime RefreshTokenExpiresAt
 );
