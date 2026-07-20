@@ -9,7 +9,7 @@ public class Result<T>
                                 or ResultStatus.NoContent;
 
     public string Message { get; protected init; } = string.Empty;
-
+    public string StatusName => Status.ToString();
     public IReadOnlyList<string> Errors { get; protected init; } = [];
 
     public T? Data { get; protected init; }

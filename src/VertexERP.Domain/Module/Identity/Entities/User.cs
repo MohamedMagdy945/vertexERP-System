@@ -4,26 +4,19 @@ namespace VertexERP.Domain.Module.Identity.Entities;
 
 public class User : BaseEntity
 {
-    public string FirstName { get; private set; } = default!;
-    public string LastName { get; private set; } = default!;
+    public string FullName { get; private set; } = default!;
     public string Email { get; private set; } = default!;
     public string PasswordHash { get; private set; } = default!;
     public bool IsActive { get; private set; }
     public ICollection<UserRole> UserRoles { get; } = [];
     public ICollection<RefreshToken> RefreshTokens { get; } = [];
 
-    public User(string firstName, string lastName, string email, string passwordHash)
+    public User(string fullName, string email, string passwordHash)
     {
-        FirstName = firstName;
-        LastName = lastName;
+        FullName = fullName;
         Email = email.ToLowerInvariant();
         PasswordHash = passwordHash;
         IsActive = true;
-    }
-    public void UpdateProfile(string firstName, string lastName, string phoneNumber)
-    {
-        FirstName = firstName;
-        LastName = lastName;
     }
 
     public void Activate()

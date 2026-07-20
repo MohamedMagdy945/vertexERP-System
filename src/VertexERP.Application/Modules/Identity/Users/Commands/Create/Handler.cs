@@ -25,7 +25,7 @@ public sealed class Handler(
 
         var hash = passwordHasher.Hash(DefaultPassword);
 
-        var user = new User(request.FirstName, request.LastName, request.Email, hash);
+        var user = new User(request.FullName, request.Email, hash);
 
         await dbContext.Users.AddAsync(user, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);

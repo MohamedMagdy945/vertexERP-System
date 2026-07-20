@@ -6,13 +6,9 @@ public sealed class Validator : AbstractValidator<Command>
 {
     public Validator()
     {
-        RuleFor(x => x.FirstName)
+        RuleFor(x => x.FullName)
             .NotEmpty().WithMessage("First name is required.")
-            .MaximumLength(25).WithMessage("First name must not exceed 25 characters.");
-
-        RuleFor(x => x.LastName)
-            .NotEmpty().WithMessage("Last name is required.")
-            .MaximumLength(25).WithMessage("Last name must not exceed 25 characters.");
+            .MaximumLength(50).WithMessage("First name must not exceed 50 characters.");
 
         RuleFor(x => x.Email)
             .NotEmpty().WithMessage("Email is required.")
