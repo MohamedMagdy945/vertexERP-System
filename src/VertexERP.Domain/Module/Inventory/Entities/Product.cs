@@ -5,10 +5,10 @@ namespace VertexERP.Domain.Module.Inventory.Entities;
 public sealed class Product : Entity
 {
     // Basic Information
-    public string Name { get; private set; }
-    public string Code { get; private set; }
-    public string? Barcode { get; private set; }
-    public string? Description { get; private set; }
+    public string Name { get; private set; } = default!;
+    public string Code { get; private set; } = default!;
+    public string? Barcode { get; private set; } = default!;
+    public string? Description { get; private set; } = default!;
 
     // Pricing
     public decimal CostPrice { get; private set; }

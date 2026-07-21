@@ -3,7 +3,7 @@ using VertexERP.Domain.Common;
 
 namespace VertexERP.Domain.Module.Identity.Entities;
 
-public sealed class RefreshToken : BaseEntity
+public sealed class RefreshToken : Entity
 {
     public string TokenHash { get; private set; } = default!;
 

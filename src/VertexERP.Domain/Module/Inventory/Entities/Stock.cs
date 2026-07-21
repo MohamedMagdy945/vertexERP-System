@@ -1,6 +1,6 @@
 ﻿using VertexERP.Domain.Common;
 
-namespace VertexERP.Domain.Module.Identity.Inventory.Entities;
+namespace VertexERP.Domain.Module.Inventory.Entities;
 
 public sealed class Stock : AuditableEntity
 {

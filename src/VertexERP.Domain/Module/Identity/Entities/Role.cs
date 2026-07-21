@@ -2,7 +2,7 @@
 
 namespace VertexERP.Domain.Module.Identity.Entities;
 
-public class Role : BaseEntity
+public class Role : Entity
 {
     public string Name { get; private set; } = default!;
     public string? Description { get; private set; }

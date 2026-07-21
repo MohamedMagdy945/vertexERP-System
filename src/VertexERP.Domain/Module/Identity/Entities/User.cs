@@ -2,7 +2,7 @@
 
 namespace VertexERP.Domain.Module.Identity.Entities;
 
-public class User : BaseEntity
+public class User : Entity
 {
     public string FullName { get; private set; } = default!;
     public string Email { get; private set; } = default!;

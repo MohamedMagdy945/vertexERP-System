@@ -19,21 +19,23 @@ public sealed class Handler(
 {
     public async ValueTask<Result<Response>> Handle(Command request, CancellationToken cancellationToken)
     {
-        var loginData = await dbContext.Users.Where(x => x.Email == request.Email)
-            .ToLoginData().FirstOrDefaultAsync(cancellationToken);
+        var loginContext = await dbContext.Users.Where(x => x.Email == request.Email)
+            .ToLoginContext().SingleOrDefaultAsync(cancellationToken);
 
-        if (loginData is null || !loginData.IsActive || !passwordHasher.Verify(request.Password, loginData.PasswordHash))
+        if (loginContext is null || !loginContext.IsActive || !passwordHasher.Verify(request.Password, loginContext.PasswordHash))
         {
             logger.LogWarning("Failed login attempt for email: {Email}", request.Email);
 
             return Result<Response>.Unauthorized("Invalid email or password.");
         }
-        var claims = new UserTokenClaims(loginData.Id, loginData.Email, loginData.Permissions);
 
-        var tokenPair = await authenticationService.CreateSessionAsync(claims, cancellationToken);
+        var tokenPair = await authenticationService.CreateSessionAsync(
+            new UserTokenClaims(loginContext.UserId, loginContext.Email, loginContext.Permissions),
+            cancellationToken);
+
         await dbContext.SaveChangesAsync();
 
-        logger.LogInformation("User {UserId} logged in successfully.", loginData.Id);
+        logger.LogInformation("User {UserId} logged in successfully.", loginContext.UserId);
 
         return Result<Response>.Success(tokenPair.Adapt<Response>());
     }

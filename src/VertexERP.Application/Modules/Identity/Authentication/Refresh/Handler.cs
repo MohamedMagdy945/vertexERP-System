@@ -21,25 +21,24 @@ public sealed class Handler(
     {
         var refreshTokenHash = refreshTokenHasher.Hash(request.RefreshToken);
 
-        var tokenContext = await dbContext.RefreshTokens.Where(x => x.TokenHash == refreshTokenHash)
-            .ToRefreshTokenContext().FirstOrDefaultAsync(cancellationToken);
+        var refreshTokenContext = await dbContext.RefreshTokens.Where(x => x.TokenHash == refreshTokenHash)
+            .ToRefreshTokenContext().SingleOrDefaultAsync(cancellationToken);
 
-        if (tokenContext is null || !tokenContext.RefreshToken.IsActive)
+        if (refreshTokenContext is null || !refreshTokenContext.RefreshToken.IsActive)
         {
             return Result<Response>.Unauthorized();
         }
 
-        var currentToken = tokenContext.RefreshToken;
 
-        var claims = new UserTokenClaims(tokenContext.UserId, tokenContext.UserEmail, tokenContext.Permissions);
+        var tokenPair = await authenticationService.CreateSessionAsync(
+            new UserTokenClaims(refreshTokenContext.UserId, refreshTokenContext.UserEmail, refreshTokenContext.Permissions),
+            cancellationToken);
 
-        var tokenPair = await authenticationService.CreateSessionAsync(claims, cancellationToken);
-
-        currentToken.Revoke(reason: "Token rotated automatically", replacedByTokenHash: tokenPair.RefreshToken);
+        refreshTokenContext.RefreshToken.Revoke(reason: "Token rotated automatically", replacedByTokenHash: tokenPair.RefreshToken);
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        logger.LogInformation("User {UserId} refreshed authentication tokens successfully.", tokenContext.UserId);
+        logger.LogInformation("User {UserId} refreshed authentication tokens successfully.", refreshTokenContext.UserId);
 
         return Result<Response>.Success(tokenPair.Adapt<Response>());
     }
