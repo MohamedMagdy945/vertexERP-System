@@ -1,4 +1,5 @@
 ﻿using VertexERP.Domain.Common;
+using VertexERP.Domain.Module.Catalog.Entities;
 using VertexERP.Domain.Module.Identity.Entities;
 using VertexERP.Domain.Module.Inventory.Enums;
 

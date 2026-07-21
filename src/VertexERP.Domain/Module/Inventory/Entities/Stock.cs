@@ -1,4 +1,5 @@
 ﻿using VertexERP.Domain.Common;
+using VertexERP.Domain.Module.Catalog.Entities;
 
 namespace VertexERP.Domain.Module.Inventory.Entities;
 

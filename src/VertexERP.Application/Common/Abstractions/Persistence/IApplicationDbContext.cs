@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using VertexERP.Domain.Module.Catalog.Entities;
 using VertexERP.Domain.Module.Identity.Entities;
 using VertexERP.Domain.Module.Inventory.Entities;
 
@@ -14,11 +15,14 @@ public interface IApplicationDbContext
     DbSet<UserRole> UserRoles { get; }
     DbSet<RolePermission> RolePermissions { get; }
 
-    // Inventory
+
+    // Catalog
     public DbSet<Product> Products { get; }
     public DbSet<ProductImage> ProductImages { get; }
     public DbSet<Category> Categories { get; }
-    public DbSet<Unit> Units { get; }
+    public DbSet<MeasurementUnit> MeasurementUnits { get; }
+
+    // Inventory
     public DbSet<Warehouse> Warehouses { get; }
     public DbSet<Stock> Stocks { get; }
     public DbSet<WarehouseTransaction> WarehouseTransactions { get; }

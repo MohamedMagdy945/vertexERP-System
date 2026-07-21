@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using VertexERP.Application.Common.Abstractions.Persistence;
+using VertexERP.Domain.Module.Catalog.Entities;
 using VertexERP.Domain.Module.Identity.Entities;
 using VertexERP.Domain.Module.Inventory.Entities;
 
@@ -16,11 +17,13 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<UserRole> UserRoles { get; set; }
     public DbSet<RolePermission> RolePermissions { get; set; }
 
-    // Inventory
+    // Catalog
     public DbSet<Product> Products { get; set; }
     public DbSet<ProductImage> ProductImages { get; set; }
     public DbSet<Category> Categories { get; set; }
-    public DbSet<Unit> Units { get; set; }
+    public DbSet<MeasurementUnit> MeasurementUnits { get; set; }
+
+    // Inventory
     public DbSet<Warehouse> Warehouses { get; set; }
     public DbSet<Stock> Stocks { get; set; }
     public DbSet<WarehouseTransaction> WarehouseTransactions { get; set; }
