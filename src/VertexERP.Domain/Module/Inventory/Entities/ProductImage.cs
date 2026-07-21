@@ -7,11 +7,11 @@ public sealed class ProductImage : Entity
     public string Url { get; private set; } = default!;
     public string? AltText { get; private set; }
     public bool IsPrimary { get; private set; }
-    public int ProductId { get; private set; }
+    public Guid ProductId { get; private set; }
     public Product Product { get; private set; } = default!;
     private ProductImage() { }
 
-    public ProductImage(string url, int productId, bool isPrimary = false, string? altText = null)
+    public ProductImage(string url, Guid productId, bool isPrimary = false, string? altText = null)
     {
         Url = url;
         ProductId = productId;

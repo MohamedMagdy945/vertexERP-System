@@ -15,10 +15,10 @@ public sealed class Product : Entity
     public decimal SellingPrice { get; private set; }
 
     // Relationships
-    public int CategoryId { get; private set; }
+    public Guid CategoryId { get; private set; }
     public Category Category { get; private set; } = default!;
 
-    public int UnitId { get; private set; }
+    public Guid UnitId { get; private set; }
     public Unit Unit { get; private set; } = default!;
 
     // Status
@@ -35,8 +35,8 @@ public sealed class Product : Entity
         string code,
         decimal costPrice,
         decimal sellingPrice,
-        int categoryId,
-        int unitId,
+        Guid categoryId,
+        Guid unitId,
         string? barcode = null,
         string? description = null)
     {
@@ -59,8 +59,8 @@ public sealed class Product : Entity
         string code,
         decimal costPrice,
         decimal sellingPrice,
-        int categoryId,
-        int unitId,
+        Guid categoryId,
+        Guid unitId,
         string? barcode,
         string? description)
     {

@@ -6,15 +6,15 @@ namespace VertexERP.Domain.Module.Inventory.Entities;
 
 public sealed class WarehouseTransaction : Entity
 {
-    public int WarehouseId { get; private set; }
+    public Guid WarehouseId { get; private set; }
     public Warehouse Warehouse { get; private set; } = default!;
 
-    public int ProductId { get; private set; }
+    public Guid ProductId { get; private set; }
     public Product Product { get; private set; } = default!;
 
     public int Quantity { get; private set; }
 
-    public int PerformedByUserId { get; private set; }
+    public Guid PerformedByUserId { get; private set; }
     public User PerformedByUser { get; private set; } = default!;
 
     public WarehouseTransactionType Type { get; private set; }
@@ -30,10 +30,10 @@ public sealed class WarehouseTransaction : Entity
     private WarehouseTransaction() { }
 
     public WarehouseTransaction(
-        int warehouseId,
-        int productId,
+        Guid warehouseId,
+        Guid productId,
         int quantity,
-        int performedByUserId,
+        Guid performedByUserId,
         WarehouseTransactionType type,
         TransactionReferenceType referenceType,
         DateTime transactionDate,
