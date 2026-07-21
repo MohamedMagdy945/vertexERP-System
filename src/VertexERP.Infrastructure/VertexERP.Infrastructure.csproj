@@ -23,4 +23,8 @@
     <ProjectReference Include="..\VertexERP.Application\VertexERP.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Configuration\" />
+  </ItemGroup>
+
 </Project>

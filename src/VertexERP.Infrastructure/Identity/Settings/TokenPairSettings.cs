@@ -1,4 +1,4 @@
-﻿namespace VertexERP.Infrastructure.Identity.Configuration;
+﻿namespace VertexERP.Infrastructure.Identity.Settings;
 
 public class TokenPairSettings
 {

@@ -7,7 +7,7 @@ using VertexERP.Application.Common.Abstractions.Identity;
 using VertexERP.Application.Common.Abstractions.Persistence;
 using VertexERP.Infrastructure.Http.Services;
 using VertexERP.Infrastructure.Identity.Authentication;
-using VertexERP.Infrastructure.Identity.Configuration;
+using VertexERP.Infrastructure.Identity.Settings;
 using VertexERP.Infrastructure.Persistence;
 
 namespace VertexERP.Infrastructure;

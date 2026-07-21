@@ -5,9 +5,9 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using VertexERP.Infrastructure.Http.Extensions;
-using VertexERP.Infrastructure.Identity.Configuration;
+using VertexERP.Infrastructure.Identity.Settings;
 
-namespace VertexERP.Infrastructure.Configuration;
+namespace VertexERP.Infrastructure.Identity.Configuration;
 
 internal sealed class JwtBearerConfiguration(IOptions<TokenPairSettings> tokenOptions) : IConfigureNamedOptions<JwtBearerOptions>
 {
