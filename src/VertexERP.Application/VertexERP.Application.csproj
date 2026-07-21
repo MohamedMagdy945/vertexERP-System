@@ -31,8 +31,4 @@
     <ProjectReference Include="..\VertexERP.Shared\VertexERP.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Modules\Identity\Inventory\" />
-  </ItemGroup>
-
 </Project>

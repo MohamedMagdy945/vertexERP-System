@@ -6,12 +6,12 @@ using VertexERP.Domain.Module.Identity.Entities;
 
 namespace VertexERP.Application.Services;
 
-public sealed class AuthenticationService(IApplicationDbContext context,
+public sealed class AuthenticationService(IApplicationDbContext dbContext,
     ITokenPairGenerator tokenPairGenerator,
     IRefreshTokenHasher refreshTokenHasher,
     IClientInfoProvider clientInfoProvider)
 {
-    public async Task<TokenPair> CreateSessionAsync(UserTokenClaims claims, CancellationToken cancellationToken)
+    public TokenPair CreateSession(UserTokenClaims claims)
     {
         var tokenPair = tokenPairGenerator.Generate(claims);
 
@@ -24,8 +24,7 @@ public sealed class AuthenticationService(IApplicationDbContext context,
             deviceInfo: clientInfoProvider.GetUserAgent()
         );
 
-        await context.RefreshTokens.AddAsync(refreshToken, cancellationToken);
-
+        dbContext.RefreshTokens.Add(refreshToken);
         return tokenPair;
     }
 

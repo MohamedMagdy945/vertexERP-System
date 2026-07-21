@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Routing;
 using VertexERP.Application.Common.Abstractions.Endpoint;
 using VertexERP.Application.Common.Extensions;
 using VertexERP.Application.Common.Models.Identity;
+using VertexERP.Shared.Results;
 
 namespace VertexERP.Application.Modules.Identity.Authentication.Login;
 
@@ -30,7 +31,7 @@ public sealed class Endpoint : IEndpoint
         .WithName("Login")
         .MapToApiVersion(1, 0)
         .WithTags("Authentication")
-        .Produces<AccessTokenResponse>(StatusCodes.Status200OK)
+        .Produces<Result<AccessTokenResponse>>(StatusCodes.Status200OK)
         .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized);
     }
 }

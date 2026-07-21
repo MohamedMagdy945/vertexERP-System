@@ -11,6 +11,8 @@ public static class SwaggerConfiguration
 
         services.AddSwaggerGen(options =>
         {
+            options.CustomSchemaIds(type => type.FullName!.Replace("+", "."));
+
             options.SwaggerDoc("v1", new OpenApiInfo
             {
                 Title = "Vertex ERP API",
@@ -22,6 +24,7 @@ public static class SwaggerConfiguration
                     Email = "mohamedmagdy000022@gmail.com"
                 }
             });
+
             options.SwaggerDoc("v2", new OpenApiInfo
             {
                 Title = "Vertex ERP API",

@@ -36,6 +36,6 @@ public sealed class Endpoint : IEndpoint
         .WithName("Refresh")
         .MapToApiVersion(1, 0)
         .WithTags("Authentication")
-        .Produces<AccessTokenResponse>(StatusCodes.Status200OK);
+        .Produces<Result<AccessTokenResponse>>(StatusCodes.Status200OK);
     }
 }

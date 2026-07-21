@@ -10,11 +10,8 @@ using VertexERP.Shared.Results;
 
 namespace VertexERP.Application.Modules.Identity.Authentication.Login;
 
-public sealed class Handler(
-    IApplicationDbContext dbContext,
-    IPasswordHasher passwordHasher,
-    ILogger<Handler> logger,
-    AuthenticationService authenticationService)
+public sealed class Handler(IApplicationDbContext dbContext, IPasswordHasher passwordHasher,
+    ILogger<Handler> logger, AuthenticationService authenticationService)
     : IRequestHandler<Command, Result<Response>>
 {
     public async ValueTask<Result<Response>> Handle(Command request, CancellationToken cancellationToken)
@@ -29,11 +26,10 @@ public sealed class Handler(
             return Result<Response>.Unauthorized("Invalid email or password.");
         }
 
-        var tokenPair = await authenticationService.CreateSessionAsync(
-            new UserTokenClaims(loginContext.UserId, loginContext.Email, loginContext.Permissions),
-            cancellationToken);
+        var userClaims = new UserTokenClaims(loginContext.UserId, loginContext.Email, loginContext.Permissions);
+        var tokenPair = authenticationService.CreateSession(userClaims);
 
-        await dbContext.SaveChangesAsync();
+        await dbContext.SaveChangesAsync(cancellationToken);
 
         logger.LogInformation("User {UserId} logged in successfully.", loginContext.UserId);
 
