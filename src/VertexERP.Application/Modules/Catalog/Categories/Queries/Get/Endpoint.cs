@@ -4,16 +4,15 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using VertexERP.Application.Common.Abstractions.Endpoint;
 using VertexERP.Application.Common.Extensions;
-using VertexERP.Shared.Pagination;
 using VertexERP.Shared.Results;
 
-namespace VertexERP.Application.Modules.Catalog.MeasurementUnits.Queries.Get;
+namespace VertexERP.Application.Modules.Catalog.Categories.Queries.Get;
 
 public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("/measurement-units", async ([AsParameters] Query query, ISender sender, CancellationToken cancellationToken) =>
+        app.MapGet("/categories", async ([AsParameters] Query query, ISender sender, CancellationToken cancellationToken) =>
         {
             var result = await sender.Send(query, cancellationToken);
 
@@ -21,6 +20,6 @@ public sealed class Endpoint : IEndpoint
         })
         .MapToApiVersion(1, 0)
         .WithTags("Catalog")
-        .Produces<Result<Page<Response>>>(StatusCodes.Status200OK);
+        .Produces<Result<Response>>(StatusCodes.Status201Created);
     }
 }

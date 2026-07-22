@@ -1,14 +1,13 @@
 ﻿using Mapster;
 using Mediator;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using VertexERP.Application.Common.Abstractions.Persistence;
 using VertexERP.Domain.Module.Catalog.Entities;
 using VertexERP.Shared.Results;
 
 namespace VertexERP.Application.Modules.Catalog.MeasurementUnits.Commands.Create;
 
-public sealed class Handler(IApplicationDbContext dbContext, ILogger<Handler> logger)
+public sealed class Handler(IApplicationDbContext dbContext)
     : IRequestHandler<Command, Result<Response>>
 {
     public async ValueTask<Result<Response>> Handle(Command request, CancellationToken cancellationToken)

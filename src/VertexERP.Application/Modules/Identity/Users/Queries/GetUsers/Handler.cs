@@ -1,7 +1,6 @@
 ﻿using Mapster;
 using Mediator;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using VertexERP.Application.Common.Abstractions.Persistence;
 using VertexERP.Application.Common.Extensions;
 using VertexERP.Shared.Pagination;
@@ -10,7 +9,7 @@ using VertexERP.Shared.Results;
 namespace VertexERP.Application.Modules.Identity.Users.Queries.GetUsers;
 
 public sealed class Handler(
-    IApplicationDbContext dbContext, ILogger<Handler> logger)
+    IApplicationDbContext dbContext)
     : IRequestHandler<Query, Result<Page<Response>>>
 {
     public async ValueTask<Result<Page<Response>>> Handle(Query request, CancellationToken cancellationToken)

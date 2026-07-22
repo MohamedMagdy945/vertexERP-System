@@ -1,11 +1,10 @@
 ﻿using Mediator;
-using Microsoft.Extensions.Logging;
 using VertexERP.Application.Common.Abstractions.Persistence;
 using VertexERP.Shared.Results;
 
 namespace VertexERP.Application.Modules.Catalog.MeasurementUnits.Commands.Delete;
 
-public sealed class Handler(IApplicationDbContext dbContext, ILogger<Handler> logger)
+public sealed class Handler(IApplicationDbContext dbContext)
     : IRequestHandler<Command, Result<Response>>
 {
     public async ValueTask<Result<Response>> Handle(Command request, CancellationToken cancellationToken)

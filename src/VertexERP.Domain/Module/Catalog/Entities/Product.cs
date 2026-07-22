@@ -46,11 +46,10 @@ public sealed class Product : Entity
     }
 
     public void Update(string name, string code, decimal costPrice, decimal sellingPrice,
-            Guid categoryId, Guid unitId, string? barcode, string? description)
+            Guid categoryId, Guid unitId, string? description)
     {
         Name = name;
         Code = code;
-        Barcode = barcode;
         Description = description;
 
         CostPrice = costPrice;

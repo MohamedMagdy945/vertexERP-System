@@ -1,7 +1,6 @@
 ﻿using Mapster;
 using Mediator;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using VertexERP.Application.Common.Abstractions.Identity;
 using VertexERP.Application.Common.Abstractions.Persistence;
 using VertexERP.Domain.Module.Identity.Entities;
@@ -10,7 +9,7 @@ using VertexERP.Shared.Results;
 namespace VertexERP.Application.Modules.Identity.Users.Commands.Create;
 
 public sealed class Handler(
-    IApplicationDbContext dbContext, ILogger<Handler> logger
+    IApplicationDbContext dbContext
     , IPasswordHasher passwordHasher)
     : IRequestHandler<Command, Result<Response>>
 {
