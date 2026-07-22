@@ -1,5 +1,4 @@
 ﻿using Mediator;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using VertexERP.Application.Common.Abstractions.Persistence;
 using VertexERP.Shared.Results;
@@ -11,7 +10,7 @@ public sealed class Handler(IApplicationDbContext dbContext, ILogger<Handler> lo
 {
     public async ValueTask<Result<Response>> Handle(Command request, CancellationToken cancellationToken)
     {
-        var category = await dbContext.Categories.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+        var category = await dbContext.Categories.FindAsync([request.Id], cancellationToken);
 
         if (category is null)
             return Result<Response>.NotFound("Category not found.");

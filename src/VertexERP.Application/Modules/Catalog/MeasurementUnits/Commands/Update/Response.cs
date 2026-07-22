@@ -1,3 +1,3 @@
-﻿namespace VertexERP.Application.Modules.Catalog.Units.Command.Create;
+﻿namespace VertexERP.Application.Modules.Catalog.MeasurementUnits.Commands.Update;
 
-public sealed record Response(Guid Id, string Name, string? Description);
+public sealed record Response(Guid Id, string Symbol);

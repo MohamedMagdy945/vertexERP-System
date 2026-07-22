@@ -1,7 +1,7 @@
 ﻿using Mediator;
 using VertexERP.Shared.Results;
 
-namespace VertexERP.Application.Modules.Catalog.Units.Command.Create;
+namespace VertexERP.Application.Modules.Catalog.MeasurementUnits.Commands.Update;
 
-public sealed record Command(Guid Id, string Name, string? Description)
+public sealed record Command(Guid Id, string Symbol)
     : IRequest<Result<Response>>;

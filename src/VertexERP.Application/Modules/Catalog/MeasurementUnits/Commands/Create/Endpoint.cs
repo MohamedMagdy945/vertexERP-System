@@ -12,7 +12,7 @@ public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("/units", async (Command command, ISender sender, CancellationToken cancellationToken) =>
+        app.MapPost("/measurement-units", async (Command command, ISender sender, CancellationToken cancellationToken) =>
         {
             var result = await sender.Send(command, cancellationToken);
 

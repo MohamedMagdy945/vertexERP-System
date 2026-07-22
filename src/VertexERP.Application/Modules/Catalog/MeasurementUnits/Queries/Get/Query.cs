@@ -2,7 +2,7 @@
 using VertexERP.Shared.Pagination;
 using VertexERP.Shared.Results;
 
-namespace VertexERP.Application.Modules.Catalog.Units.Queries.Get;
+namespace VertexERP.Application.Modules.Catalog.MeasurementUnits.Queries.Get;
 
 public sealed record Query(int PageNumber = 1, int PageSize = 10, string? SearchTerm = null)
     : IRequest<Result<Page<Response>>>;

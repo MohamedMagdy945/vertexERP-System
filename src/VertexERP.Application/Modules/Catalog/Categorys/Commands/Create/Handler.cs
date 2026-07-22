@@ -13,13 +13,14 @@ public sealed class Handler(IApplicationDbContext dbContext, ILogger<Handler> lo
 {
     public async ValueTask<Result<Response>> Handle(Command request, CancellationToken cancellationToken)
     {
-        var exists = await dbContext.Categories.AnyAsync(x => x.Name == request.Name, cancellationToken);
+        var categoryName = Category.FormatName(request.Name);
+
+        var exists = await dbContext.Categories.AnyAsync(x => x.Name == categoryName, cancellationToken);
 
         if (exists)
             return Result<Response>.Conflict("Category name already exists.");
 
         var category = new Category(request.Name, request.Description);
-
         dbContext.Categories.Add(category);
         await dbContext.SaveChangesAsync(cancellationToken);
 

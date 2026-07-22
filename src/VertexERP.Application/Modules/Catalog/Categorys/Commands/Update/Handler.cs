@@ -3,6 +3,7 @@ using Mediator;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using VertexERP.Application.Common.Abstractions.Persistence;
+using VertexERP.Domain.Module.Catalog.Entities;
 using VertexERP.Shared.Results;
 
 namespace VertexERP.Application.Modules.Catalog.Categorys.Commands.Update;
@@ -12,15 +13,17 @@ public sealed class Handler(IApplicationDbContext dbContext, ILogger<Handler> lo
 {
     public async ValueTask<Result<Response>> Handle(Command request, CancellationToken cancellationToken)
     {
-        var category = await dbContext.Categories.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+        var category = await dbContext.Categories.FindAsync([request.Id], cancellationToken);
 
         if (category is null)
             return Result<Response>.NotFound("Category not found.");
 
-        if (category.Name != request.Name)
+        var categoryName = Category.FormatName(request.Name);
+
+        if (category.Name != categoryName)
         {
             var exists = await dbContext.Categories
-                .AnyAsync(x => x.Name == request.Name, cancellationToken);
+                .AnyAsync(x => x.Id != request.Id && x.Name == categoryName, cancellationToken);
 
             if (exists)
                 return Result<Response>.Conflict("Category name already exists.");

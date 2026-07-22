@@ -6,13 +6,13 @@ using VertexERP.Application.Common.Abstractions.Endpoint;
 using VertexERP.Application.Common.Extensions;
 using VertexERP.Shared.Results;
 
-namespace VertexERP.Application.Modules.Catalog.Units.Command.Create;
+namespace VertexERP.Application.Modules.Catalog.MeasurementUnits.Commands.Update;
 
 public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPut("/categories/{id:guid}", async (Guid id, Command command, ISender sender, CancellationToken cancellationToken) =>
+        app.MapPut("/measurement-units/{id:guid}", async (Guid id, Command command, ISender sender, CancellationToken cancellationToken) =>
         {
             var result = await sender.Send(command with { Id = id }, cancellationToken);
 

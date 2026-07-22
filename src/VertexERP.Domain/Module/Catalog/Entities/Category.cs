@@ -14,15 +14,21 @@ public sealed class Category : Entity
 
     public Category(string name, string? description = null)
     {
-        Name = name;
+        Name = FormatName(name);
         Description = description;
     }
 
     public void Update(string name, string? description)
     {
-        Name = name;
+        Name = FormatName(name);
         Description = description;
 
         MarkAsUpdated();
+    }
+    public static string FormatName(string name)
+    {
+        name = name.Trim().ToLowerInvariant();
+
+        return char.ToUpperInvariant(name[0]) + name[1..];
     }
 }

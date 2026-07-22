@@ -20,12 +20,10 @@ public sealed class StockConfiguration : IEntityTypeConfiguration<Stock>
         builder.Property(x => x.Quantity)
             .IsRequired();
 
-
         builder.HasOne(x => x.Product)
-            .WithMany(x => x.Stocks)
-            .HasForeignKey(x => x.ProductId)
-            .OnDelete(DeleteBehavior.Restrict);
-
+        .WithMany()
+        .HasForeignKey(x => x.ProductId)
+        .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(x => x.Warehouse)
             .WithMany(x => x.Stocks)

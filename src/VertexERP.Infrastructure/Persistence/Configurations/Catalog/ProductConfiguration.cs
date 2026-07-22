@@ -57,13 +57,6 @@ public sealed class ProductConfiguration : IEntityTypeConfiguration<Product>
             .HasForeignKey(x => x.ProductId)
             .OnDelete(DeleteBehavior.Cascade);
 
-
-        builder.HasMany(x => x.Stocks)
-            .WithOne(x => x.Product)
-            .HasForeignKey(x => x.ProductId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-
         // Indexes
         builder.HasIndex(x => x.Code)
             .IsUnique();

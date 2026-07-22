@@ -1,25 +1,24 @@
 ﻿using Mediator;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using VertexERP.Application.Common.Abstractions.Persistence;
 using VertexERP.Shared.Results;
 
-namespace VertexERP.Application.Modules.Catalog.Units.Command.Create;
+namespace VertexERP.Application.Modules.Catalog.MeasurementUnits.Commands.Delete;
 
 public sealed class Handler(IApplicationDbContext dbContext, ILogger<Handler> logger)
     : IRequestHandler<Command, Result<Response>>
 {
     public async ValueTask<Result<Response>> Handle(Command request, CancellationToken cancellationToken)
     {
-        var category = await dbContext.Categories.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+        var measurementUnit = await dbContext.MeasurementUnits.FindAsync([request.Id], cancellationToken);
 
-        if (category is null)
-            return Result<Response>.NotFound("Category not found.");
+        if (measurementUnit is null)
+            return Result<Response>.NotFound("Measurement Unit not found.");
 
-        dbContext.Categories.Remove(category);
+        dbContext.MeasurementUnits.Remove(measurementUnit);
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return Result<Response>.Success(new Response(category.Id));
+        return Result<Response>.Success(new Response(measurementUnit.Id));
     }
 }

@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace VertexERP.Application.Modules.Catalog.Units.Command.Create;
+namespace VertexERP.Application.Modules.Catalog.MeasurementUnits.Commands.Delete;
 
 public sealed class Validator : AbstractValidator<Command>
 {

@@ -13,13 +13,17 @@ public sealed class Handler(IApplicationDbContext dbContext, ILogger<Handler> lo
 {
     public async ValueTask<Result<Response>> Handle(Command request, CancellationToken cancellationToken)
     {
-        var exists = await dbContext.MeasurementUnits.AnyAsync(x => x.Name == request.Name || x.Symbol == request.Symbol, cancellationToken);
-        if (exists)
-            return Result<Response>.Conflict("Unit already exists.");
+        var symbol = MeasurementUnit.FormatSymbol(request.Symbol);
 
-        var measurementUnit = new MeasurementUnit(request.Name, request.Symbol);
+        var exists = await dbContext.MeasurementUnits.AnyAsync(x => x.Symbol == symbol, cancellationToken);
+
+        if (exists)
+            return Result<Response>.Conflict("Measurement Unit already exists.");
+
+        var measurementUnit = new MeasurementUnit(symbol);
 
         dbContext.MeasurementUnits.Add(measurementUnit);
+
         await dbContext.SaveChangesAsync(cancellationToken);
 
         return Result<Response>.Created(measurementUnit.Adapt<Response>());

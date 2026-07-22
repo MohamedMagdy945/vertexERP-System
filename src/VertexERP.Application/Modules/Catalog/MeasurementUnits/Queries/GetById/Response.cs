@@ -1,6 +1,3 @@
-﻿namespace VertexERP.Application.Modules.Catalog.Units.Queries.GetById;
+﻿namespace VertexERP.Application.Modules.Catalog.MeasurementUnits.Queries.GetById;
 
-public sealed record Response(
-    Guid Id,
-    string Name,
-    string? Description);
+public sealed record Response(Guid Id, string Symbol);

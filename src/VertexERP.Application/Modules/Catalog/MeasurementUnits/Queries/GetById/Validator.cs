@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace VertexERP.Application.Modules.Catalog.Units.Queries.GetById;
+namespace VertexERP.Application.Modules.Catalog.MeasurementUnits.Queries.GetById;
 
 public sealed class Validator : AbstractValidator<Query>
 {

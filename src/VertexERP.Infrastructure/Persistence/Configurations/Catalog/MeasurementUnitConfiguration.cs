@@ -12,16 +12,10 @@ public sealed class MeasurementUnitConfiguration : IEntityTypeConfiguration<Meas
 
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.Name)
-            .HasMaxLength(20)
-            .IsRequired();
 
         builder.Property(x => x.Symbol)
             .HasMaxLength(20)
             .IsRequired();
-
-        builder.HasIndex(x => x.Name)
-            .IsUnique();
 
         builder.HasIndex(x => x.Symbol)
             .IsUnique();
