@@ -11,12 +11,16 @@ public sealed class ProductImage : Entity
     public Product Product { get; private set; } = default!;
     private ProductImage() { }
 
-    public ProductImage(string url, Guid productId, bool isPrimary = false, string? altText = null)
+    public ProductImage(string url, bool isPrimary = false, string? altText = null)
     {
         Url = url;
-        ProductId = productId;
         IsPrimary = isPrimary;
         AltText = altText;
+    }
+
+    public ProductImage(string url, Guid productId, bool isPrimary = false, string? altText = null) : this(url, isPrimary, altText)
+    {
+        ProductId = productId;
     }
 
     public void Update(string url, string? altText)

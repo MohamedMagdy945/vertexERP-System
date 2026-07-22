@@ -14,15 +14,15 @@ public sealed class ProductConfiguration : IEntityTypeConfiguration<Product>
 
         // Basic Information
         builder.Property(x => x.Name)
-            .HasMaxLength(200)
+            .HasMaxLength(100)
             .IsRequired();
 
         builder.Property(x => x.Code)
-            .HasMaxLength(50)
+            .HasMaxLength(40)
             .IsRequired();
 
         builder.Property(x => x.Barcode)
-            .HasMaxLength(100);
+            .HasMaxLength(40);
 
         builder.Property(x => x.Description)
             .HasMaxLength(1000);

@@ -29,15 +29,8 @@ public sealed class Product : Entity
 
     private Product() { }
 
-    public Product(
-        string name,
-        string code,
-        decimal costPrice,
-        decimal sellingPrice,
-        Guid categoryId,
-        Guid unitId,
-        string? barcode = null,
-        string? description = null)
+    public Product(string name, string code, decimal costPrice, decimal sellingPrice
+                    , Guid categoryId, Guid unitId, string? barcode = null, string? description = null)
     {
         Name = name;
         Code = code;
@@ -46,22 +39,14 @@ public sealed class Product : Entity
 
         CostPrice = costPrice;
         SellingPrice = sellingPrice;
-
         CategoryId = categoryId;
-        UnitId = unitId;
 
+        UnitId = unitId;
         IsAvailable = true;
     }
 
-    public void Update(
-        string name,
-        string code,
-        decimal costPrice,
-        decimal sellingPrice,
-        Guid categoryId,
-        Guid unitId,
-        string? barcode,
-        string? description)
+    public void Update(string name, string code, decimal costPrice, decimal sellingPrice,
+            Guid categoryId, Guid unitId, string? barcode, string? description)
     {
         Name = name;
         Code = code;
@@ -87,5 +72,14 @@ public sealed class Product : Entity
     {
         IsAvailable = false;
         MarkAsUpdated();
+    }
+    public void AddImages(IEnumerable<string> imagePaths)
+    {
+        foreach (var path in imagePaths)
+        {
+            if (string.IsNullOrWhiteSpace(path)) continue;
+
+            Images.Add(new ProductImage(path));
+        }
     }
 }

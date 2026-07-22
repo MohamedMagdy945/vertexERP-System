@@ -33,4 +33,20 @@ public sealed class LocalFileStorage(IWebHostEnvironment environment) : IFileSto
 
         return Task.CompletedTask;
     }
+    public async Task<List<string>> UploadManyAsync(IEnumerable<IFormFile> files, string folderName, CancellationToken cancellationToken = default)
+    {
+        var uploadTasks = files.Select(file => UploadAsync(file, folderName, cancellationToken));
+        var results = await Task.WhenAll(uploadTasks);
+        return results.ToList();
+    }
+    public async Task DeleteManyAsync(IEnumerable<string> filePaths, CancellationToken cancellationToken = default)
+    {
+        if (filePaths is null || !filePaths.Any())
+            return;
+
+        var deleteTasks = filePaths.Where(path => !string.IsNullOrWhiteSpace(path))
+            .Select(path => DeleteAsync(path));
+
+        await Task.WhenAll(deleteTasks);
+    }
 }
