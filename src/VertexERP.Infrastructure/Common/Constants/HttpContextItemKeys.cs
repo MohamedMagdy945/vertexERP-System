@@ -1,4 +1,4 @@
-﻿namespace VertexERP.Infrastructure.Constants;
+﻿namespace VertexERP.Infrastructure.Common.Constants;
 
 public static class HttpContextItemKeys
 {

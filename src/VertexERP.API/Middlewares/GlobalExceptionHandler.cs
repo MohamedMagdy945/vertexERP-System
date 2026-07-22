@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using VertexERP.Infrastructure.Constants;
+using VertexERP.Infrastructure.Common.Constants;
 using VertexERP.Infrastructure.Http.Extensions;
 using VertexERP.Shared.Exceptions;
 using VertexERP.Shared.Results;

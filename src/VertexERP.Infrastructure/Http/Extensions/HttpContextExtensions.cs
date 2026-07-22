@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using VertexERP.Infrastructure.Constants;
+using VertexERP.Infrastructure.Common.Constants;
 
 namespace VertexERP.Infrastructure.Http.Extensions;
 
