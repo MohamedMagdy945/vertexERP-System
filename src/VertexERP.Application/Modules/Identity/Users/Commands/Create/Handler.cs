@@ -18,16 +18,20 @@ public sealed class Handler(
     public async ValueTask<Result<Response>> Handle(Command request, CancellationToken cancellationToken)
     {
 
-        var emailExists = await dbContext.Users.AnyAsync(x => x.Email == request.Email, cancellationToken);
+        var email = request.Email.Trim().ToLowerInvariant();
+
+        var emailExists = await dbContext.Users
+            .AnyAsync(x => x.Email == email, cancellationToken);
 
         if (emailExists)
             return Result<Response>.Conflict("Email already exists.");
 
         var hash = passwordHasher.Hash(DefaultPassword);
 
-        var user = new User(request.FullName, request.Email, hash);
+        var user = new User(request.FullName, email, hash);
 
-        await dbContext.Users.AddAsync(user, cancellationToken);
+        dbContext.Users.Add(user);
+
         await dbContext.SaveChangesAsync(cancellationToken);
 
         return Result<Response>.Created(user.Adapt<Response>());

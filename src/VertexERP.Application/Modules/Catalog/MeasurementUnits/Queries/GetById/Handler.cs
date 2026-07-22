@@ -12,8 +12,8 @@ public sealed class Handler(IApplicationDbContext dbContext, ILogger<Handler> lo
 {
     public async ValueTask<Result<Response>> Handle(Query request, CancellationToken cancellationToken)
     {
-        var measurementUnit = await dbContext.MeasurementUnits.AsNoTracking().ProjectToType<Response>()
-            .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+        var measurementUnit = await dbContext.MeasurementUnits.AsNoTracking().Where(x => x.Id == request.Id)
+                                .ProjectToType<Response>().FirstOrDefaultAsync(cancellationToken);
 
         if (measurementUnit is null)
             return Result<Response>.NotFound("Category not found.");

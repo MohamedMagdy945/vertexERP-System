@@ -19,17 +19,18 @@ public sealed class Handler(IApplicationDbContext dbContext, IRefreshTokenHasher
         var refreshTokenHash = refreshTokenHasher.Hash(request.RefreshToken);
 
         var refreshTokenContext = await dbContext.RefreshTokens.Where(x => x.TokenHash == refreshTokenHash)
-            .ToRefreshTokenContext().SingleOrDefaultAsync(cancellationToken);
+                                   .ToRefreshTokenContext().SingleOrDefaultAsync(cancellationToken);
 
         if (refreshTokenContext is null || !refreshTokenContext.RefreshToken.IsActive)
             return Result<Response>.Unauthorized();
 
-
-
         var userClaims = new UserTokenClaims(refreshTokenContext.UserId, refreshTokenContext.UserEmail, refreshTokenContext.Permissions);
+
         var tokenPair = authenticationService.CreateSession(userClaims);
 
-        refreshTokenContext.RefreshToken.Revoke(reason: "Token rotated automatically", replacedByTokenHash: tokenPair.RefreshToken);
+        var newRefreshTokenHash = refreshTokenHasher.Hash(tokenPair.RefreshToken);
+
+        refreshTokenContext.RefreshToken.Revoke(reason: "Token rotated automatically", replacedByTokenHash: newRefreshTokenHash);
 
         await dbContext.SaveChangesAsync(cancellationToken);
 

@@ -19,22 +19,17 @@ public sealed class Handler(
 
         if (!string.IsNullOrWhiteSpace(request.SearchTerm))
         {
-            var searchTerm = request.SearchTerm.Trim().ToLower();
+            var term = $"%{request.SearchTerm.Trim()}%";
 
-            query = query.Where(u =>
-                u.FullName.ToLower().Contains(searchTerm) ||
-                u.Email.ToLower().Contains(searchTerm));
+            query = query.Where(x => EF.Functions.Like(x.FullName, term) ||
+                     EF.Functions.Like(x.Email, term));
         }
 
-        var projectedQuery = query.ProjectToType<Response>();
+        var totalCount = await query.CountAsync(cancellationToken);
 
-        var totalCount = await projectedQuery.CountAsync(cancellationToken);
+        var items = await query.ProjectToType<Response>().ApplyPagination(request.PageNumber, request.PageSize)
+                    .ToListAsync(cancellationToken);
 
-        var items = await projectedQuery.ApplyPagination(request.PageNumber, request.PageSize)
-                                .ToListAsync(cancellationToken);
-
-        var paginatedUsers = Page<Response>.Create(items, totalCount, request.PageNumber, request.PageSize);
-
-        return Result<Page<Response>>.Success(paginatedUsers);
+        return Result<Page<Response>>.Success(Page<Response>.Create(items, totalCount, request.PageNumber, request.PageSize));
     }
 }
