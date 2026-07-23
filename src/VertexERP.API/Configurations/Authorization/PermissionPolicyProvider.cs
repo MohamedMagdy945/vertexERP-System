@@ -3,21 +3,11 @@ using Microsoft.Extensions.Options;
 
 namespace VertexERP.API.Configurations.Authorization;
 
-public class PermissionPolicyProvider
-: DefaultAuthorizationPolicyProvider
+public class PermissionPolicyProvider(IOptions<AuthorizationOptions> options) : DefaultAuthorizationPolicyProvider(options)
 {
-    public PermissionPolicyProvider(
-           IOptions<AuthorizationOptions> options)
-           : base(options)
+    public override Task<AuthorizationPolicy?> GetPolicyAsync(string policyName)
     {
-    }
-    public override Task<AuthorizationPolicy?> GetPolicyAsync(
-       string policyName)
-    {
-        var policy = new AuthorizationPolicyBuilder()
-            .AddRequirements(
-                new PermissionRequirement(policyName))
-            .Build();
+        var policy = new AuthorizationPolicyBuilder().AddRequirements(new PermissionRequirement(policyName)).Build();
 
         return Task.FromResult<AuthorizationPolicy?>(policy);
     }

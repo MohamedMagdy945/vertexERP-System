@@ -1,5 +1,5 @@
 ﻿using VertexERP.Application.Common.Abstractions.Identity;
-namespace VertexERP.Infrastructure.Identity.Authentication;
+namespace VertexERP.Infrastructure.Services.Identity.Authentication;
 
 public sealed class PasswordHasher : IPasswordHasher
 {

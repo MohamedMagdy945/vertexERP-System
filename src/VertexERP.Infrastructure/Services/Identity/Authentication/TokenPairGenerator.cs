@@ -5,9 +5,9 @@ using System.Security.Cryptography;
 using System.Text;
 using VertexERP.Application.Common.Abstractions.Identity;
 using VertexERP.Application.Common.Models.Identity;
-using VertexERP.Infrastructure.Identity.Settings;
+using VertexERP.Infrastructure.Common.Settings;
 
-namespace VertexERP.Infrastructure.Identity.Authentication;
+namespace VertexERP.Infrastructure.Services.Identity.Authentication;
 
 public sealed class TokenPairGenerator(IOptions<TokenPairSettings> options) : ITokenPairGenerator
 {

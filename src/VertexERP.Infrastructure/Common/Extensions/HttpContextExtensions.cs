@@ -4,7 +4,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using VertexERP.Infrastructure.Common.Constants;
 
-namespace VertexERP.Infrastructure.Http.Extensions;
+namespace VertexERP.Infrastructure.Common.Extensions;
 
 public static class HttpContextExtensions
 {

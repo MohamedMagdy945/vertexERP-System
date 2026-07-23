@@ -2,7 +2,10 @@
 using System.Text.Json;
 using VertexERP.Application.Common.Abstractions.Cache;
 
-public sealed class UserPermissionCache(IDistributedCache cache) : IUserPermissionCache
+
+namespace VertexERP.Infrastructure.Services.Cache;
+
+public sealed class MemoryUserPermissionCache(IDistributedCache cache) : IUserPermissionCache
 {
     private const string Prefix = "user-permissions:";
 
@@ -17,7 +20,7 @@ public sealed class UserPermissionCache(IDistributedCache cache) : IUserPermissi
     }
 
 
-    public async Task SetAsync(Guid userId, IReadOnlySet<string> permissions, CancellationToken ct = default)
+    public async Task SetAsync(Guid userId, HashSet<string> permissions, CancellationToken ct = default)
     {
         var data = JsonSerializer.Serialize(permissions);
 
@@ -26,10 +29,8 @@ public sealed class UserPermissionCache(IDistributedCache cache) : IUserPermissi
             {
                 SlidingExpiration = TimeSpan.FromHours(2),
                 AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(8)
-            },
-            ct);
+            }, ct);
     }
-
 
     public async Task RemoveAsync(Guid userId, CancellationToken ct = default)
     {

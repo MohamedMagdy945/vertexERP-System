@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using VertexERP.Application.Common.Abstractions.Cache;
@@ -7,10 +6,13 @@ using VertexERP.Application.Common.Abstractions.Http;
 using VertexERP.Application.Common.Abstractions.Identity;
 using VertexERP.Application.Common.Abstractions.Persistence;
 using VertexERP.Application.Common.Abstractions.Storage;
-using VertexERP.Infrastructure.Identity.Authentication;
-using VertexERP.Infrastructure.Identity.Settings;
+using VertexERP.Infrastructure.Common.Extensions;
+using VertexERP.Infrastructure.Common.Settings;
 using VertexERP.Infrastructure.Persistence;
-using VertexERP.Infrastructure.Services;
+using VertexERP.Infrastructure.Services.Cache;
+using VertexERP.Infrastructure.Services.Http;
+using VertexERP.Infrastructure.Services.Identity.Authentication;
+using VertexERP.Infrastructure.Services.Storage;
 
 namespace VertexERP.Infrastructure;
 
@@ -34,11 +36,11 @@ public static class InfrastructureRegistration
 
         services.AddSingleton<IFileStorage, LocalFileStorage>();
 
-        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
+        services.AddJwtAuthentication(configuration);
 
         services.AddMemoryCache();
 
-        services.AddScoped<IUserPermissionCache, UserPermissionCache>();
+        services.AddSingleton<IUserPermissionCache, MemoryUserPermissionCache>();
 
 
         return services;

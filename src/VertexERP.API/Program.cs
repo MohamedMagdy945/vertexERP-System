@@ -32,11 +32,12 @@ public class Program
             builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
             builder.Services.AddProblemDetails();
             builder.Services.AddHttpContextAccessor();
-            builder.Services.AddSingleton<IAuthorizationHandler,
-             PermissionAuthorizationHandler>();
 
-            builder.Services.AddSingleton<IAuthorizationPolicyProvider,
-                PermissionPolicyProvider>();
+            builder.Services.AddAuthorization();
+
+            builder.Services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
+
+            builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
 
             builder.Services.AddApplicationServices();
 
@@ -52,6 +53,8 @@ public class Program
             app.UseExceptionHandler();
 
             app.UseMiddleware<RequestResponseLoggingMiddleware>();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

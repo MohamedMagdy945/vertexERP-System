@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using VertexERP.Infrastructure.Common.Constants;
-using VertexERP.Infrastructure.Http.Extensions;
+using VertexERP.Infrastructure.Common.Extensions;
 
 namespace VertexERP.API.Middlewares;
 

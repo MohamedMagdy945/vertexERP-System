@@ -1,22 +1,33 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using System.IdentityModel.Tokens.Jwt;
+using VertexERP.Application.Common.Abstractions.Identity;
+using VertexERP.Shared.Constant;
 
 namespace VertexERP.API.Configurations.Authorization;
 
-public class PermissionAuthorizationHandler
+public sealed class PermissionAuthorizationHandler(IUserPermissionService userPermissionService, IHttpContextAccessor httpContextAccessor)
     : AuthorizationHandler<PermissionRequirement>
 {
-    protected override Task HandleRequirementAsync(
-           AuthorizationHandlerContext context,
-           PermissionRequirement requirement)
+    protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
     {
-        var permissions = context.User.FindAll("permission")
-            .Select(x => x.Value);
+        if (context.User.IsInRole(Roles.SuperAdmin))
+        {
+            context.Succeed(requirement);
+            return;
+        }
+
+        var ct = httpContextAccessor.HttpContext?.RequestAborted ?? CancellationToken.None;
+
+        var userIdClaim = context.User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+
+        if (userIdClaim is null || !Guid.TryParse(userIdClaim, out var userId))
+            return;
+
+        var permissions = await userPermissionService.GetPermissionsAsync(userId, ct);
 
         if (permissions.Contains(requirement.Permission))
         {
             context.Succeed(requirement);
         }
-
-        return Task.CompletedTask;
     }
 }
