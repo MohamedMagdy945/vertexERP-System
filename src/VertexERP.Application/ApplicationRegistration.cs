@@ -10,15 +10,11 @@ public static class ApplicationRegistration
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
-        services.AddMediator(options =>
-        {
-            options.ServiceLifetime = ServiceLifetime.Scoped;
-
-            options.PipelineBehaviors =
-              [
-                  typeof(ValidationBehavior<,>)
-              ];
-        });
+        services.Scan(scan => scan
+            .FromAssemblyOf<ApplicationAssemblyMarker>()
+            .AddClasses(classes => classes.Where(type => type.Name == "Handler"))
+            .AsSelf()
+            .WithScopedLifetime());
 
         services.AddScoped<AuthenticationService>();
 

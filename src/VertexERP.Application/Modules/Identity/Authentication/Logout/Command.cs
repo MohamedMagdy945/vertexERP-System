@@ -1,8 +1,0 @@
-﻿using Mediator;
-using VertexERP.Shared.Results;
-
-namespace VertexERP.Application.Modules.Identity.Authentication.Logout;
-
-public record Command(string RefreshToken)
-    : IRequest<Result<Response>>;
-

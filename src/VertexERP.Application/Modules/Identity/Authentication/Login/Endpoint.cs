@@ -1,5 +1,4 @@
 ﻿using Mapster;
-using Mediator;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,9 +14,10 @@ public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("/authentication/login", async (Command command, ISender sender, HttpContext httpContext, CancellationToken cancellationToken) =>
+        app.MapPost("/authentication/login", async (Command command, Handler handler, HttpContext httpContext, CancellationToken cancellationToken) =>
         {
-            var result = await sender.Send(command, cancellationToken);
+            var result = await handler.HandleAsync(command, cancellationToken);
+
 
             if (!result.IsSuccess || result.Data is null)
                 return result.ToMinimalResult();

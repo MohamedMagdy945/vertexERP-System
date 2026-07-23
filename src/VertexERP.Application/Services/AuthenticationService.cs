@@ -6,10 +6,8 @@ using VertexERP.Domain.Module.Identity.Entities;
 
 namespace VertexERP.Application.Services;
 
-public sealed class AuthenticationService(IApplicationDbContext dbContext,
-    ITokenPairGenerator tokenPairGenerator,
-    IRefreshTokenHasher refreshTokenHasher,
-    IClientInfoProvider clientInfoProvider)
+public sealed class AuthenticationService(IApplicationDbContext dbContext, ITokenPairGenerator tokenPairGenerator,
+    IRefreshTokenHasher refreshTokenHasher, IClientInfoProvider clientInfoProvider)
 {
     public TokenPair CreateSession(UserTokenClaims claims)
     {

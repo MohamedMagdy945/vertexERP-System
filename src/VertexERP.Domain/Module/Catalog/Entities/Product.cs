@@ -81,4 +81,21 @@ public sealed class Product : Entity
             Images.Add(new ProductImage(path));
         }
     }
+    public void AddImage(string path)
+    {
+
+        if (string.IsNullOrWhiteSpace(path)) return;
+
+        Images.Add(new ProductImage(path));
+
+    }
+    public void RemoveImage(Guid imageId)
+    {
+        var image = Images.FirstOrDefault(x => x.Id == imageId);
+
+        if (image is null)
+            return;
+
+        Images.Remove(image);
+    }
 }

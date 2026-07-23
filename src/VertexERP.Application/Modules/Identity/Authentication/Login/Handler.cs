@@ -1,5 +1,4 @@
 ﻿using Mapster;
-using Mediator;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using VertexERP.Application.Common.Abstractions.Identity;
@@ -12,9 +11,8 @@ namespace VertexERP.Application.Modules.Identity.Authentication.Login;
 
 public sealed class Handler(IApplicationDbContext dbContext, IPasswordHasher passwordHasher,
     ILogger<Handler> logger, AuthenticationService authenticationService)
-    : IRequestHandler<Command, Result<Response>>
 {
-    public async ValueTask<Result<Response>> Handle(Command request, CancellationToken cancellationToken)
+    public async Task<Result<Response>> HandleAsync(Command request, CancellationToken cancellationToken)
     {
         var email = request.Email.Trim().ToLowerInvariant();
 
