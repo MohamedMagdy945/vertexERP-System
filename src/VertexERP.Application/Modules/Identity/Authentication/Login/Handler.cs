@@ -1,6 +1,7 @@
 ﻿using Mapster;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using VertexERP.Application.Common.Abstractions.Handler;
 using VertexERP.Application.Common.Abstractions.Identity;
 using VertexERP.Application.Common.Abstractions.Persistence;
 using VertexERP.Application.Common.Models.Identity;
@@ -10,7 +11,7 @@ using VertexERP.Shared.Results;
 namespace VertexERP.Application.Modules.Identity.Authentication.Login;
 
 public sealed class Handler(IApplicationDbContext dbContext, IPasswordHasher passwordHasher,
-    ILogger<Handler> logger, AuthenticationService authenticationService)
+    ILogger<Handler> logger, AuthenticationService authenticationService) : IHandler
 {
     public async Task<Result<Response>> HandleAsync(Command request, CancellationToken cancellationToken)
     {

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using VertexERP.Application.Common.Abstractions.Storage;
 
-namespace VertexERP.Infrastructure.Storage;
+namespace VertexERP.Infrastructure.Services;
 
 public sealed class LocalFileStorage(IWebHostEnvironment environment) : IFileStorage
 {

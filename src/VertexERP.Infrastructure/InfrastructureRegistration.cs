@@ -2,15 +2,15 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using VertexERP.Application.Common.Abstractions.Cache;
 using VertexERP.Application.Common.Abstractions.Http;
 using VertexERP.Application.Common.Abstractions.Identity;
 using VertexERP.Application.Common.Abstractions.Persistence;
 using VertexERP.Application.Common.Abstractions.Storage;
-using VertexERP.Infrastructure.Http.Services;
 using VertexERP.Infrastructure.Identity.Authentication;
 using VertexERP.Infrastructure.Identity.Settings;
 using VertexERP.Infrastructure.Persistence;
-using VertexERP.Infrastructure.Storage;
+using VertexERP.Infrastructure.Services;
 
 namespace VertexERP.Infrastructure;
 
@@ -35,6 +35,10 @@ public static class InfrastructureRegistration
         services.AddSingleton<IFileStorage, LocalFileStorage>();
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
+
+        services.AddMemoryCache();
+
+        services.AddScoped<IUserPermissionCache, UserPermissionCache>();
 
 
         return services;

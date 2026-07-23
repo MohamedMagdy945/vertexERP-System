@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using VertexERP.Infrastructure.Common.Constants;
 using VertexERP.Infrastructure.Http.Extensions;
-using VertexERP.Shared.Exceptions;
-using VertexERP.Shared.Results;
 
 namespace VertexERP.API.Middlewares;
 
@@ -18,20 +16,6 @@ public sealed class GlobalExceptionHandler(
 
         switch (statusCode)
         {
-            case StatusCodes.Status400BadRequest:
-
-                logger.LogWarning("Validation failed for request {Path}. Errors: {@Errors}",
-                                  httpContext.Request.Path, errors);
-
-                var correlationId = httpContext.GetCorrelationId();
-                httpContext.Response.Headers["X-Correlation-Id"] = correlationId;
-
-                var validationResult = Result<object>.ValidationFailed(errors);
-
-                await httpContext.WriteResponseAsync(validationResult, statusCode, cancellationToken);
-
-                break;
-
             default:
                 logger.LogError(exception, "Unhandled exception while processing {Method} {Path}",
                     httpContext.Request.Method, httpContext.Request.Path);
@@ -48,7 +32,6 @@ public sealed class GlobalExceptionHandler(
     {
         return exception switch
         {
-            AppValidationException validationException => (StatusCodes.Status400BadRequest, LogLevel.Warning, validationException.Errors),
 
             _ => (StatusCodes.Status500InternalServerError, LogLevel.Error, Array.Empty<string>())
         };

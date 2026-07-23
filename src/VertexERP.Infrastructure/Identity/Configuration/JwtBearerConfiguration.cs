@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using VertexERP.Infrastructure.Http.Extensions;
+using VertexERP.Infrastructure.Common.Extensions;
 using VertexERP.Infrastructure.Identity.Settings;
 
 namespace VertexERP.Infrastructure.Identity.Configuration;

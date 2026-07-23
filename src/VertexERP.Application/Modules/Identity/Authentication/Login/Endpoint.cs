@@ -1,7 +1,6 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using VertexERP.Application.Common.Abstractions.Endpoint;
 using VertexERP.Application.Common.Extensions;
@@ -28,10 +27,10 @@ public sealed class Endpoint : IEndpoint
 
             return Results.Ok(response);
         })
+        .AddValidation<Command>()
         .WithName("Login")
         .MapToApiVersion(1, 0)
         .WithTags("Authentication")
-        .Produces<Result<AccessTokenResponse>>(StatusCodes.Status200OK)
-        .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized);
+        .Produces<Result<AccessTokenResponse>>(StatusCodes.Status200OK);
     }
 }
