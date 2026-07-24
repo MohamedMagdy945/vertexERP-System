@@ -10,7 +10,7 @@ public class Permission : Entity
 
     private Permission() { }
 
-    public Permission(string name, string description)
+    public Permission(string name, string? description = null)
     {
         Name = name;
         Description = description;

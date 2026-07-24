@@ -10,7 +10,7 @@ public sealed class PermissionAuthorizationHandler(IUserPermissionService userPe
 {
     protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
     {
-        if (context.User.IsInRole(Roles.SuperAdmin))
+        if (context.User.IsInRole(Roles.System))
         {
             context.Succeed(requirement);
             return;

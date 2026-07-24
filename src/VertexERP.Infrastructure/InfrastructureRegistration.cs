@@ -45,6 +45,8 @@ public static class InfrastructureRegistration
         services.AddScoped<IUserPermissionService, UserPermissionService>();
 
 
+        services.AddDataSeeders();
+
         return services;
     }
 }

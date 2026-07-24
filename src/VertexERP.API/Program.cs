@@ -8,6 +8,7 @@ using VertexERP.API.Extensions;
 using VertexERP.API.Middlewares;
 using VertexERP.Application;
 using VertexERP.Infrastructure;
+using VertexERP.Infrastructure.Common.Extensions;
 
 namespace VertexERP.API;
 
@@ -46,7 +47,10 @@ public class Program
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
+
             app.UseSwaggerDocumentation();
+
+            await app.SeedDataAsync();
 
             app.UseMiddleware<CorrelationIdMiddleware>();
 

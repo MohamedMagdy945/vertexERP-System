@@ -11,13 +11,13 @@ public class Role : Entity
     public ICollection<RolePermission> RolePermissions { get; } = [];
     private Role() { }
 
-    public Role(string name, string description)
+    public Role(string name, string? description = null)
     {
         Name = name;
         Description = description;
     }
 
-    public void Update(string name, string description)
+    public void Update(string name, string? description = null)
     {
         Name = name;
         Description = description;
