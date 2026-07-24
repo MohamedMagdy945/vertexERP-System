@@ -27,9 +27,9 @@ public sealed class Endpoint : IEndpoint
 
             httpContext.Response.SetRefreshTokenCookie(result.Data.RefreshToken, result.Data.RefreshTokenExpiresAt, httpContext.Request.IsHttps);
 
-            var response = result.Data.Adapt<AccessTokenResponse>();
+            var mappedResult = Result<AccessTokenResponse>.Success(result.Data.Adapt<AccessTokenResponse>());
 
-            return Results.Ok(response);
+            return mappedResult.ToMinimalResult();
         })
         .WithName("Refresh")
         .MapToApiVersion(1, 0)

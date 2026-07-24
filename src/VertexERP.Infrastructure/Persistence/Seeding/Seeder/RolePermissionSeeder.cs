@@ -14,6 +14,7 @@ public sealed class RolePermissionSeeder(IApplicationDbContext dbContext) : IDat
     {
         if (await dbContext.Permissions.AnyAsync())
             return;
+
         var roles = await dbContext.Roles
             .Where(role => Roles.GetAll().Contains(role.Name))
             .ToDictionaryAsync(role => role.Name);
@@ -30,13 +31,9 @@ public sealed class RolePermissionSeeder(IApplicationDbContext dbContext) : IDat
         rolePermissions.AddRange(Permissions.GetAll()
             .Select(permission => new RolePermission(adminRole.Id, permissions[permission].Id)));
 
-        rolePermissions.Add(
-            new RolePermission(
-                userRole.Id,
-                permissions[Permissions.Products.Read].Id));
+        rolePermissions.Add(new RolePermission(userRole.Id, permissions[Permissions.Products.Read].Id));
 
-        await dbContext.RolePermissions.AddRangeAsync(
-            rolePermissions);
+        await dbContext.RolePermissions.AddRangeAsync(rolePermissions);
 
         await dbContext.SaveChangesAsync();
     }

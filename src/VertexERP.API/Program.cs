@@ -8,7 +8,6 @@ using VertexERP.API.Extensions;
 using VertexERP.API.Middlewares;
 using VertexERP.Application;
 using VertexERP.Infrastructure;
-using VertexERP.Infrastructure.Common.Extensions;
 
 namespace VertexERP.API;
 
@@ -36,9 +35,9 @@ public class Program
 
             builder.Services.AddAuthorization();
 
-            builder.Services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
+            builder.Services.AddScoped<IAuthorizationHandler, Handler>();
 
-            builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+            builder.Services.AddSingleton<IAuthorizationPolicyProvider, Provider>();
 
             builder.Services.AddApplicationServices();
 
@@ -50,7 +49,7 @@ public class Program
 
             app.UseSwaggerDocumentation();
 
-            await app.SeedDataAsync();
+            //await app.SeedDataAsync();
 
             app.UseMiddleware<CorrelationIdMiddleware>();
 

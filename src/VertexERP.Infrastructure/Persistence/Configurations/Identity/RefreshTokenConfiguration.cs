@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using VertexERP.Domain.Module.Identity.Entities;
+using VertexERP.Shared.Constant;
 
 namespace VertexERP.Infrastructure.Persistence.Configurations.Identity;
 
@@ -8,7 +9,8 @@ public class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshToken>
 {
     public void Configure(EntityTypeBuilder<RefreshToken> builder)
     {
-        builder.ToTable("RefreshTokens");
+
+        builder.ToTable("RefreshTokens", Schemas.Identity);
 
         builder.HasKey(x => x.Id);
 

@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using System.IdentityModel.Tokens.Jwt;
 using VertexERP.Application.Common.Abstractions.Identity;
 using VertexERP.Shared.Constant;
 
-namespace VertexERP.API.Configurations.Authorization;
+namespace VertexERP.Application.Common.Authorization;
 
-public sealed class PermissionAuthorizationHandler(IUserPermissionService userPermissionService, IHttpContextAccessor httpContextAccessor)
+public sealed class PermissionHandler(IUserPermissionService userPermissionService, IHttpContextAccessor httpContextAccessor)
     : AuthorizationHandler<PermissionRequirement>
 {
     protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)

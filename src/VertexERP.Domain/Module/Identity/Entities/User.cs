@@ -4,16 +4,18 @@ namespace VertexERP.Domain.Module.Identity.Entities;
 
 public class User : Entity
 {
-    public string FullName { get; private set; } = default!;
+    public string Name { get; private set; } = default!;
     public string Email { get; private set; } = default!;
     public string PasswordHash { get; private set; } = default!;
     public bool IsActive { get; private set; }
+    public bool IsEmailConfirmed { get; private set; }
+
     public ICollection<UserRole> UserRoles { get; } = [];
     public ICollection<RefreshToken> RefreshTokens { get; } = [];
 
-    public User(string fullName, string email, string passwordHash)
+    public User(string name, string email, string passwordHash)
     {
-        FullName = fullName;
+        Name = name;
         Email = email.ToLowerInvariant();
         PasswordHash = passwordHash;
         IsActive = true;

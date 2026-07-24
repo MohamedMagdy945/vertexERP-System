@@ -22,7 +22,9 @@ namespace VertexERP.Infrastructure.Persistence.Seeding.Seeder
 
             var user = new User(Users.User, "user@example.com", passwordHasher.Hash("User@123"));
 
-            await dbContext.Users.AddRangeAsync(admin, system, user);
+            var security = new User(Users.Security, "security@example.com", passwordHasher.Hash("Security@123"));
+
+            await dbContext.Users.AddRangeAsync(admin, system, user, security);
 
             await dbContext.SaveChangesAsync();
         }

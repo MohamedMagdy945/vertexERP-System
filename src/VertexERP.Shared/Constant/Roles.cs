@@ -5,11 +5,13 @@ public static class Roles
     public const string Admin = "Admin";
     public const string User = "User";
     public const string System = "System";
+    public const string Security = "Security";
 
     public static IReadOnlyList<string> GetAll() =>
     [
         Admin,
         User,
-        System
+        System,
+        Security,
     ];
 }

@@ -2,7 +2,7 @@
 
 namespace VertexERP.Application.Modules.Identity.Authentication.Login;
 
-public sealed class Validator : AbstractValidator<Command>
+public sealed class Validator : AbstractValidator<Query>
 {
     public Validator()
     {

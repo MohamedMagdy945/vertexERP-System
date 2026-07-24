@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using VertexERP.Domain.Module.Identity.Entities;
+using VertexERP.Shared.Constant;
 
 namespace VertexERP.Infrastructure.Persistence.Configurations.Identity;
 
@@ -9,7 +10,7 @@ public class RolePermissionConfiguration : IEntityTypeConfiguration<RolePermissi
     public void Configure(EntityTypeBuilder<RolePermission> builder)
     {
 
-        builder.ToTable("RolePermissions");
+        builder.ToTable("RolePermissions", Schemas.Identity);
 
         builder.HasKey(x => new
         {
