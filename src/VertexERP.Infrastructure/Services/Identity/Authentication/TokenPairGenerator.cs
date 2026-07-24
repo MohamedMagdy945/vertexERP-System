@@ -11,8 +11,8 @@ namespace VertexERP.Infrastructure.Services.Identity.Authentication;
 
 public sealed class TokenPairGenerator(IOptions<TokenPairSettings> options) : ITokenPairGenerator
 {
-    private const string PermissionsClaim = "permissions";
     private const int RefreshTokenSize = 32;
+    private const string Role = "role";
 
     private static readonly JsonWebTokenHandler TokenHandler = new();
 
@@ -38,13 +38,9 @@ public sealed class TokenPairGenerator(IOptions<TokenPairSettings> options) : IT
         {
             [JwtRegisteredClaimNames.Sub] = userClaims.UserId,
             [JwtRegisteredClaimNames.Email] = userClaims.Email,
-            [JwtRegisteredClaimNames.Jti] = Guid.NewGuid().ToString()
+            [JwtRegisteredClaimNames.Jti] = Guid.NewGuid().ToString(),
+            [Role] = userClaims.Roles
         };
-
-        if (userClaims.Permissions is not null && userClaims.Permissions.Any())
-        {
-            claims["permissions"] = userClaims.Permissions;
-        }
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {

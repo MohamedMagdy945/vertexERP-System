@@ -12,6 +12,7 @@ using VertexERP.Infrastructure.Persistence;
 using VertexERP.Infrastructure.Services.Cache;
 using VertexERP.Infrastructure.Services.Http;
 using VertexERP.Infrastructure.Services.Identity.Authentication;
+using VertexERP.Infrastructure.Services.Identity.UserPermission;
 using VertexERP.Infrastructure.Services.Storage;
 
 namespace VertexERP.Infrastructure;
@@ -40,7 +41,8 @@ public static class InfrastructureRegistration
 
         services.AddMemoryCache();
 
-        services.AddSingleton<IUserPermissionCache, MemoryUserPermissionCache>();
+        services.AddScoped<IUserPermissionCache, MemoryUserPermissionCache>();
+        services.AddScoped<IUserPermissionService, UserPermissionService>();
 
 
         return services;

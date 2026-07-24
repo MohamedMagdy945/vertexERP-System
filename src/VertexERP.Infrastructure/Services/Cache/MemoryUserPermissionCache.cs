@@ -1,41 +1,42 @@
-﻿using Microsoft.Extensions.Caching.Distributed;
-using System.Text.Json;
+﻿using Microsoft.Extensions.Caching.Memory;
 using VertexERP.Application.Common.Abstractions.Cache;
-
 
 namespace VertexERP.Infrastructure.Services.Cache;
 
-public sealed class MemoryUserPermissionCache(IDistributedCache cache) : IUserPermissionCache
+public sealed class MemoryUserPermissionCache(IMemoryCache cache) : IUserPermissionCache
 {
     private const string Prefix = "user-permissions:";
 
-    public async Task<HashSet<string>?> GetAsync(Guid userId, CancellationToken ct = default)
+    public Task<HashSet<string>?> GetAsync(Guid userId, CancellationToken ct = default)
     {
-        var data = await cache.GetStringAsync(GetKey(userId), ct);
+        cache.TryGetValue(GetKey(userId), out HashSet<string>? permissions);
 
-        if (data is null)
-            return null;
-
-        return JsonSerializer.Deserialize<HashSet<string>>(data);
+        return Task.FromResult(permissions);
     }
 
-
-    public async Task SetAsync(Guid userId, HashSet<string> permissions, CancellationToken ct = default)
+    public Task SetAsync(Guid userId, HashSet<string> permissions, CancellationToken ct = default)
     {
-        var data = JsonSerializer.Serialize(permissions);
-
-        await cache.SetStringAsync(GetKey(userId), data,
-            new DistributedCacheEntryOptions
+        cache.Set(
+            GetKey(userId),
+            permissions,
+            new MemoryCacheEntryOptions
             {
                 SlidingExpiration = TimeSpan.FromHours(2),
                 AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(8)
-            }, ct);
+            });
+
+        return Task.CompletedTask;
     }
 
-    public async Task RemoveAsync(Guid userId, CancellationToken ct = default)
+
+    public Task RemoveAsync(Guid userId, CancellationToken ct = default)
     {
-        await cache.RemoveAsync(GetKey(userId), ct);
+        cache.Remove(GetKey(userId));
+
+        return Task.CompletedTask;
     }
+
+
     private static string GetKey(Guid userId)
         => $"{Prefix}{userId}";
 }

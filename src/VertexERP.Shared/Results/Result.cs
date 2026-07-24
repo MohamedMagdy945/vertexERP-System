@@ -1,17 +1,15 @@
-﻿namespace VertexERP.Shared.Results;
+﻿using System.Text.Json.Serialization;
+
+namespace VertexERP.Shared.Results;
 
 public class Result<T>
 {
+    [JsonIgnore]
     public ResultStatus Status { get; protected init; }
 
-    public bool IsSuccess => Status is ResultStatus.Success
-                                or ResultStatus.Created
-                                or ResultStatus.NoContent;
-
+    public bool IsSuccess => Status is ResultStatus.Success or ResultStatus.Created or ResultStatus.NoContent;
     public string Message { get; protected init; } = string.Empty;
-    public string StatusName => Status.ToString();
-    public IReadOnlyList<string> Errors { get; protected init; } = [];
-
+    public IReadOnlyList<string>? Errors { get; protected init; }
     public T? Data { get; protected init; }
 
     protected Result()
@@ -99,6 +97,34 @@ public class Result<T>
             Status = ResultStatus.Created,
             Message = message,
             Data = data
+        };
+    }
+    public static Result<T> BadRequest(string message = "The request is invalid.", params string[] errors)
+    {
+        return new()
+        {
+            Status = ResultStatus.BadRequest,
+            Message = message,
+            Errors = errors
+        };
+    }
+
+    public static Result<T> Unprocessable(string message = "The request could not be processed due to semantic errors.", params string[] errors)
+    {
+        return new()
+        {
+            Status = ResultStatus.Unprocessable,
+            Message = message,
+            Errors = errors
+        };
+    }
+
+    public static Result<T> TooManyRequests(string message = "Rate limit exceeded. Please try again later.")
+    {
+        return new()
+        {
+            Status = ResultStatus.TooManyRequests,
+            Message = message
         };
     }
 }

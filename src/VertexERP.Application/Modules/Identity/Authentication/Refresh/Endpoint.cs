@@ -7,16 +7,20 @@ using VertexERP.Application.Common.Extensions;
 using VertexERP.Application.Common.Models.Identity;
 using VertexERP.Shared.Results;
 
-namespace VertexERP.Application.Modules.Identity.Authentication.Login;
+namespace VertexERP.Application.Modules.Identity.Authentication.Refresh;
 
 public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("/authentication/login", async (Command command, Handler handler, HttpContext httpContext, CancellationToken cancellationToken) =>
+        app.MapPost("/authentication/refresh", async (Handler handler, HttpContext httpContext, CancellationToken cancellationToken) =>
         {
-            var result = await handler.HandleAsync(command, cancellationToken);
+            var refreshToken = httpContext.Request.GetRefreshToken();
 
+            if (refreshToken is null)
+                return Result<Response>.Unauthorized().ToMinimalResult();
+
+            var result = await handler.HandleAsync(new Command(refreshToken), cancellationToken);
 
             if (!result.IsSuccess || result.Data is null)
                 return result.ToMinimalResult();
@@ -27,7 +31,7 @@ public sealed class Endpoint : IEndpoint
 
             return Results.Ok(response);
         })
-        .AddValidation<Command>()
+        .WithName("Refresh")
         .MapToApiVersion(1, 0)
         .WithTags("Authentication")
         .Produces<Result<AccessTokenResponse>>(StatusCodes.Status200OK);

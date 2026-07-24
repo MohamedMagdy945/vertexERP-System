@@ -6,12 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Include="Results\Result.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Constant\" />
-  </ItemGroup>
-
 </Project>

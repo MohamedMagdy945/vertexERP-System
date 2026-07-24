@@ -35,7 +35,7 @@ public class Program
 
             builder.Services.AddAuthorization();
 
-            builder.Services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
+            builder.Services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
 
             builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
 

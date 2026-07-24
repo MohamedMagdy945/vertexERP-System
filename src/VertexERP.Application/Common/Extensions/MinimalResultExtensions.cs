@@ -15,23 +15,17 @@ public static class MinimalResultExtensions
 
             ResultStatus.NoContent => Results.NoContent(),
 
-            ResultStatus.ValidationFailed => Results.BadRequest(result),
-
-            ResultStatus.Unauthorized => Results.Json(result, statusCode: StatusCodes.Status401Unauthorized),
-
-            ResultStatus.Forbidden => Results.Json(result, statusCode: StatusCodes.Status403Forbidden),
+            ResultStatus.BadRequest or ResultStatus.ValidationFailed => Results.BadRequest(result),
 
             ResultStatus.NotFound => Results.NotFound(result),
 
             ResultStatus.Conflict => Results.Conflict(result),
 
-            ResultStatus.Unprocessable => Results.UnprocessableEntity(result),
+            ResultStatus.Unauthorized => Results.Json(result, statusCode: StatusCodes.Status401Unauthorized),
 
-            ResultStatus.TooManyRequests => Results.Json(result, statusCode: StatusCodes.Status429TooManyRequests),
+            ResultStatus.Forbidden => Results.Json(result, statusCode: StatusCodes.Status403Forbidden),
 
-            ResultStatus.Failure => Results.Json(result, statusCode: StatusCodes.Status500InternalServerError),
-
-            _ => Results.Problem()
+            _ => Results.Json(result, statusCode: StatusCodes.Status500InternalServerError)
         };
     }
 }

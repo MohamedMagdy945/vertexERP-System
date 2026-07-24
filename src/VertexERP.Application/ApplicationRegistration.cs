@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using System.Text.Json.Serialization;
 using VertexERP.Application.Common;
 using VertexERP.Application.Common.Abstractions.Handler;
 using VertexERP.Application.Common.Extensions;
@@ -16,6 +17,12 @@ public static class ApplicationRegistration
          .AddClasses(classes => classes.AssignableTo<IHandler>())
          .AsSelf()
          .WithScopedLifetime());
+
+        services.ConfigureHttpJsonOptions(options =>
+        {
+            options.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+        });
+
 
         services.AddScoped<AuthenticationService>();
 

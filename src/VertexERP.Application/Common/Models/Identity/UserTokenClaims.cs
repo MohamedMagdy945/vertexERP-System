@@ -1,3 +1,3 @@
 ﻿namespace VertexERP.Application.Common.Models.Identity;
 
-public record UserTokenClaims(Guid UserId, string Email, IEnumerable<string>? Permissions);
+public sealed record UserTokenClaims(Guid UserId, string Email, IEnumerable<string> Roles);

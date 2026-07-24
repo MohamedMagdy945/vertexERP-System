@@ -17,23 +17,23 @@ public sealed class Handler(IApplicationDbContext dbContext, IPasswordHasher pas
     {
         var email = request.Email.Trim().ToLowerInvariant();
 
-        var loginContext = await dbContext.Users.Where(x => x.Email == email)
-                             .ToLoginContext().SingleOrDefaultAsync(cancellationToken);
+        var context = await dbContext.Users.Where(x => x.Email == email).AsNoTracking()
+                            .ToContext().SingleOrDefaultAsync(cancellationToken);
 
-        if (loginContext is null || !loginContext.IsActive || !passwordHasher.Verify(request.Password, loginContext.PasswordHash))
+        if (context is null || !context.IsActive || !passwordHasher.Verify(request.Password, context.PasswordHash))
         {
             logger.LogWarning("Failed login attempt for email: {Email}", email);
 
             return Result<Response>.Unauthorized("Invalid email or password.");
         }
 
-        var userClaims = new UserTokenClaims(loginContext.UserId, loginContext.Email, loginContext.Permissions);
+        var userClaims = new UserTokenClaims(context.UserId, context.Email, context.Roles);
 
         var tokenPair = authenticationService.CreateSession(userClaims);
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        logger.LogInformation("User {UserId} logged in successfully.", loginContext.UserId);
+        logger.LogInformation("User {UserId} logged in successfully.", context.UserId);
 
         return Result<Response>.Success(tokenPair.Adapt<Response>());
     }
