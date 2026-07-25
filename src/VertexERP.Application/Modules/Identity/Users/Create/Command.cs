@@ -2,4 +2,4 @@
 
 namespace VertexERP.Application.Modules.Identity.Users.Create;
 
-public sealed record Command(string FullName, string Email, PortalType Portal);
+public sealed record Command(string Name, string Email, PortalType PortalType);

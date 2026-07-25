@@ -11,6 +11,7 @@ public static class Projection
             u.Name,
             u.Email,
             u.IsActive,
+            u.PortalType.ToString(),
             u.CreatedAt,
             u.UserRoles.Select(ur => ur.Role.Name).ToList()
         ));

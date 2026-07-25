@@ -7,6 +7,7 @@ public sealed record UserResponse(
     string Name,
     string Email,
     bool IsActive,
+    string PortalType,
     DateTime CreatedAt,
     IReadOnlyCollection<string> Roles
     );

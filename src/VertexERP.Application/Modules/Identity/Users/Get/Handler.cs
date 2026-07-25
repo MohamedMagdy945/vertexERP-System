@@ -26,6 +26,7 @@ public sealed class Handler(IApplicationDbContext dbContext) : IHandler
             .OrderBy(x => x.Id)
             .AsNoTracking()
             .ToResponse()
+            .AsSplitQuery()
             .ApplyPagination(request.PageNumber, request.PageSize)
             .ToListAsync(cancellationToken);
 

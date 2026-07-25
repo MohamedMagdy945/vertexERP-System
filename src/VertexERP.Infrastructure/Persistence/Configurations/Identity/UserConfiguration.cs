@@ -25,8 +25,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(x => x.PasswordHash)
             .IsRequired();
 
-        builder.Property(x => x.Portal)
-             .HasConversion<string>();
+        builder.Property(x => x.PortalType)
+            .HasConversion<string>()
+            .HasMaxLength(20);
 
         builder.HasIndex(u => u.Email)
             .IsUnique();

@@ -10,17 +10,17 @@ public class User : Entity
     public string PasswordHash { get; private set; } = default!;
     public bool IsActive { get; private set; }
     public bool IsEmailConfirmed { get; private set; }
-    public PortalType Portal { get; private set; } = PortalType.User;
+    public PortalType PortalType { get; private set; }
     public ICollection<UserRole> UserRoles { get; } = [];
     public ICollection<RefreshToken> RefreshTokens { get; } = [];
 
-    public User(string name, string email, string passwordHash, PortalType portal = PortalType.User)
+    public User(string name, string email, string passwordHash, PortalType portalType = PortalType.User)
     {
         Name = name;
         Email = email.ToLowerInvariant();
         PasswordHash = passwordHash;
         IsActive = true;
-        Portal = portal;
+        PortalType = portalType;
     }
 
     public void Activate()

@@ -35,4 +35,8 @@
     <ProjectReference Include="..\VertexERP.Domain\VertexERP.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Modules\Identity\Users\Update\" />
+  </ItemGroup>
+
 </Project>

@@ -30,7 +30,7 @@ public sealed class Handler(IApplicationDbContext dbContext, IPasswordHasher pas
 
         var hash = passwordHasher.Hash(DefaultPassword);
 
-        var user = new User(request.FullName, email, hash);
+        var user = new User(request.Name, email, hash, request.PortalType);
 
         user.AssignRole(defaultRole.Id);
 
