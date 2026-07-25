@@ -7,6 +7,8 @@ public sealed record UserResponse(
     string Name,
     string Email,
     bool IsActive,
-    DateTime CreatedAt);
+    DateTime CreatedAt,
+    IReadOnlyCollection<string> Roles
+    );
 
 public sealed record Response(Page<UserResponse> Users);

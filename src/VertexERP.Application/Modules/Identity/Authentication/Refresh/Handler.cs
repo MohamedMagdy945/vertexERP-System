@@ -18,15 +18,18 @@ public sealed class Handler(IApplicationDbContext dbContext, IRefreshTokenServic
     {
         var refreshTokenHash = refreshTokenService.ComputeHash(request.RefreshToken);
 
-        var context = await dbContext.RefreshTokens.Where(x => x.TokenHash == refreshTokenHash)
-                            .ToContext().SingleOrDefaultAsync(cancellationToken);
+        var context = await dbContext
+            .RefreshTokens
+            .Where(x => x.TokenHash == refreshTokenHash)
+            .ToContext()
+            .SingleOrDefaultAsync(cancellationToken);
 
         if (context is null || !context.RefreshToken.IsActive)
             return Result<AuthenticationResult>.Unauthorized();
 
 
         var userClaims = new UserTokenClaims(context.UserId, context.UserEmail, context.Roles);
-        var authenticatedUser = new AuthenticatedUser(context.UserId, context.UserEmail, string.Empty);
+        var authenticatedUser = new AuthenticatedUser(context.UserId, context.UserEmail, string.Empty, context.Roles);
 
         var tokenPair = sessionService.Create(userClaims);
 

@@ -31,7 +31,7 @@ public sealed class Handler(IApplicationDbContext dbContext, IPasswordHasher pas
         }
 
         var userClaims = new UserTokenClaims(context.UserId, context.Email, context.Roles);
-        var authenticatedUser = new AuthenticatedUser(context.UserId, context.Email, string.Empty);
+        var authenticatedUser = new AuthenticatedUser(context.UserId, context.Email, string.Empty, context.Roles);
 
         var tokenPair = sessionService.Create(userClaims);
 

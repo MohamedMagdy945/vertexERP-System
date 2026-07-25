@@ -1,4 +1,5 @@
 ﻿using VertexERP.Domain.Common;
+using VertexERP.Domain.Module.Identity.Enum;
 
 namespace VertexERP.Domain.Module.Identity.Entities;
 
@@ -9,16 +10,17 @@ public class User : Entity
     public string PasswordHash { get; private set; } = default!;
     public bool IsActive { get; private set; }
     public bool IsEmailConfirmed { get; private set; }
-
+    public PortalType Portal { get; private set; } = PortalType.User;
     public ICollection<UserRole> UserRoles { get; } = [];
     public ICollection<RefreshToken> RefreshTokens { get; } = [];
 
-    public User(string name, string email, string passwordHash)
+    public User(string name, string email, string passwordHash, PortalType portal = PortalType.User)
     {
         Name = name;
         Email = email.ToLowerInvariant();
         PasswordHash = passwordHash;
         IsActive = true;
+        Portal = portal;
     }
 
     public void Activate()

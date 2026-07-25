@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using VertexERP.Application.Common.Abstractions.Endpoint;
 using VertexERP.Application.Common.Extensions;
+using VertexERP.Application.Shared.Constant;
 using VertexERP.Application.Shared.Results;
 
 namespace VertexERP.Application.Modules.Identity.Users.Me;
@@ -17,9 +18,9 @@ public sealed class Endpoint : IEndpoint
 
             return result.ToMinimalResult();
         })
-        .MapToApiVersion(1, 0)
         .RequireAuthorization()
-        .WithTags("Identity")
+        .MapToApiVersion(1, 0)
+        .WithTags(Tags.Identity)
         .Produces<Result<Response>>(StatusCodes.Status200OK);
     }
 }

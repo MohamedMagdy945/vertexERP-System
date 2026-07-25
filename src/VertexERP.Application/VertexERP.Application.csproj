@@ -35,8 +35,4 @@
     <ProjectReference Include="..\VertexERP.Domain\VertexERP.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Common\Contracts\Authentication\" />
-  </ItemGroup>
-
 </Project>

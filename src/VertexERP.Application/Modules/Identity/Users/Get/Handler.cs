@@ -1,5 +1,4 @@
-﻿using Mapster;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using VertexERP.Application.Common.Abstractions.Handler;
 using VertexERP.Application.Common.Abstractions.Persistence;
 using VertexERP.Application.Common.Extensions;
@@ -25,7 +24,8 @@ public sealed class Handler(IApplicationDbContext dbContext) : IHandler
 
         var items = await query
             .OrderBy(x => x.Id)
-            .ProjectToType<UserResponse>()
+            .AsNoTracking()
+            .ToResponse()
             .ApplyPagination(request.PageNumber, request.PageSize)
             .ToListAsync(cancellationToken);
 

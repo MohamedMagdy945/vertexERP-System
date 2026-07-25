@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using VertexERP.Application.Common.Abstractions.Endpoint;
 using VertexERP.Application.Common.Extensions;
+using VertexERP.Application.Shared.Constant;
 using VertexERP.Application.Shared.Results;
 
 namespace VertexERP.Application.Modules.Identity.Authentication.Refresh;
@@ -29,9 +30,8 @@ public sealed class Endpoint : IEndpoint
 
             return response.ToMinimalResult();
         })
-        .WithName("Refresh")
         .MapToApiVersion(1, 0)
-        .WithTags("Authentication")
+        .WithTags(Tags.Authentication)
         .Produces<Result<Response>>(StatusCodes.Status200OK);
     }
 }

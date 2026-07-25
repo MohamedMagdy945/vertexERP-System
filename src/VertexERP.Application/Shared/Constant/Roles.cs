@@ -2,8 +2,8 @@
 
 public static class Roles
 {
-    public const string User = "User";
-    public const string Admin = "Admin";
+    public const string User = "user";
+    public const string Admin = "admin";
     public const string SystemAdmin = "system_admin";
     public const string SecurityAdmin = "security_admin";
 

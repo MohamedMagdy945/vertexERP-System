@@ -22,7 +22,7 @@ public sealed class Endpoint : IEndpoint
         })
         .RequireRole(Roles.SecurityAdmin)
         .MapToApiVersion(1, 0)
-        .WithTags("Identity")
+        .WithTags(Tags.Identity)
         .Produces<Result<Page<Response>>>(StatusCodes.Status200OK);
     }
 }

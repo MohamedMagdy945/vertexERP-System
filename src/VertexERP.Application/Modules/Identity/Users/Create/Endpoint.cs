@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using VertexERP.Application.Common.Abstractions.Endpoint;
+using VertexERP.Application.Common.Authorization;
 using VertexERP.Application.Common.Extensions;
+using VertexERP.Application.Shared.Constant;
 
 namespace VertexERP.Application.Modules.Identity.Users.Create;
 
@@ -16,8 +18,9 @@ public sealed class Endpoint : IEndpoint
             var result = await handler.HandleAsync(command, cancellationToken);
             return result.ToMinimalResult();
         })
+        .RequireRole(Roles.SecurityAdmin)
         .AddValidation<Command>()
         .MapToApiVersion(1, 0)
-        .WithTags("Identity");
+        .WithTags(Tags.Identity);
     }
 }

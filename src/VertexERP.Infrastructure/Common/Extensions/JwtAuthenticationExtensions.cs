@@ -24,6 +24,7 @@ public static class JwtAuthenticationExtensions
 
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
+                    RoleClaimType = "role",
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,
@@ -35,6 +36,7 @@ public static class JwtAuthenticationExtensions
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(settings.SecretKey)),
 
                     ClockSkew = TimeSpan.Zero
+
                 };
 
 

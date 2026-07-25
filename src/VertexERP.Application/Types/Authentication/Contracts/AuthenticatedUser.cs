@@ -3,4 +3,5 @@
 public sealed record AuthenticatedUser(
     Guid Id,
     string Email,
-    string Portal);
+    string Portal,
+    IReadOnlyCollection<string> Roles);

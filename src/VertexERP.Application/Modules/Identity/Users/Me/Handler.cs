@@ -1,5 +1,4 @@
-﻿using Mapster;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using VertexERP.Application.Common.Abstractions.Handler;
 using VertexERP.Application.Common.Abstractions.Identity;
 using VertexERP.Application.Common.Abstractions.Persistence;
@@ -12,8 +11,10 @@ public sealed class Handler(IApplicationDbContext dbContext, ICurrentUserService
     public async Task<Result<Response>> HandleAsync(CancellationToken cancellationToken)
     {
         var response = await dbContext.Users
-              .AsNoTracking().Where(u => u.Id == currentUser.UserId)
-              .ProjectToType<Response>().SingleOrDefaultAsync(cancellationToken);
+                      .AsNoTracking()
+                      .Where(u => u.Id == currentUser.UserId)
+                      .ToResponse()
+                      .SingleOrDefaultAsync(cancellationToken);
 
         if (response is null)
             return Result<Response>.NotFound();

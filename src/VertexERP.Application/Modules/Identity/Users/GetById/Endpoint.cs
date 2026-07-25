@@ -19,9 +19,9 @@ public sealed class Endpoint : IEndpoint
 
             return result.ToMinimalResult();
         })
-        .MapToApiVersion(1, 0)
         .RequireRole(Roles.SecurityAdmin)
-        .WithTags("Identity")
+        .MapToApiVersion(1, 0)
+        .WithTags(Tags.Identity)
         .Produces<Result<Response>>(StatusCodes.Status200OK);
     }
 }
