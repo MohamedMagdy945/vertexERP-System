@@ -9,7 +9,7 @@ namespace VertexERP.Application.Modules.Identity.Authentication.Logout;
 
 public sealed class Handler(IApplicationDbContext dbContext, IRefreshTokenService refreshTokenService, ILogger<Handler> logger) : IHandler
 {
-    public async Task<Result<Response>> HandleAsync(Command request, CancellationToken cancellationToken)
+    public async Task<Result<Response>> HandleAsync(Request request, CancellationToken cancellationToken)
     {
         var refreshTokenHash = refreshTokenService.ComputeHash(request.RefreshToken);
 

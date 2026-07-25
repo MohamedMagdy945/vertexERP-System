@@ -1,4 +1,4 @@
-﻿namespace VertexERP.Application.Modules.Identity.Users.GetById;
+﻿namespace VertexERP.Application.Modules.Identity.Me;
 
 public sealed class Response
 {

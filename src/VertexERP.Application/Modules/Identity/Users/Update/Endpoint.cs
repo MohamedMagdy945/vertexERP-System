@@ -4,23 +4,22 @@ using Microsoft.AspNetCore.Routing;
 using VertexERP.Application.Common.Abstractions.Endpoint;
 using VertexERP.Application.Common.Extensions;
 using VertexERP.Application.Shared.Constant;
-using VertexERP.Application.Shared.Results;
 
-namespace VertexERP.Application.Modules.Identity.Users.Me;
+namespace VertexERP.Application.Modules.Identity.Users.Update;
+
 
 public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("/users/me", async (Handler handler, CancellationToken cancellationToken) =>
+        app.MapPost("users", async (Request command, Handler handler, CancellationToken cancellationToken) =>
         {
-            var result = await handler.HandleAsync(cancellationToken);
-
+            var result = await handler.HandleAsync(command, cancellationToken);
             return result.ToMinimalResult();
         })
-        .RequireAuthorization()
+        .RequireRole(Roles.SecurityAdmin)
+        .AddValidation<Request>()
         .MapToApiVersion(1, 0)
-        .WithTags(Tags.Identity)
-        .Produces<Result<Response>>(StatusCodes.Status200OK);
+        .WithTags(Tags.Identity);
     }
 }

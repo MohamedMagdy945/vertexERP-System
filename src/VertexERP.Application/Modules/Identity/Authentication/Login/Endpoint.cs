@@ -12,7 +12,7 @@ public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("/authentication/login", async (Command command, Handler handler, HttpContext httpContext, CancellationToken cancellationToken) =>
+        app.MapPost("/authentication/login", async (Request command, Handler handler, HttpContext httpContext, CancellationToken cancellationToken) =>
         {
             var result = await handler.HandleAsync(command, cancellationToken);
 
@@ -25,7 +25,7 @@ public sealed class Endpoint : IEndpoint
 
             return response.ToMinimalResult();
         })
-        .AddValidation<Command>()
+        .AddValidation<Request>()
         .MapToApiVersion(1, 0)
         .WithTags(Tags.Authentication)
         .Produces<Result<Response>>(StatusCodes.Status200OK);

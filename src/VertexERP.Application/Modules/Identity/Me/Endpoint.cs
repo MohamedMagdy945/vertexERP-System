@@ -6,25 +6,21 @@ using VertexERP.Application.Common.Extensions;
 using VertexERP.Application.Shared.Constant;
 using VertexERP.Application.Shared.Results;
 
-namespace VertexERP.Application.Modules.Identity.Authentication.Logout;
+namespace VertexERP.Application.Modules.Identity.Me;
 
 public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("/authentication/logout", async (Handler handler, HttpContext httpContext, CancellationToken cancellationToken) =>
+        app.MapGet("/me", async (Handler handler, CancellationToken cancellationToken) =>
         {
-            var refreshToken = httpContext.Request.GetRefreshToken();
-
-            if (refreshToken is null)
-                return Result<Response>.Unauthorized().ToMinimalResult();
-
-            var result = await handler.HandleAsync(new Request(refreshToken), cancellationToken);
+            var result = await handler.HandleAsync(new Request(), cancellationToken);
 
             return result.ToMinimalResult();
         })
+        .RequireAuthorization()
         .MapToApiVersion(1, 0)
-        .WithTags(Tags.Authentication)
+        .WithTags(Tags.Identity)
         .Produces<Result<Response>>(StatusCodes.Status200OK);
     }
 }

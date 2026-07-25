@@ -17,12 +17,16 @@ public class User : Entity
     public User(string name, string email, string passwordHash, PortalType portalType = PortalType.User)
     {
         Name = name;
-        Email = email.ToLowerInvariant();
+        Email = email;
         PasswordHash = passwordHash;
         IsActive = true;
         PortalType = portalType;
     }
-
+    public void Update(string name, PortalType portalType)
+    {
+        Name = name;
+        PortalType = portalType;
+    }
     public void Activate()
     {
         IsActive = true;

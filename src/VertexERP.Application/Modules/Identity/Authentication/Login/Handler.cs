@@ -13,7 +13,7 @@ namespace VertexERP.Application.Modules.Identity.Authentication.Login;
 public sealed class Handler(IApplicationDbContext dbContext, IPasswordHasher passwordHasher
     , SessionService sessionService, ILogger<Handler> logger) : IHandler
 {
-    public async Task<Result<AuthenticationResult>> HandleAsync(Command request, CancellationToken cancellationToken)
+    public async Task<Result<AuthenticationResult>> HandleAsync(Request request, CancellationToken cancellationToken)
     {
         var email = request.Email.Trim().ToLowerInvariant();
 

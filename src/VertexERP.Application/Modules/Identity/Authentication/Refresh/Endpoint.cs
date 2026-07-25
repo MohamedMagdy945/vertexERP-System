@@ -19,7 +19,7 @@ public sealed class Endpoint : IEndpoint
             if (refreshToken is null)
                 return Result<Response>.Unauthorized().ToMinimalResult();
 
-            var result = await handler.HandleAsync(new Command(refreshToken), cancellationToken);
+            var result = await handler.HandleAsync(new Request(refreshToken), cancellationToken);
 
             if (!result.IsSuccess || result.Data is null)
                 return result.ToMinimalResult();

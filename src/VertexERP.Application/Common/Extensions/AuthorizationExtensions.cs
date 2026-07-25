@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using VertexERP.Application.Common.Authorization;
 
-namespace VertexERP.Application.Common.Authorization;
+namespace VertexERP.Application.Common.Extensions;
 
 public static class AuthorizationExtensions
 {

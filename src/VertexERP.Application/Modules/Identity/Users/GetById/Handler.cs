@@ -8,13 +8,13 @@ namespace VertexERP.Application.Modules.Identity.Users.GetById;
 
 public sealed class Handler(IApplicationDbContext dbContext, IUserPermissionCache userPermissionCache) : IHandler
 {
-    public async Task<Result<Response>> HandleAsync(Query request, CancellationToken cancellationToken)
+    public async Task<Result<Response>> HandleAsync(Request request, CancellationToken cancellationToken)
     {
         var user = await dbContext.Users
-            .AsNoTracking()
-            .Where(u => u.Id == request.Id)
-            .ToResponse()
-            .FirstOrDefaultAsync(cancellationToken);
+             .AsNoTracking()
+             .Where(u => u.Id == request.Id)
+             .ToResponse()
+             .SingleOrDefaultAsync(cancellationToken);
 
         if (user is null)
             return Result<Response>.NotFound("User Not Found");

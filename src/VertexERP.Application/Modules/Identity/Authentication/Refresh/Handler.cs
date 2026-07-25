@@ -14,7 +14,7 @@ public sealed class Handler(IApplicationDbContext dbContext, IRefreshTokenServic
     SessionService sessionService,
     ILogger<Handler> logger) : IHandler
 {
-    public async Task<Result<AuthenticationResult>> HandleAsync(Command request, CancellationToken cancellationToken)
+    public async Task<Result<AuthenticationResult>> HandleAsync(Request request, CancellationToken cancellationToken)
     {
         var refreshTokenHash = refreshTokenService.ComputeHash(request.RefreshToken);
 

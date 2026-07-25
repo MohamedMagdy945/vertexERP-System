@@ -1,6 +1,6 @@
 ﻿using VertexERP.Domain.Module.Identity.Entities;
 
-namespace VertexERP.Application.Modules.Identity.Users.GetById;
+namespace VertexERP.Application.Modules.Identity.Me;
 
 public static class Projection
 {

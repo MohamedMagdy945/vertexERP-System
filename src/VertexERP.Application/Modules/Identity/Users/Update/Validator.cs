@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace VertexERP.Application.Modules.Identity.Users.Create;
+namespace VertexERP.Application.Modules.Identity.Users.Update;
 
 public sealed class Validator : AbstractValidator<Request>
 {

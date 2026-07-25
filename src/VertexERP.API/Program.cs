@@ -4,7 +4,6 @@ using VertexERP.API.Extensions;
 using VertexERP.API.Middlewares;
 using VertexERP.Application;
 using VertexERP.Infrastructure;
-using VertexERP.Infrastructure.Common.Extensions;
 
 namespace VertexERP.API;
 
@@ -39,7 +38,7 @@ public class Program
 
             app.UseSwaggerDocumentation();
 
-            await app.SeedDataAsync();
+            //await app.SeedDataAsync();
 
             app.UseMiddleware<CorrelationIdMiddleware>();
 

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using VertexERP.Application.Common.Abstractions.Endpoint;
-using VertexERP.Application.Common.Authorization;
 using VertexERP.Application.Common.Extensions;
 using VertexERP.Application.Shared.Constant;
 using VertexERP.Application.Shared.Results;
@@ -15,7 +14,7 @@ public sealed class Endpoint : IEndpoint
     {
         app.MapGet("/users/{id:guid}", async (Guid id, Handler handler, CancellationToken cancellationToken) =>
         {
-            var result = await handler.HandleAsync(new Query(id), cancellationToken);
+            var result = await handler.HandleAsync(new Request(id), cancellationToken);
 
             return result.ToMinimalResult();
         })
