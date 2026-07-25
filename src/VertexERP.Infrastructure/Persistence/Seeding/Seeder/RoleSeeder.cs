@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using VertexERP.Application.Shared.Constant;
 using VertexERP.Domain.Module.Identity.Entities;
 using VertexERP.Infrastructure.Persistence.Seeding.SeederRunner;
-using VertexERP.Shared.Constant;
 
 namespace VertexERP.Infrastructure.Persistence.Seeding.Seeder
 {
@@ -14,7 +14,7 @@ namespace VertexERP.Infrastructure.Persistence.Seeding.Seeder
             if (await dbContext.Roles.AnyAsync())
                 return;
 
-            var roles = Roles.GetAll().Select(roleName => new Role(roleName));
+            var roles = Roles.All().Select(roleName => new Role(roleName));
 
             await dbContext.Roles.AddRangeAsync(roles);
 

@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Azure;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using VertexERP.Application.Common.Abstractions.Endpoint;
+using VertexERP.Application.Common.Authorization;
 using VertexERP.Application.Common.Extensions;
-using VertexERP.Application.Common.Models.Identity;
-using VertexERP.Shared.Results;
+using VertexERP.Application.Shared.Constant;
+using VertexERP.Application.Shared.Results;
 
 namespace VertexERP.Application.Modules.Identity.Users.Get;
 
@@ -18,8 +20,9 @@ public sealed class Endpoint : IEndpoint
 
             return result.ToMinimalResult();
         })
+        .RequireRole(Roles.SecurityAdmin)
         .MapToApiVersion(1, 0)
         .WithTags("Identity")
-        .Produces<Result<AccessTokenResponse>>(StatusCodes.Status200OK);
+        .Produces<Result<Page<Response>>>(StatusCodes.Status200OK);
     }
 }

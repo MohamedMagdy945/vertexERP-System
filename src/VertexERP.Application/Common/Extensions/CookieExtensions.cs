@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using VertexERP.Application.Types.Authentication.Models;
 
 namespace VertexERP.Application.Common.Extensions;
 
@@ -13,15 +14,14 @@ public static class CookieExtensions
         return token;
     }
 
-    public static void SetRefreshTokenCookie(this HttpResponse response, string refreshToken
-        , DateTime expires, bool isSecure = true)
+    public static void SetRefreshTokenCookie(this HttpResponse response, RefreshTokenInfo refreshTokenInfo, bool isSecure = true)
     {
-        response.Cookies.Append(RefreshTokenCookieName, refreshToken, new CookieOptions
+        response.Cookies.Append(RefreshTokenCookieName, refreshTokenInfo.Token, new CookieOptions
         {
             HttpOnly = true,
             Secure = isSecure,
             SameSite = SameSiteMode.Lax,
-            Expires = expires,
+            Expires = refreshTokenInfo.ExpiresAt,
             Path = CookiePath
         });
     }

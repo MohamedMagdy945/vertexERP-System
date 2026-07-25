@@ -1,40 +1,45 @@
-﻿using Mapster;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using VertexERP.Application.Common.Abstractions.Handler;
 using VertexERP.Application.Common.Abstractions.Identity;
 using VertexERP.Application.Common.Abstractions.Persistence;
-using VertexERP.Application.Common.Models.Identity;
 using VertexERP.Application.Services;
-using VertexERP.Shared.Results;
+using VertexERP.Application.Shared.Results;
+using VertexERP.Application.Types.Authentication.Contracts;
+using VertexERP.Application.Types.Authentication.Models;
 
 namespace VertexERP.Application.Modules.Identity.Authentication.Login;
 
-public sealed class Handler(IApplicationDbContext dbContext, IPasswordHasher passwordHasher,
-    ILogger<Handler> logger, AuthenticationService authenticationService) : IHandler
+public sealed class Handler(IApplicationDbContext dbContext, IPasswordHasher passwordHasher
+    , AuthenticationSessionService authenticationSessionService, ILogger<Handler> logger) : IHandler
 {
-    public async Task<Result<Response>> HandleAsync(Query request, CancellationToken cancellationToken)
+    public async Task<Result<AuthenticationResult>> HandleAsync(Command request, CancellationToken cancellationToken)
     {
         var email = request.Email.Trim().ToLowerInvariant();
 
-        var context = await dbContext.Users.Where(x => x.Email == email).AsNoTracking()
-                            .ToContext().SingleOrDefaultAsync(cancellationToken);
+        var context = await dbContext.Users
+            .Where(x => x.Email == email)
+            .AsNoTracking()
+            .ToContext()
+            .SingleOrDefaultAsync(cancellationToken);
 
         if (context is null || !context.IsActive || !passwordHasher.Verify(request.Password, context.PasswordHash))
         {
             logger.LogWarning("Failed login attempt for email: {Email}", email);
 
-            return Result<Response>.Unauthorized("Invalid email or password.");
+            return Result<AuthenticationResult>.Unauthorized("Invalid email or password.");
         }
 
         var userClaims = new UserTokenClaims(context.UserId, context.Email, context.Roles);
+        var authenticatedUser = new AuthenticatedUser(context.UserId, context.Email, string.Empty);
 
-        var tokenPair = authenticationService.CreateSession(userClaims);
+        var authenticationResult = authenticationSessionService.Create(authenticatedUser, userClaims);
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        logger.LogInformation("User {UserId} logged in successfully.", context.UserId);
+        logger.LogInformation("User {UserId} logged in successfully.",
+            context.UserId);
 
-        return Result<Response>.Success(tokenPair.Adapt<Response>());
+        return Result<AuthenticationResult>.Success(authenticationResult);
     }
 }

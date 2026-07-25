@@ -1,13 +1,10 @@
-using Microsoft.AspNetCore.Authorization;
 using Serilog;
-using VertexERP.API.Configurations.Authorization;
-using VertexERP.API.Configurations.Logging;
-using VertexERP.API.Configurations.Swagger;
-using VertexERP.API.Configurations.Versioning;
+using VertexERP.API.Configurations;
 using VertexERP.API.Extensions;
 using VertexERP.API.Middlewares;
 using VertexERP.Application;
 using VertexERP.Infrastructure;
+using VertexERP.Infrastructure.Common.Extensions;
 
 namespace VertexERP.API;
 
@@ -26,18 +23,11 @@ public class Program
             // Add services to the container.
             builder.AddSerilogLogging();
             builder.Services.AddSwaggerConfiguration();
-            builder.Services.AddControllers();
             builder.Services.AddApiVersioningConfiguration();
 
             builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
             builder.Services.AddProblemDetails();
             builder.Services.AddHttpContextAccessor();
-
-            builder.Services.AddAuthorization();
-
-            builder.Services.AddScoped<IAuthorizationHandler, Handler>();
-
-            builder.Services.AddSingleton<IAuthorizationPolicyProvider, Provider>();
 
             builder.Services.AddApplicationServices();
 
@@ -49,7 +39,7 @@ public class Program
 
             app.UseSwaggerDocumentation();
 
-            //await app.SeedDataAsync();
+            await app.SeedDataAsync();
 
             app.UseMiddleware<CorrelationIdMiddleware>();
 

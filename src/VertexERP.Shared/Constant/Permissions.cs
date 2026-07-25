@@ -19,7 +19,7 @@ public static class Permissions
     }
 
 
-    public static IReadOnlyList<string> GetAll()
+    public static IReadOnlyList<string> All()
         => [ Products.Read,Products.Create,Products.Update,Products.Delete
             , Categories.Read, Categories.Create, Categories.Update,Categories.Delete];
 }

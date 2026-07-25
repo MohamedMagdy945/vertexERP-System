@@ -1,9 +1,10 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json.Serialization;
 using VertexERP.Application.Common;
 using VertexERP.Application.Common.Abstractions.Handler;
-using VertexERP.Application.Common.Extensions;
+using VertexERP.Application.Common.Authorization;
 using VertexERP.Application.Services;
 
 namespace VertexERP.Application;
@@ -24,11 +25,16 @@ public static class ApplicationRegistration
         });
 
 
-        services.AddScoped<AuthenticationService>();
+        services.AddScoped<AuthenticationSessionService>();
 
         services.AddValidatorsFromAssembly(typeof(ApplicationAssemblyMarker).Assembly);
 
-        services.AddMapsterConfigurations();
+        //services.AddMapsterConfigurations();
+
+
+        services.AddAuthorization();
+
+        services.AddScoped<IAuthorizationHandler, PermissionHandler>();
 
         return services;
     }

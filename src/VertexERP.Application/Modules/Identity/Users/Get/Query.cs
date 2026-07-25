@@ -1,4 +1,4 @@
-﻿using VertexERP.Shared.Pagination;
+﻿using VertexERP.Application.Shared.Pagination;
 
 namespace VertexERP.Application.Modules.Identity.Users.Get;
 

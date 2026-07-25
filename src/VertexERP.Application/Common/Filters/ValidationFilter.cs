@@ -3,7 +3,7 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using VertexERP.Application.Common.Extensions;
-using VertexERP.Shared.Results;
+using VertexERP.Application.Shared.Results;
 
 public sealed class ValidationFilter<TRequest>(IValidator<TRequest>? validator = null)
     : IEndpointFilter where TRequest : class

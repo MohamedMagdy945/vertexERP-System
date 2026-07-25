@@ -17,7 +17,10 @@
 	<PackageReference Include="Asp.Versioning.Http" Version="10.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Common\Abstractions\Identity\ITokenPairGenerator.cs" />
+    <None Include="Common\Abstractions\Identity\IRefreshTokenService.cs" />
+    <None Include="Common\Abstractions\Identity\IAccessTokenGenerator.cs" />
+    <None Include="Types\Authentication\Models\AccessTokenInfo.cs" />
+    <None Include="Types\Authentication\Models\RefreshTokenInfo.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,7 +33,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\VertexERP.Domain\VertexERP.Domain.csproj" />
-    <ProjectReference Include="..\VertexERP.Shared\VertexERP.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Common\Contracts\Authentication\" />
   </ItemGroup>
 
 </Project>

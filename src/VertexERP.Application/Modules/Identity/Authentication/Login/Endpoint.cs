@@ -1,11 +1,9 @@
-﻿using Mapster;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using VertexERP.Application.Common.Abstractions.Endpoint;
 using VertexERP.Application.Common.Extensions;
-using VertexERP.Application.Common.Models.Identity;
-using VertexERP.Shared.Results;
+using VertexERP.Application.Shared.Results;
 
 namespace VertexERP.Application.Modules.Identity.Authentication.Login;
 
@@ -13,22 +11,22 @@ public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("/authentication/login", async (Query command, Handler handler, HttpContext httpContext, CancellationToken cancellationToken) =>
+        app.MapPost("/authentication/login", async (Command command, Handler handler, HttpContext httpContext, CancellationToken cancellationToken) =>
         {
             var result = await handler.HandleAsync(command, cancellationToken);
 
             if (!result.IsSuccess || result.Data is null)
                 return result.ToMinimalResult();
 
-            httpContext.Response.SetRefreshTokenCookie(result.Data.RefreshToken, result.Data.RefreshTokenExpiresAt, httpContext.Request.IsHttps);
+            httpContext.Response.SetRefreshTokenCookie(result.Data.RefreshToken, httpContext.Request.IsHttps);
 
-            var mappedResult = Result<AccessTokenResponse>.Success(result.Data.Adapt<AccessTokenResponse>());
+            var response = Result<Response>.Success(new Response(result.Data.User, result.Data.AccessToken));
 
-            return mappedResult.ToMinimalResult();
+            return response.ToMinimalResult();
         })
-        .AddValidation<Query>()
+        .AddValidation<Command>()
         .MapToApiVersion(1, 0)
         .WithTags("Authentication")
-        .Produces<Result<AccessTokenResponse>>(StatusCodes.Status200OK);
+        .Produces<Result<Response>>(StatusCodes.Status200OK);
     }
 }

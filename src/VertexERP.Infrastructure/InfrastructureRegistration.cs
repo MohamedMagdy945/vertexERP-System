@@ -11,8 +11,7 @@ using VertexERP.Infrastructure.Common.Settings;
 using VertexERP.Infrastructure.Persistence;
 using VertexERP.Infrastructure.Services.Cache;
 using VertexERP.Infrastructure.Services.Http;
-using VertexERP.Infrastructure.Services.Identity.Authentication;
-using VertexERP.Infrastructure.Services.Identity.UserPermission;
+using VertexERP.Infrastructure.Services.Identity;
 using VertexERP.Infrastructure.Services.Storage;
 
 namespace VertexERP.Infrastructure;
@@ -26,12 +25,13 @@ public static class InfrastructureRegistration
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
         });
 
-        services.Configure<TokenPairSettings>(configuration.GetRequiredSection(nameof(TokenPairSettings)));
+        services.Configure<RefreshTokenSettings>(configuration.GetRequiredSection(nameof(RefreshTokenSettings)));
+        services.Configure<AccessTokenSettings>(configuration.GetRequiredSection(nameof(AccessTokenSettings)));
 
-        services.AddSingleton<ITokenPairGenerator, TokenPairGenerator>();
 
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
-        services.AddSingleton<IRefreshTokenHasher, RefreshTokenHasher>();
+        services.AddSingleton<IRefreshTokenService, RefreshTokenService>();
+        services.AddSingleton<IAccessTokenGenerator, AccessTokenGenerator>();
 
         services.AddSingleton<IClientInfoProvider, ClientInfoProvider>();
 
@@ -43,6 +43,7 @@ public static class InfrastructureRegistration
 
         services.AddScoped<IUserPermissionCache, MemoryUserPermissionCache>();
         services.AddScoped<IUserPermissionService, UserPermissionService>();
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
 
 
         services.AddDataSeeders();

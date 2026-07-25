@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using VertexERP.Application.Common.Abstractions.Handler;
 using VertexERP.Application.Common.Abstractions.Persistence;
-using VertexERP.Shared.Results;
+using VertexERP.Application.Shared.Results;
 
 namespace VertexERP.Application.Modules.Identity.Users.GetById;
 

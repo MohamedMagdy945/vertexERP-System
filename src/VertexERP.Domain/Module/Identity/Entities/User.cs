@@ -29,15 +29,18 @@ public class User : Entity
     {
         IsActive = false;
     }
-    public void AddRole(UserRole userRole)
+    public void AssignRole(Guid roleId)
     {
-        if (!UserRoles.Contains(userRole))
-            UserRoles.Add(userRole);
+        if (UserRoles.Any(r => r.RoleId == roleId))
+            return;
+
+        UserRoles.Add(new UserRole(Id, roleId));
     }
     public void RemoveRole(UserRole userRole)
     {
         UserRoles.Remove(userRole);
     }
+
     public void AddRefreshToken(RefreshToken refreshToken)
     {
         RefreshTokens.Add(refreshToken);

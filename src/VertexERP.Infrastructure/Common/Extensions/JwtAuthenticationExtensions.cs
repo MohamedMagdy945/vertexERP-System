@@ -14,12 +14,14 @@ public static class JwtAuthenticationExtensions
 {
     public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
-        var settings = configuration.GetRequiredSection(nameof(TokenPairSettings))
-            .Get<TokenPairSettings>()!;
+        var settings = configuration.GetRequiredSection(nameof(AccessTokenSettings))
+            .Get<AccessTokenSettings>()!;
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
+                options.MapInboundClaims = false;
+
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,

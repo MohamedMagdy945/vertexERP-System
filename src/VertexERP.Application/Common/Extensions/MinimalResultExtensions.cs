@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using VertexERP.Shared.Results;
+using VertexERP.Application.Shared.Results;
 
 namespace VertexERP.Application.Common.Extensions;
 

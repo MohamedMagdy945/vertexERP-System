@@ -2,16 +2,16 @@
 
 public static class Roles
 {
-    public const string Admin = "Admin";
     public const string User = "User";
-    public const string System = "System";
-    public const string Security = "Security";
+    public const string Admin = "Admin";
+    public const string SystemAdmin = "system_admin";
+    public const string SecurityAdmin = "security_admin";
 
-    public static IReadOnlyList<string> GetAll() =>
+    public static IReadOnlyList<string> All() =>
     [
         Admin,
         User,
-        System,
-        Security,
+        SystemAdmin,
+        SecurityAdmin,
     ];
 }
