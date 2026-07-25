@@ -18,9 +18,9 @@ public sealed class Endpoint : IEndpoint
             if (!result.IsSuccess || result.Data is null)
                 return result.ToMinimalResult();
 
-            httpContext.Response.SetRefreshTokenCookie(result.Data.RefreshToken, httpContext.Request.IsHttps);
+            httpContext.Response.SetRefreshTokenCookie(result.Data.TokenPair.RefreshToken, httpContext.Request.IsHttps);
 
-            var response = Result<Response>.Success(new Response(result.Data.User, result.Data.AccessToken));
+            var response = Result<Response>.Success(new Response(result.Data.User, result.Data.TokenPair.AccessToken));
 
             return response.ToMinimalResult();
         })

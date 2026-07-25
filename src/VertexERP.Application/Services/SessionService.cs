@@ -7,13 +7,13 @@ using VertexERP.Domain.Module.Identity.Entities;
 
 namespace VertexERP.Application.Services;
 
-public sealed class AuthenticationSessionService(
+public sealed class SessionService(
     IAccessTokenGenerator accessTokenGenerator,
     IRefreshTokenService refreshTokenService,
     IClientInfoProvider clientInfoProvider,
     IApplicationDbContext dbContext)
 {
-    public AuthenticationResult Create(AuthenticatedUser user, UserTokenClaims userClaims)
+    public TokenPair Create(UserTokenClaims userClaims)
     {
         var accessTokenInfo = accessTokenGenerator.Generate(userClaims);
 
@@ -30,6 +30,6 @@ public sealed class AuthenticationSessionService(
 
         dbContext.RefreshTokens.Add(refreshToken);
 
-        return new AuthenticationResult(user, accessTokenInfo, refreshTokenInfo);
+        return new TokenPair(accessTokenInfo, refreshTokenInfo);
     }
 }

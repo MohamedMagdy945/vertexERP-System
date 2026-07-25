@@ -1,31 +1,31 @@
-﻿//using Microsoft.AspNetCore.Builder;
-//using Microsoft.AspNetCore.Http;
-//using Microsoft.AspNetCore.Routing;
-//using VertexERP.Application.Common.Abstractions.Endpoint;
-//using VertexERP.Application.Common.Extensions;
-//using VertexERP.Application.Modules.Identity.Authentication.Login;
-//using VertexERP.Shared.Results;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
+using VertexERP.Application.Common.Abstractions.Endpoint;
+using VertexERP.Application.Common.Extensions;
+using VertexERP.Application.Modules.Identity.Authentication.Login;
+using VertexERP.Application.Shared.Results;
 
-//namespace VertexERP.Application.Modules.Identity.Authentication.Logout;
+namespace VertexERP.Application.Modules.Identity.Authentication.Logout;
 
-//public sealed class Endpoint : IEndpoint
-//{
-//    public void MapEndpoint(IEndpointRouteBuilder app)
-//    {
-//        app.MapPost("/authentication/logout", async (Handler handler, HttpContext httpContext, CancellationToken cancellationToken) =>
-//        {
-//            var refreshToken = httpContext.Request.GetRefreshToken();
+public sealed class Endpoint : IEndpoint
+{
+    public void MapEndpoint(IEndpointRouteBuilder app)
+    {
+        app.MapPost("/authentication/logout", async (Handler handler, HttpContext httpContext, CancellationToken cancellationToken) =>
+        {
+            var refreshToken = httpContext.Request.GetRefreshToken();
 
-//            if (refreshToken is null)
-//                return Result<Response>.Unauthorized().ToMinimalResult();
+            if (refreshToken is null)
+                return Result<Response>.Unauthorized().ToMinimalResult();
 
-//            var result = await handler.HandleAsync(new Command(refreshToken), cancellationToken);
+            var result = await handler.HandleAsync(new Command(refreshToken), cancellationToken);
 
-//            return result.ToMinimalResult();
-//        })
-//        .WithName("Logout")
-//        .MapToApiVersion(1, 0)
-//        .WithTags("Authentication")
-//        .Produces<Result<Response>>(StatusCodes.Status200OK);
-//    }
-//}
+            return result.ToMinimalResult();
+        })
+        .WithName("Logout")
+        .MapToApiVersion(1, 0)
+        .WithTags("Authentication")
+        .Produces<Result<Response>>(StatusCodes.Status200OK);
+    }
+}

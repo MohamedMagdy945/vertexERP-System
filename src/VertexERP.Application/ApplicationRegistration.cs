@@ -25,7 +25,7 @@ public static class ApplicationRegistration
         });
 
 
-        services.AddScoped<AuthenticationSessionService>();
+        services.AddScoped<SessionService>();
 
         services.AddValidatorsFromAssembly(typeof(ApplicationAssemblyMarker).Assembly);
 

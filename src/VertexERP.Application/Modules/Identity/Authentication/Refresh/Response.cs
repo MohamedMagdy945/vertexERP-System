@@ -1,8 +1,10 @@
-﻿namespace VertexERP.Application.Modules.Identity.Authentication.Refresh;
+﻿using VertexERP.Application.Types.Authentication.Contracts;
+using VertexERP.Application.Types.Authentication.Models;
+
+namespace VertexERP.Application.Modules.Identity.Authentication.Refresh;
+
 
 public sealed record Response(
-    string AccessToken,
-    string RefreshToken,
-    DateTime AccessTokenExpiresAt,
-    DateTime RefreshTokenExpiresAt
-);
+    AuthenticatedUser User,
+    AccessTokenInfo AccessToken);
+
