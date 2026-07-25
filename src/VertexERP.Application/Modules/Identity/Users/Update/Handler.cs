@@ -11,23 +11,19 @@ public sealed class Handler(IApplicationDbContext dbContext, IPasswordHasher pas
 {
     public async Task<Result<Response>> HandleAsync(Request request, CancellationToken cancellationToken)
     {
-        var email = request.Email.Trim().ToLowerInvariant();
+
+        var user = await dbContext.Users
+             .Where(u => u.Id == request.Id)
+             .SingleOrDefaultAsync(cancellationToken);
 
 
+        if (user is null)
+            return Result<Response>.NotFound("User not found.");
 
-        var emailExists = await dbContext.Users
-            .AnyAsync(u => u.Email == email, cancellationToken);
-
-        if (emailExists)
-            return Result<Response>.Conflict("Email already exists.");
-
-
-        user.AssignRole(defaultRole.Id);
-
-        dbContext.Users.Add(user);
+        user.Update(request.Name, request.PortalType);
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return Result<Response>.Created(user.Adapt<Response>());
+        return Result<Response>.Success(user.Adapt<Response>());
     }
 }
