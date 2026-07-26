@@ -13,9 +13,9 @@ public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("/users/{id}/roles", async (Guid id, Handler handler, HttpContext httpContext, CancellationToken cancellationToken) =>
+        app.MapGet("/users/{id}/roles", async (Guid id, Handler handler, CancellationToken ct) =>
         {
-            var result = await handler.HandleAsync(new Request(id), cancellationToken);
+            var result = await handler.HandleAsync(new Request(id), ct);
 
             return result.ToMinimalResult();
         })

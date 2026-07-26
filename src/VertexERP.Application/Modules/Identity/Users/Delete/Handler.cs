@@ -4,23 +4,24 @@ using VertexERP.Application.Common.Abstractions.Handler;
 using VertexERP.Application.Common.Abstractions.Persistence;
 using VertexERP.Application.Shared.Results;
 
-namespace VertexERP.Application.Modules.Identity.Users.GetById;
+namespace VertexERP.Application.Modules.Identity.Users.Delete;
 
 public sealed class Handler(IAppDbContext dbContext, IUserPermissionCache userPermissionCache) : IHandler
 {
     public async Task<Result<Response>> HandleAsync(Request request, CancellationToken cancellationToken)
     {
         var user = await dbContext.Users
-             .AsNoTracking()
-             .Where(u => u.Id == request.Id)
-             .ToResponse()
-             .SingleOrDefaultAsync(cancellationToken);
+            .SingleOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
         if (user is null)
-            return Result<Response>.NotFound("User Not Found");
+        {
+            return Result<Response>.NotFound("User not found.");
+        }
 
-        user.Permissions = await userPermissionCache.GetAsync(request.Id, cancellationToken);
+        dbContext.Users.Remove(user);
 
-        return Result<Response>.Success(user);
+        await dbContext.SaveChangesAsync(cancellationToken);
+
+        return Result<Response>.Success(new Response { Id = user.Id }, "User deleted successfully.");
     }
 }

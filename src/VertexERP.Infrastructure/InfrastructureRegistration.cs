@@ -20,7 +20,7 @@ public static class InfrastructureRegistration
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
+        services.AddDbContext<IAppDbContext, AppDbContext>(options =>
         {
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
         });

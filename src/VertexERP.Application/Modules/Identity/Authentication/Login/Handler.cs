@@ -10,10 +10,10 @@ using VertexERP.Application.Types.Authentication.Models;
 
 namespace VertexERP.Application.Modules.Identity.Authentication.Login;
 
-public sealed class Handler(IApplicationDbContext dbContext, IPasswordHasher passwordHasher
+public sealed class Handler(IAppDbContext dbContext, IPasswordHasher passwordHasher
     , SessionService sessionService, ILogger<Handler> logger) : IHandler
 {
-    public async Task<Result<AuthenticationResult>> HandleAsync(Request request, CancellationToken cancellationToken)
+    public async Task<Result<AuthenticationResult>> HandleAsync(Request request, CancellationToken ct)
     {
         var email = request.Email.Trim().ToLowerInvariant();
 
@@ -21,7 +21,7 @@ public sealed class Handler(IApplicationDbContext dbContext, IPasswordHasher pas
             .Where(x => x.Email == email)
             .AsNoTracking()
             .ToContext()
-            .SingleOrDefaultAsync(cancellationToken);
+            .SingleOrDefaultAsync(ct);
 
         if (context is null || !context.IsActive || !passwordHasher.Verify(request.Password, context.PasswordHash))
         {
@@ -35,7 +35,7 @@ public sealed class Handler(IApplicationDbContext dbContext, IPasswordHasher pas
 
         var tokenPair = sessionService.Create(userClaims);
 
-        await dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.SaveChangesAsync(ct);
 
         logger.LogInformation("User {UserId} logged in successfully.",
             context.UserId);

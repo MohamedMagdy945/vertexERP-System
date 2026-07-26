@@ -11,7 +11,7 @@ using VertexERP.Infrastructure.Persistence;
 
 namespace VertexERP.Infrastructure.Persistence.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(AppDbContext))]
     [Migration("20260724065946_InitialCreate")]
     partial class InitialCreate
     {

@@ -10,11 +10,11 @@ using VertexERP.Application.Types.Authentication.Models;
 
 namespace VertexERP.Application.Modules.Identity.Authentication.Refresh;
 
-public sealed class Handler(IApplicationDbContext dbContext, IRefreshTokenService refreshTokenService,
+public sealed class Handler(IAppDbContext dbContext, IRefreshTokenService refreshTokenService,
     SessionService sessionService,
     ILogger<Handler> logger) : IHandler
 {
-    public async Task<Result<AuthenticationResult>> HandleAsync(Request request, CancellationToken cancellationToken)
+    public async Task<Result<AuthenticationResult>> HandleAsync(Request request, CancellationToken ct)
     {
         var refreshTokenHash = refreshTokenService.ComputeHash(request.RefreshToken);
 
@@ -22,7 +22,7 @@ public sealed class Handler(IApplicationDbContext dbContext, IRefreshTokenServic
             .RefreshTokens
             .Where(x => x.TokenHash == refreshTokenHash)
             .ToContext()
-            .SingleOrDefaultAsync(cancellationToken);
+            .SingleOrDefaultAsync(ct);
 
         if (context is null || !context.RefreshToken.IsActive)
             return Result<AuthenticationResult>.Unauthorized();
@@ -35,7 +35,7 @@ public sealed class Handler(IApplicationDbContext dbContext, IRefreshTokenServic
 
         context.RefreshToken.Revoke(reason: "Token rotated automatically", replacedByTokenHash: tokenPair.RefreshToken.Token);
 
-        await dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.SaveChangesAsync(ct);
 
         logger.LogInformation("User {UserId} refreshed authentication tokens successfully.", context.UserId);
 

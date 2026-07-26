@@ -7,7 +7,7 @@ using VertexERP.Application.Shared.Results;
 
 namespace VertexERP.Application.Modules.Identity.Me;
 
-public sealed class Handler(IApplicationDbContext dbContext,
+public sealed class Handler(IAppDbContext dbContext,
     ICurrentUserService currentUserService, IUserPermissionCache userPermissionCache) : IHandler
 {
     public async Task<Result<Response>> HandleAsync(Request request, CancellationToken cancellationToken)

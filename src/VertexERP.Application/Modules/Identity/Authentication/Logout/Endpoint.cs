@@ -12,14 +12,15 @@ public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("/authentication/logout", async (Handler handler, HttpContext httpContext, CancellationToken cancellationToken) =>
+        app.MapPost("/authentication/logout", async (Handler handler, HttpContext httpContext, CancellationToken ct) =>
         {
             var refreshToken = httpContext.Request.GetRefreshToken();
 
             if (refreshToken is null)
                 return Result<Response>.Unauthorized().ToMinimalResult();
 
-            var result = await handler.HandleAsync(new Request(refreshToken), cancellationToken);
+
+            var result = await handler.HandleAsync(new Request(refreshToken), ct);
 
             return result.ToMinimalResult();
         })

@@ -3,7 +3,7 @@ using VertexERP.Infrastructure.Persistence.Seeding.SeederRunner;
 
 namespace VertexERP.Infrastructure.Persistence.Seeding.Seeder;
 
-public sealed class UserRoleSeeder(ApplicationDbContext dbContext) : IDataSeeder
+public sealed class UserRoleSeeder(AppDbContext dbContext) : IDataSeeder
 {
     public int Order => 4;
 

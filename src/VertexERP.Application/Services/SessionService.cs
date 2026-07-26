@@ -11,7 +11,7 @@ public sealed class SessionService(
     IAccessTokenGenerator accessTokenGenerator,
     IRefreshTokenService refreshTokenService,
     IClientInfoProvider clientInfoProvider,
-    IApplicationDbContext dbContext)
+    IAppDbContext dbContext)
 {
     public TokenPair Create(UserTokenClaims userClaims)
     {

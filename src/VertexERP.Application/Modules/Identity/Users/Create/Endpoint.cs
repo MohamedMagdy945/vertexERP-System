@@ -12,9 +12,9 @@ public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("users", async (Request command, Handler handler, CancellationToken cancellationToken) =>
+        app.MapPost("users", async (Request command, Handler handler, CancellationToken ct) =>
         {
-            var result = await handler.HandleAsync(command, cancellationToken);
+            var result = await handler.HandleAsync(command, ct);
             return result.ToMinimalResult();
         })
         .RequireRole(RoleNames.SecurityAdmin)

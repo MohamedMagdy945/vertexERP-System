@@ -4,7 +4,8 @@ using VertexERP.Application.Types.Authentication.Models;
 namespace VertexERP.Application.Modules.Identity.Authentication.Refresh;
 
 
-public sealed record Response(
-    AuthenticatedUser User,
-    AccessTokenInfo AccessToken);
-
+public sealed class Response
+{
+    public AuthenticatedUser User { get; init; } = default!;
+    public AccessTokenInfo AccessToken { get; init; } = default!;
+}

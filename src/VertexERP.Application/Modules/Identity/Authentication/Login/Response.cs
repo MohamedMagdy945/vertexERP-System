@@ -3,7 +3,8 @@ using VertexERP.Application.Types.Authentication.Models;
 
 namespace VertexERP.Application.Modules.Identity.Authentication.Login;
 
-public sealed record Response(
-    AuthenticatedUser User,
-    AccessTokenInfo AccessToken);
-
+public sealed record Response
+{
+    public AuthenticatedUser User { get; init; } = default!;
+    public AccessTokenInfo AccessToken { get; init; } = default!;
+}

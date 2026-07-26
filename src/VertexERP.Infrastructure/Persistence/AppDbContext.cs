@@ -7,7 +7,7 @@ using VertexERP.Domain.Module.Inventory.Entities;
 
 namespace VertexERP.Infrastructure.Persistence;
 
-public class ApplicationDbContext : DbContext, IApplicationDbContext
+public class AppDbContext : DbContext, IAppDbContext
 {
     //Identity
     public DbSet<User> Users { get; set; }
@@ -28,7 +28,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<Stock> Stocks { get; set; }
     public DbSet<WarehouseTransaction> WarehouseTransactions { get; set; }
 
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+    public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
     {
     }
@@ -37,7 +37,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
     }
 
 }

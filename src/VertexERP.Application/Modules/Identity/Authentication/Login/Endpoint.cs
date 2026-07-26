@@ -12,18 +12,23 @@ public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("/authentication/login", async (Request request, Handler handler, HttpContext httpContext, CancellationToken cancellationToken) =>
+        app.MapPost("/authentication/login", async (Request request, Handler handler, HttpContext httpContext, CancellationToken ct) =>
         {
-            var result = await handler.HandleAsync(request, cancellationToken);
+            var result = await handler.HandleAsync(request, ct);
 
             if (!result.IsSuccess || result.Data is null)
                 return result.ToMinimalResult();
 
             httpContext.Response.SetRefreshTokenCookie(result.Data.TokenPair.RefreshToken, httpContext.Request.IsHttps);
 
-            var response = Result<Response>.Success(new Response(result.Data.User, result.Data.TokenPair.AccessToken));
 
-            return response.ToMinimalResult();
+            var response = new Response
+            {
+                User = result.Data.User,
+                AccessToken = result.Data.TokenPair.AccessToken,
+            };
+
+            return Result<Response>.Success(response).ToMinimalResult();
         })
         .AddValidation<Request>()
         .MapToApiVersion(1, 0)

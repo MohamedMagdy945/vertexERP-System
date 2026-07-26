@@ -2,10 +2,11 @@
 using VertexERP.Application.Common.Abstractions.Cache;
 using VertexERP.Application.Common.Abstractions.Identity;
 using VertexERP.Application.Common.Abstractions.Persistence;
+using VertexERP.Application.Common.Extensions;
 
 namespace VertexERP.Infrastructure.Services.Identity;
 
-public sealed class UserPermissionService(IApplicationDbContext dbContext, IUserPermissionCache permissionCache)
+public sealed class UserPermissionService(IAppDbContext dbContext, IUserPermissionCache permissionCache)
     : IUserPermissionService
 
 {
@@ -17,9 +18,9 @@ public sealed class UserPermissionService(IApplicationDbContext dbContext, IUser
             return cachedPermissions;
 
 
-        var permissions = await dbContext.UserRoles.AsNoTracking()
-                         .Where(ur => ur.UserId == userId).SelectMany(ur => ur.Role.RolePermissions)
-                         .Select(rp => rp.Permission.Name).ToListAsync(ct);
+        var permissions = await dbContext.UserRoles
+            .GetPermissionNames(userId)
+            .ToHashSetAsync(ct);
 
         var result = permissions.ToHashSet();
 

@@ -5,7 +5,7 @@ using VertexERP.Infrastructure.Persistence.Seeding.SeederRunner;
 
 namespace VertexERP.Infrastructure.Persistence.Seeding.Seeder
 {
-    public sealed class RoleSeeder(ApplicationDbContext dbContext) : IDataSeeder
+    public sealed class RoleSeeder(AppDbContext dbContext) : IDataSeeder
     {
         public int Order => 2;
 

@@ -5,7 +5,7 @@ using VertexERP.Domain.Module.Inventory.Entities;
 
 namespace VertexERP.Application.Common.Abstractions.Persistence;
 
-public interface IApplicationDbContext
+public interface IAppDbContext
 {
     // Identity
     DbSet<User> Users { get; }
