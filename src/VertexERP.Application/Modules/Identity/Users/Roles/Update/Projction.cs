@@ -1,6 +1,6 @@
 ﻿using VertexERP.Domain.Module.Identity.Entities;
 
-namespace VertexERP.Application.Modules.Identity.Users.GetById;
+namespace VertexERP.Application.Modules.Identity.Users.Roles.Update;
 
 public static class Projection
 {
@@ -17,12 +17,12 @@ public static class Projection
             CreatedAt = u.CreatedAt,
             UpdatedAt = u.UpdatedAt,
             Roles = u.UserRoles
-              .Select(ur => new RoleResponse
-              {
-                  Id = ur.Role.Id,
-                  Name = ur.Role.Name
-              })
-              .ToList()
+            .Select(ur => new RoleResponse
+            {
+                Id = ur.Role.Id,
+                Name = ur.Role.Name
+            })
+            .ToList()
         });
     }
 };

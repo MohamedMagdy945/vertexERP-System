@@ -12,9 +12,9 @@ public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("/authentication/login", async (Request command, Handler handler, HttpContext httpContext, CancellationToken cancellationToken) =>
+        app.MapPost("/authentication/login", async (Request request, Handler handler, HttpContext httpContext, CancellationToken cancellationToken) =>
         {
-            var result = await handler.HandleAsync(command, cancellationToken);
+            var result = await handler.HandleAsync(request, cancellationToken);
 
             if (!result.IsSuccess || result.Data is null)
                 return result.ToMinimalResult();

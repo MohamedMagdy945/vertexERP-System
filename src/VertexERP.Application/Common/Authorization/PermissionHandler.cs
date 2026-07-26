@@ -11,7 +11,7 @@ public sealed class PermissionHandler(IUserPermissionService userPermissionServi
 {
     protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
     {
-        if (context.User.IsInRole(Roles.SystemAdmin))
+        if (context.User.IsInRole(RoleNames.SystemAdmin))
         {
             context.Succeed(requirement);
             return;

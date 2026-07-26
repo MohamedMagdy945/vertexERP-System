@@ -17,7 +17,7 @@ public sealed class Handler(IApplicationDbContext dbContext, IPasswordHasher pas
         var email = request.Email.Trim().ToLowerInvariant();
 
         var defaultRole = await dbContext.Roles
-            .SingleOrDefaultAsync(r => r.Name == Roles.User, cancellationToken);
+            .SingleOrDefaultAsync(r => r.Name == RoleNames.User, cancellationToken);
 
         if (defaultRole is null)
             return Result<Response>.Failure("Default role not found.");

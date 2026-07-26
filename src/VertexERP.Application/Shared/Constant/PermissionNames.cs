@@ -1,6 +1,6 @@
 ﻿namespace VertexERP.Application.Shared.Constant;
 
-public static class Permissions
+public static class PermissionNames
 {
     public static class Products
     {

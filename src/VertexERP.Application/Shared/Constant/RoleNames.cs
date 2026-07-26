@@ -1,6 +1,6 @@
 ﻿namespace VertexERP.Application.Shared.Constant;
 
-public static class Roles
+public static class RoleNames
 {
     public const string User = "user";
     public const string Admin = "admin";

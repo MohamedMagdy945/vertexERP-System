@@ -1,4 +1,4 @@
-﻿namespace VertexERP.Application.Modules.Identity.Users.GetById;
+﻿namespace VertexERP.Application.Modules.Identity.Users.Roles.Update;
 
 public sealed class RoleResponse
 {
@@ -28,3 +28,4 @@ public sealed class Response
 
     public IReadOnlySet<string>? Permissions { get; set; }
 }
+

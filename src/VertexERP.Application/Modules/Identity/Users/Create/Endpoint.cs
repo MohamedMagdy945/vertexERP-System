@@ -17,7 +17,7 @@ public sealed class Endpoint : IEndpoint
             var result = await handler.HandleAsync(command, cancellationToken);
             return result.ToMinimalResult();
         })
-        .RequireRole(Roles.SecurityAdmin)
+        .RequireRole(RoleNames.SecurityAdmin)
         .AddValidation<Request>()
         .MapToApiVersion(1, 0)
         .WithTags(Tags.Identity);

@@ -14,7 +14,7 @@ namespace VertexERP.Infrastructure.Persistence.Seeding.Seeder
             if (await dbContext.Roles.AnyAsync())
                 return;
 
-            var roles = Roles.All().Select(roleName => new Role(roleName));
+            var roles = RoleNames.All().Select(roleName => new Role(roleName));
 
             await dbContext.Roles.AddRangeAsync(roles);
 
