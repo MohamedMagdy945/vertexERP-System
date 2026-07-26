@@ -3,16 +3,14 @@
 public class RolePermission
 {
     public Guid RoleId { get; private set; }
-    public Guid PermissionId { get; private set; }
+    public string Permission { get; private set; } = default!;
 
     public Role Role { get; private set; } = default!;
-    public Permission Permission { get; private set; } = default!;
-
     private RolePermission() { }
 
-    public RolePermission(Guid roleId, Guid permissionId)
+    public RolePermission(Guid roleId, string permission)
     {
         RoleId = roleId;
-        PermissionId = permissionId;
+        Permission = permission;
     }
 }

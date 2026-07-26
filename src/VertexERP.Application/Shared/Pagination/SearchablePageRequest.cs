@@ -1,6 +1,6 @@
 ﻿namespace VertexERP.Application.Shared.Pagination;
 
-public record SearchablePageQuery : PageQuery
+public record SearchablePageRequest : PageRequest
 {
     private readonly string? _searchTerm;
 

@@ -11,6 +11,6 @@ public static class UserPermissionExtensions
             .AsNoTracking()
             .Where(ur => ur.UserId == userId)
             .SelectMany(ur => ur.Role.RolePermissions)
-            .Select(rp => rp.Permission.Name);
+            .Select(rp => rp.Permission);
     }
 }

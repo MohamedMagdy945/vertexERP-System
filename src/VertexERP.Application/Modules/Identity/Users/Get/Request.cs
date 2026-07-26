@@ -2,4 +2,5 @@
 
 namespace VertexERP.Application.Modules.Identity.Users.Get;
 
-public sealed record Request : SearchablePageQuery;
+public sealed record Request : SearchablePageRequest;
+

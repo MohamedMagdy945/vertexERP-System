@@ -8,3 +8,7 @@ public sealed record Response
     public AuthenticatedUser User { get; init; } = default!;
     public AccessTokenInfo AccessToken { get; init; } = default!;
 }
+public sealed record UserRoleAccess(
+    string RoleName,
+    IReadOnlyList<string> Permissions
+);

@@ -50,7 +50,7 @@ public sealed class Handler(IAppDbContext dbContext, IUserPermissionCache userPe
         var permissions = await dbContext.Roles
             .Where(r => request.RoleIds.Contains(r.Id))
             .SelectMany(r => r.RolePermissions)
-            .Select(rp => rp.Permission.Name)
+            .Select(rp => rp.Permission)
             .ToHashSetAsync(ct);
 
         await userPermissionCache.SetAsync(user.Id, permissions, ct);

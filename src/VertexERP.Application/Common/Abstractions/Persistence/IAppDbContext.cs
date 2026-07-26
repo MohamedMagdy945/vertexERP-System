@@ -9,7 +9,6 @@ public interface IAppDbContext
 {
     // Identity
     DbSet<User> Users { get; }
-    DbSet<Permission> Permissions { get; }
     DbSet<Role> Roles { get; }
     DbSet<RefreshToken> RefreshTokens { get; }
     DbSet<UserRole> UserRoles { get; }
