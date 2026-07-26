@@ -1,28 +1,31 @@
-﻿using VertexERP.Application.Common.Abstractions.Cache;
+﻿using Microsoft.EntityFrameworkCore;
 using VertexERP.Application.Common.Abstractions.Handler;
 using VertexERP.Application.Common.Abstractions.Persistence;
 using VertexERP.Application.Shared.Results;
 
 namespace VertexERP.Application.Modules.Identity.Roles.GetById;
 
-public sealed class Handler(IAppDbContext dbContext, IUserPermissionCache userPermissionCache) : IHandler
+public sealed class Handler(IAppDbContext dbContext) : IHandler
 {
-    public async Task<Result<Response>> HandleAsync(Request request, CancellationToken cancellationToken)
+    public async Task<Result<Response>> HandleAsync(Request request,
+     CancellationToken ct)
     {
-        //var user = await dbContext.Roles
-        //     .AsNoTracking()
-        //     .Where(r => r.Id == request.Id)
-        //     .ToResponse()
-        //     .SingleOrDefaultAsync(cancellationToken);
+        var role = await dbContext.Roles
+          .AsNoTracking()
+          .Where(x => x.Id == request.Id)
+          .Select(x => new Response
+          {
+              Id = x.Id,
+              Name = x.Name,
+              Permissions = x.RolePermissions
+                  .Select(rp => rp.Permission)
+                  .ToHashSet()
+          })
+        .SingleOrDefaultAsync(ct);
 
-        //if (user is null)
-        //    return Result<Response>.NotFound("User Not Found");
+        if (role is null)
+            return Result<Response>.NotFound("Role not found.");
 
-        //var permissions = await userPermissionCache.GetAsync(request.Id, cancellationToken);
-
-        //if (permissions is not null)
-        //    user.Permissions = permissions;
-
-        return Result<Response>.Unprocessable();
+        return Result<Response>.Success(role);
     }
 }

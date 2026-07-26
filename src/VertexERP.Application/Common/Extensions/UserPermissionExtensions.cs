@@ -1,13 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using VertexERP.Domain.Module.Identity.Entities;
+using VertexERP.Application.Common.Abstractions.Persistence;
 
 namespace VertexERP.Application.Common.Extensions;
 
 public static class UserPermissionExtensions
 {
-    public static IQueryable<string> GetPermissionNames(this IQueryable<UserRole> userRoles, Guid userId)
+    public static IQueryable<string> GetPermissionNames(
+       this IAppDbContext dbContext,
+       Guid userId)
     {
-        return userRoles
+        return dbContext.UserRoles
             .AsNoTracking()
             .Where(ur => ur.UserId == userId)
             .SelectMany(ur => ur.Role.RolePermissions)

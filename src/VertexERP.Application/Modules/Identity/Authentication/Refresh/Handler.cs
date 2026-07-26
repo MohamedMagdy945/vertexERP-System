@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using VertexERP.Application.Common.Abstractions.Handler;
 using VertexERP.Application.Common.Abstractions.Identity;
 using VertexERP.Application.Common.Abstractions.Persistence;
+using VertexERP.Application.Common.Extensions;
 using VertexERP.Application.Services;
 using VertexERP.Application.Shared.Results;
 using VertexERP.Application.Types.Authentication.Contracts;
@@ -31,24 +32,27 @@ public sealed class Handler(
             return Result<AuthenticationResult>.Unauthorized();
 
 
-        var userClaims = new UserTokenClaims(context.UserId, context.UserEmail, context.Roles);
+
+        var roles = await dbContext.GetRoleNames(context.UserId).ToListAsync(ct);
+        var userClaims = new UserTokenClaims(context.UserId, context.UserEmail, roles);
+
+
+        var permissions = await userPermissionService.GetPermissionsAsync(context.UserId, ct);
 
         var authenticatedUser = new AuthenticatedUser
         {
             Id = context.UserId,
             Email = context.UserEmail,
             Portal = context.PortalType,
-            Roles = context.Roles
+            Roles = roles,
+            Permissions = permissions
         };
-
-        var permissions = await userPermissionService.GetPermissionsAsync(context.UserId);
-
-        if (permissions is not null)
-            authenticatedUser.Permissions = permissions;
 
         var tokenPair = sessionService.Create(userClaims);
 
-        context.RefreshToken.Revoke(reason: "Token rotated automatically", replacedByTokenHash: tokenPair.RefreshToken.Token);
+        context.RefreshToken.Revoke(
+            reason: "Token rotated automatically",
+            replacedByTokenHash: tokenPair.RefreshToken.Token);
 
         await dbContext.SaveChangesAsync(ct);
 

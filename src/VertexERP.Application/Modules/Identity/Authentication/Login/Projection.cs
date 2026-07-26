@@ -13,7 +13,6 @@ public static class Projection
             PasswordHash = u.PasswordHash,
             IsActive = u.IsActive,
             PortalType = u.PortalType.ToString(),
-            Roles = u.UserRoles.Select(userRole => userRole.Role.Name).ToList()
         });
     }
 }

@@ -1,10 +1,9 @@
 ﻿namespace VertexERP.Application.Modules.Identity.Users.GetById;
 
-public sealed class RoleResponse
+public sealed record RoleResponse
 {
-    public Guid Id { get; set; }
-
-    public string Name { get; set; } = default!;
+    public required Guid Id { get; init; }
+    public required string Name { get; init; }
 }
 public sealed class Response
 {
@@ -17,6 +16,5 @@ public sealed class Response
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
     public IReadOnlyList<RoleResponse> Roles { get; set; } = [];
-
     public IReadOnlySet<string> Permissions { get; set; } = new HashSet<string>();
 }

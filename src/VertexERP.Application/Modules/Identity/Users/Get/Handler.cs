@@ -11,7 +11,7 @@ public sealed class Handler(IAppDbContext dbContext) : IHandler
 {
     public async Task<Result<Response>> HandleAsync(Request request, CancellationToken ct)
     {
-        var query = dbContext.Users.AsNoTracking();
+        var query = dbContext.Users.AsNoTracking().AsSplitQuery();
 
         if (!string.IsNullOrWhiteSpace(request.SearchTerm))
         {
@@ -28,6 +28,7 @@ public sealed class Handler(IAppDbContext dbContext) : IHandler
             .ToResponse()
             .ApplyPagination(request.PageNumber, request.PageSize)
             .ToListAsync(ct);
+
 
         var page = Page<UserResponse>.Create(items, totalCount, request.PageNumber, request.PageSize);
 

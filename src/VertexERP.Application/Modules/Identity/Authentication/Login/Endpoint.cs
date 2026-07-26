@@ -21,7 +21,6 @@ public sealed class Endpoint : IEndpoint
 
             httpContext.Response.SetRefreshTokenCookie(result.Data.TokenPair.RefreshToken, httpContext.Request.IsHttps);
 
-
             var response = new Response
             {
                 User = result.Data.User,

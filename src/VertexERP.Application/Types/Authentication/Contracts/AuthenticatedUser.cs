@@ -2,9 +2,9 @@
 
 public sealed class AuthenticatedUser
 {
-    public Guid Id { get; set; }
-    public string Email { get; set; } = default!;
-    public string Portal { get; set; } = default!;
-    public IReadOnlyCollection<string> Roles { get; set; } = [];
-    public IReadOnlySet<string> Permissions { get; set; } = new HashSet<string>();
+    public required Guid Id { get; init; }
+    public required string Email { get; init; }
+    public required string Portal { get; init; }
+    public required IReadOnlyList<string> Roles { get; init; }
+    public required IReadOnlySet<string> Permissions { get; init; }
 }

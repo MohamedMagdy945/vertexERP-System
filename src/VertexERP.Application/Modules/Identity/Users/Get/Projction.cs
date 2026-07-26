@@ -14,7 +14,6 @@ public static class Projection
             IsActive = u.IsActive,
             PortalType = u.PortalType.ToString(),
             CreatedAt = u.CreatedAt,
-            Roles = u.UserRoles.Select(ur => ur.Role.Name).ToList()
         });
     }
 };

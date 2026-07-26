@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using VertexERP.Application.Common.Abstractions.Handler;
 using VertexERP.Application.Common.Abstractions.Identity;
 using VertexERP.Application.Common.Abstractions.Persistence;
+using VertexERP.Application.Common.Extensions;
 using VertexERP.Application.Services;
 using VertexERP.Application.Shared.Results;
 using VertexERP.Application.Types.Authentication.Contracts;
@@ -22,39 +23,37 @@ public sealed class Handler(
         var email = request.Email.Trim().ToLowerInvariant();
 
         var context = await dbContext.Users
-            .Where(x => x.Email == email)
             .AsNoTracking()
+            .Where(x => x.Email == email)
             .ToContext()
             .SingleOrDefaultAsync(ct);
 
         if (context is null || !context.IsActive || !passwordHasher.Verify(request.Password, context.PasswordHash))
         {
             logger.LogWarning("Failed login attempt for email: {Email}", email);
-
             return Result<AuthenticationResult>.Unauthorized("Invalid email or password.");
         }
 
-        var userClaims = new UserTokenClaims(context.UserId, context.Email, context.Roles);
+        var roles = await dbContext.GetRoleNames(context.UserId).ToListAsync(ct);
+        var userClaims = new UserTokenClaims(context.UserId, context.Email, roles);
+
+
+        var permissions = await userPermissionService.GetPermissionsAsync(context.UserId, ct);
 
         var authenticatedUser = new AuthenticatedUser
         {
             Id = context.UserId,
             Email = context.Email,
             Portal = context.PortalType,
-            Roles = context.Roles
+            Roles = roles,
+            Permissions = permissions
         };
-
-        var permissions = await userPermissionService.GetPermissionsAsync(context.UserId);
-
-        if (permissions is not null)
-            authenticatedUser.Permissions = permissions;
 
         var tokenPair = sessionService.Create(userClaims);
 
         await dbContext.SaveChangesAsync(ct);
 
-        logger.LogInformation("User {UserId} logged in successfully.",
-            context.UserId);
+        logger.LogInformation("User {UserId} logged in successfully.", context.UserId);
 
         return Result<AuthenticationResult>.Success(new AuthenticationResult(authenticatedUser, tokenPair));
     }

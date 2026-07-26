@@ -1,25 +1,64 @@
-﻿namespace VertexERP.Infrastructure.Persistence.Seeding.Seeder
+﻿using Microsoft.EntityFrameworkCore;
+using VertexERP.Application.Common.Abstractions.Identity;
+using VertexERP.Application.Common.Abstractions.Persistence;
+using VertexERP.Domain.Module.Identity.Entities;
+using VertexERP.Infrastructure.Persistence.Seeding.SeederRunner;
+
+namespace VertexERP.Infrastructure.Persistence.Seeding.Seeder
 {
-    //public sealed class UserSeeder(ApplicationDbContext dbContext, IPasswordHasher passwordHasher) : IDataSeeder
-    //{
-    //    public int Order => 1;
-    //    public async Task SeedAsync()
-    //    {
-    //        if (await dbContext.Users.AnyAsync())
-    //            return;
+    public sealed class UserSeeder(
+    IAppDbContext dbContext,
+    IPasswordHasher passwordHasher) : IDataSeeder
+    {
+        public int Order => 1;
 
-    //        var admin = new User(SystemUsers.Admin, "admin@example.com", passwordHasher.Hash("Admin@123"));
+        public async Task SeedAsync()
+        {
+            if (await dbContext.Users.AnyAsync())
+                return;
 
-    //        var system = new User(SystemUsers.System, "system@example.com", passwordHasher.Hash("System@123"));
+            await dbContext.Users.AddRangeAsync(
+                new User(
+                    SeedUsers.AdminName,
+                    SeedUsers.AdminEmail,
+                    passwordHasher.Hash(SeedUsers.AdminPassword)),
 
-    //        var user = new User(SystemUsers.User, "user@example.com", passwordHasher.Hash("User@123"));
+                new User(
+                    SeedUsers.SystemName,
+                    SeedUsers.SystemEmail,
+                    passwordHasher.Hash(SeedUsers.SystemPassword)),
 
-    //        var security = new User(SystemUsers.Security, "security@example.com", passwordHasher.Hash("Security@123"));
+                new User(
+                    SeedUsers.UserName,
+                    SeedUsers.UserEmail,
+                    passwordHasher.Hash(SeedUsers.UserPassword)),
 
-    //        await dbContext.Users.AddRangeAsync(admin, system, user, security);
+                new User(
+                    SeedUsers.SecurityName,
+                    SeedUsers.SecurityEmail,
+                    passwordHasher.Hash(SeedUsers.SecurityPassword)));
 
-    //        await dbContext.SaveChangesAsync();
-    //    }
-    //}
+            await dbContext.SaveChangesAsync();
+        }
+    }
+}
+
+public static class SeedUsers
+{
+    public const string AdminName = "Admin";
+    public const string AdminEmail = "admin@example.com";
+    public const string AdminPassword = "Admin@123";
+
+    public const string SystemName = "System";
+    public const string SystemEmail = "system@example.com";
+    public const string SystemPassword = "System@123";
+
+    public const string SecurityName = "Security";
+    public const string SecurityEmail = "security@example.com";
+    public const string SecurityPassword = "Security@123";
+
+    public const string UserName = "User";
+    public const string UserEmail = "user@example.com";
+    public const string UserPassword = "User@123";
 }
 

@@ -12,7 +12,6 @@ public static class RefreshTokenQueryExtensions
             UserId = r.UserId,
             UserEmail = r.User.Email,
             PortalType = r.User.PortalType.ToString(),
-            Roles = r.User.UserRoles.Select(userRole => userRole.Role.Name).ToList()
         });
     }
 }

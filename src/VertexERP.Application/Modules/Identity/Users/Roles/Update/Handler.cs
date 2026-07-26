@@ -9,16 +9,16 @@ namespace VertexERP.Application.Modules.Identity.Users.Roles.Update;
 
 public sealed class Handler(IAppDbContext dbContext, IUserPermissionCache userPermissionCache) : IHandler
 {
-    public async Task<Result<Response>> HandleAsync(Request request, CancellationToken ct)
+    public async Task<Result<Response>> HandleAsync(
+    Request request,
+    CancellationToken ct)
     {
         var user = await dbContext.Users
-           .Include(x => x.UserRoles)
-           .SingleOrDefaultAsync(x => x.Id == request.Id, ct);
+            .Include(x => x.UserRoles)
+            .SingleOrDefaultAsync(x => x.Id == request.UserId, ct);
 
         if (user is null)
-        {
             return Result<Response>.NotFound("User not found.");
-        }
 
         var requestedRoleIds = request.RoleIds.ToHashSet();
 
@@ -30,37 +30,38 @@ public sealed class Handler(IAppDbContext dbContext, IUserPermissionCache userPe
             .Where(x => !requestedRoleIds.Contains(x.RoleId))
             .ToList();
 
-        var newRoleIdsToAdd = requestedRoleIds
-            .Except(existingRoleIds)
-            .ToList();
-
-        foreach (var role in rolesToRemove)
+        foreach (var userRole in rolesToRemove)
         {
-            user.UserRoles.Remove(role);
+            user.UserRoles.Remove(userRole);
         }
 
-        foreach (var roleId in newRoleIdsToAdd)
+        var rolesToAdd = requestedRoleIds.Except(existingRoleIds);
+
+        foreach (var roleId in rolesToAdd)
         {
             user.UserRoles.Add(new UserRole(user.Id, roleId));
         }
 
-
         await dbContext.SaveChangesAsync(ct);
 
-        var permissions = await dbContext.Roles
-            .Where(r => request.RoleIds.Contains(r.Id))
-            .SelectMany(r => r.RolePermissions)
-            .Select(rp => rp.Permission)
-            .ToHashSetAsync(ct);
+        await userPermissionCache.RemoveAsync(user.Id, ct);
 
-        await userPermissionCache.SetAsync(user.Id, permissions, ct);
-
-        var response = await dbContext.Users
-            .Where(x => x.Id == user.Id)
+        var roles = await dbContext.UserRoles
             .AsNoTracking()
-            .ToResponse()
-            .SingleAsync(ct);
+            .Where(x => x.UserId == user.Id)
+            .Select(x => new RoleResponse
+            {
+                Id = x.RoleId,
+                Name = x.Role.Name
+            })
+            .ToListAsync(ct);
 
-        return Result<Response>.Success(response);
+        return Result<Response>.Success(new Response
+        {
+            UserId = user.Id,
+            Roles = roles
+        });
     }
 }
+
+

@@ -5,10 +5,6 @@ namespace VertexERP.Application.Modules.Identity.Authentication.Login;
 
 public sealed record Response
 {
-    public AuthenticatedUser User { get; init; } = default!;
-    public AccessTokenInfo AccessToken { get; init; } = default!;
+    public required AuthenticatedUser User { get; init; }
+    public required AccessTokenInfo AccessToken { get; init; }
 }
-public sealed record UserRoleAccess(
-    string RoleName,
-    IReadOnlyList<string> Permissions
-);

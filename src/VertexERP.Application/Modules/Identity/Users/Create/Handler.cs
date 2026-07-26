@@ -16,17 +16,17 @@ public sealed class Handler(IAppDbContext dbContext, IPasswordHasher passwordHas
     {
         var email = request.Email.Trim().ToLowerInvariant();
 
-        var defaultRole = await dbContext.Roles
-            .SingleOrDefaultAsync(r => r.Name == RoleNames.User, ct);
-
-        if (defaultRole is null)
-            return Result<Response>.Failure("Default role not found.");
-
         var emailExists = await dbContext.Users
             .AnyAsync(u => u.Email == email, ct);
 
         if (emailExists)
             return Result<Response>.Conflict("Email already exists.");
+
+        var defaultRole = await dbContext.Roles
+            .SingleOrDefaultAsync(r => r.Name == RoleNames.User, ct);
+
+        if (defaultRole is null)
+            return Result<Response>.Failure("Default role not found.");
 
         var hash = passwordHasher.Hash(DefaultPassword);
 

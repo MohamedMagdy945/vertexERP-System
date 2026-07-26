@@ -7,5 +7,4 @@ public sealed class Context
     public string PasswordHash { get; init; } = default!;
     public bool IsActive { get; init; }
     public string PortalType { get; init; } = default!;
-    public IReadOnlyCollection<string> Roles { get; init; } = [];
 }

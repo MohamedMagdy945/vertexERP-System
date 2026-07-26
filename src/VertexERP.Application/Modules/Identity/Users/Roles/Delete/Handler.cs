@@ -12,20 +12,17 @@ public sealed class Handler(IAppDbContext dbContext, IUserPermissionCache userPe
     public async Task<Result<Response>> HandleAsync(Request request, CancellationToken ct)
     {
         var userRole = await dbContext.UserRoles.FirstOrDefaultAsync(
-        x => x.UserId == request.UserId &&
-             x.RoleId == request.RoleId,
-        ct);
+            x => x.UserId == request.UserId && x.RoleId == request.RoleId,
+            ct);
 
         if (userRole is null)
-        {
             return Result<Response>.NotFound("Role assignment not found.");
-        }
 
         dbContext.UserRoles.Remove(userRole);
 
         await dbContext.SaveChangesAsync(ct);
 
-        var permissions = await dbContext.UserRoles
+        var permissions = await dbContext
             .GetPermissionNames(request.UserId)
             .ToHashSetAsync(ct);
 

@@ -18,9 +18,9 @@ public sealed class UserPermissionService(IAppDbContext dbContext, IUserPermissi
             return cachedPermissions;
 
 
-        var permissions = await dbContext.UserRoles
-            .GetPermissionNames(userId)
-            .ToHashSetAsync(ct);
+        var permissions = await dbContext
+         .GetPermissionNames(userId)
+         .ToHashSetAsync(ct);
 
         var result = permissions.ToHashSet();
 
