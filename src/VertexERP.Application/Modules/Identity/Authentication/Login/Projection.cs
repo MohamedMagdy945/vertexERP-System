@@ -6,15 +6,14 @@ public static class Projection
 {
     public static IQueryable<Context> ToContext(this IQueryable<User> query)
     {
-        return query.Select(user => new Context
+        return query.Select(u => new Context
         {
-            UserId = user.Id,
-            Email = user.Email,
-            PasswordHash = user.PasswordHash,
-            IsActive = user.IsActive,
-            Roles = user.UserRoles
-               .Select(userRole => userRole.Role.Name)
-               .ToList()
+            UserId = u.Id,
+            Email = u.Email,
+            PasswordHash = u.PasswordHash,
+            IsActive = u.IsActive,
+            PortalType = u.PortalType.ToString(),
+            Roles = u.UserRoles.Select(userRole => userRole.Role.Name).ToList()
         });
     }
 }

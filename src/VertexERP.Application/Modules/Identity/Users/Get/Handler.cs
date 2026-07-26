@@ -9,7 +9,7 @@ namespace VertexERP.Application.Modules.Identity.Users.Get;
 
 public sealed class Handler(IAppDbContext dbContext) : IHandler
 {
-    public async Task<Result<Response>> HandleAsync(Request request, CancellationToken cancellationToken)
+    public async Task<Result<Response>> HandleAsync(Request request, CancellationToken ct)
     {
         var query = dbContext.Users.AsNoTracking();
 
@@ -20,18 +20,17 @@ public sealed class Handler(IAppDbContext dbContext) : IHandler
             query = query.Where(x => EF.Functions.Like(x.Email, term));
         }
 
-        var totalCount = await query.CountAsync(cancellationToken);
+        var totalCount = await query.CountAsync(ct);
 
         var items = await query
             .OrderBy(x => x.Id)
             .AsNoTracking()
             .ToResponse()
-            .AsSplitQuery()
             .ApplyPagination(request.PageNumber, request.PageSize)
-            .ToListAsync(cancellationToken);
+            .ToListAsync(ct);
 
         var page = Page<UserResponse>.Create(items, totalCount, request.PageNumber, request.PageSize);
 
-        return Result<Response>.Success(new Response(page));
+        return Result<Response>.Success(new Response { Users = page });
     }
 }

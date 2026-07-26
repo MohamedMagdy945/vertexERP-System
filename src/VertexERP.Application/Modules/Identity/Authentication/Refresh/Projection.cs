@@ -6,13 +6,13 @@ public static class RefreshTokenQueryExtensions
 {
     public static IQueryable<Context> ToContext(this IQueryable<RefreshToken> query)
     {
-        return query.Select(refreshToken => new Context
+        return query.Select(r => new Context
         {
-            RefreshToken = refreshToken,
-            UserId = refreshToken.UserId,
-            UserEmail = refreshToken.User.Email,
-            Roles = refreshToken.User.UserRoles
-                    .Select(userRole => userRole.Role.Name).ToList()
+            RefreshToken = r,
+            UserId = r.UserId,
+            UserEmail = r.User.Email,
+            PortalType = r.User.PortalType.ToString(),
+            Roles = r.User.UserRoles.Select(userRole => userRole.Role.Name).ToList()
         });
     }
 }

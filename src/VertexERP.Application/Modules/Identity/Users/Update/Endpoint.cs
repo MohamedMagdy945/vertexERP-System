@@ -7,15 +7,15 @@ using VertexERP.Application.Common.Extensions;
 using VertexERP.Application.Shared.Constant;
 using VertexERP.Application.Shared.Results;
 
-namespace VertexERP.Application.Modules.Identity.Users.Get;
+namespace VertexERP.Application.Modules.Identity.Users.Update;
 
 public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("/users", async ([AsParameters] Request request, Handler handler, CancellationToken ct) =>
+        app.MapPut("/users/{id}", async (Guid id, Request request, Handler handler, CancellationToken ct) =>
         {
-            var result = await handler.HandleAsync(request, ct);
+            var result = await handler.HandleAsync(request with { Id = id }, ct);
 
             return result.ToMinimalResult();
         })

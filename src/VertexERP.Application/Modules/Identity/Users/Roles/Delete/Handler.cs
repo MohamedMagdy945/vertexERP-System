@@ -11,9 +11,10 @@ public sealed class Handler(IAppDbContext dbContext, IUserPermissionCache userPe
 {
     public async Task<Result<Response>> HandleAsync(Request request, CancellationToken ct)
     {
-        var userRole = await dbContext.UserRoles
-           .SingleOrDefaultAsync(x => x.UserId == request.UserId && x.RoleId == request.RoleId,
-            ct);
+        var userRole = await dbContext.UserRoles.FirstOrDefaultAsync(
+        x => x.UserId == request.UserId &&
+             x.RoleId == request.RoleId,
+        ct);
 
         if (userRole is null)
         {

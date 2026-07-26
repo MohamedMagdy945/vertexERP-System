@@ -9,11 +9,11 @@ namespace VertexERP.Application.Modules.Identity.Users.Roles.Update;
 
 public sealed class Handler(IAppDbContext dbContext, IUserPermissionCache userPermissionCache) : IHandler
 {
-    public async Task<Result<Response>> HandleAsync(Request request, CancellationToken cancellationToken)
+    public async Task<Result<Response>> HandleAsync(Request request, CancellationToken ct)
     {
         var user = await dbContext.Users
            .Include(x => x.UserRoles)
-           .SingleOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+           .SingleOrDefaultAsync(x => x.Id == request.Id, ct);
 
         if (user is null)
         {
@@ -45,21 +45,21 @@ public sealed class Handler(IAppDbContext dbContext, IUserPermissionCache userPe
         }
 
 
-        await dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.SaveChangesAsync(ct);
 
         var permissions = await dbContext.Roles
             .Where(r => request.RoleIds.Contains(r.Id))
             .SelectMany(r => r.RolePermissions)
             .Select(rp => rp.Permission.Name)
-            .ToHashSetAsync(cancellationToken);
+            .ToHashSetAsync(ct);
 
-        await userPermissionCache.SetAsync(user.Id, permissions, cancellationToken);
+        await userPermissionCache.SetAsync(user.Id, permissions, ct);
 
         var response = await dbContext.Users
             .Where(x => x.Id == user.Id)
             .AsNoTracking()
             .ToResponse()
-            .SingleAsync(cancellationToken);
+            .SingleAsync(ct);
 
         return Result<Response>.Success(response);
     }

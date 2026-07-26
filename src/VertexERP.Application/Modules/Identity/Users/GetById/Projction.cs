@@ -16,12 +16,11 @@ public static class Projection
             IsEmailConfirmed = u.IsEmailConfirmed,
             CreatedAt = u.CreatedAt,
             UpdatedAt = u.UpdatedAt,
-            Roles = u.UserRoles
-              .Select(ur => new RoleResponse
-              {
-                  Id = ur.Role.Id,
-                  Name = ur.Role.Name
-              })
+            Roles = u.UserRoles.Select(ur => new RoleResponse
+            {
+                Id = ur.Role.Id,
+                Name = ur.Role.Name
+            })
               .ToList()
         });
     }

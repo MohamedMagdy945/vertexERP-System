@@ -36,7 +36,7 @@ public sealed class Handler(IAppDbContext dbContext, IPasswordHasher passwordHas
 
         dbContext.Users.Add(user);
 
-        await dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.SaveChangesAsync(ct);
 
         return Result<Response>.Created(user.Adapt<Response>());
     }

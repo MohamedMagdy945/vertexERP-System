@@ -6,14 +6,15 @@ public static class Projection
 {
     public static IQueryable<UserResponse> ToResponse(this IQueryable<User> query)
     {
-        return query.Select(u => new UserResponse(
-            u.Id,
-            u.Name,
-            u.Email,
-            u.IsActive,
-            u.PortalType.ToString(),
-            u.CreatedAt,
-            u.UserRoles.Select(ur => ur.Role.Name).ToList()
-        ));
+        return query.Select(u => new UserResponse
+        {
+            Id = u.Id,
+            Name = u.Name,
+            Email = u.Email,
+            IsActive = u.IsActive,
+            PortalType = u.PortalType.ToString(),
+            CreatedAt = u.CreatedAt,
+            Roles = u.UserRoles.Select(ur => ur.Role.Name).ToList()
+        });
     }
 };

@@ -19,7 +19,10 @@ public sealed class Handler(IAppDbContext dbContext, IUserPermissionCache userPe
         if (user is null)
             return Result<Response>.NotFound("User Not Found");
 
-        user.Permissions = await userPermissionCache.GetAsync(request.Id, cancellationToken);
+        var permissions = await userPermissionCache.GetAsync(request.Id, cancellationToken);
+
+        if (permissions is not null)
+            user.Permissions = permissions;
 
         return Result<Response>.Success(user);
     }

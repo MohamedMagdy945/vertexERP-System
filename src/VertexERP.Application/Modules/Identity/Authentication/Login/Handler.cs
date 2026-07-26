@@ -10,8 +10,12 @@ using VertexERP.Application.Types.Authentication.Models;
 
 namespace VertexERP.Application.Modules.Identity.Authentication.Login;
 
-public sealed class Handler(IAppDbContext dbContext, IPasswordHasher passwordHasher
-    , SessionService sessionService, ILogger<Handler> logger) : IHandler
+public sealed class Handler(
+    IAppDbContext dbContext,
+    IPasswordHasher passwordHasher,
+    SessionService sessionService,
+    IUserPermissionService userPermissionService,
+    ILogger<Handler> logger) : IHandler
 {
     public async Task<Result<AuthenticationResult>> HandleAsync(Request request, CancellationToken ct)
     {
@@ -31,7 +35,19 @@ public sealed class Handler(IAppDbContext dbContext, IPasswordHasher passwordHas
         }
 
         var userClaims = new UserTokenClaims(context.UserId, context.Email, context.Roles);
-        var authenticatedUser = new AuthenticatedUser(context.UserId, context.Email, string.Empty, context.Roles);
+
+        var authenticatedUser = new AuthenticatedUser
+        {
+            Id = context.UserId,
+            Email = context.Email,
+            Portal = context.PortalType,
+            Roles = context.Roles
+        };
+
+        var permissions = await userPermissionService.GetPermissionsAsync(context.UserId);
+
+        if (permissions is not null)
+            authenticatedUser.Permissions = permissions;
 
         var tokenPair = sessionService.Create(userClaims);
 
