@@ -2,25 +2,27 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using VertexERP.Application.Common.Abstractions.Endpoint;
+using VertexERP.Application.Common.Authorization;
 using VertexERP.Application.Common.Extensions;
 using VertexERP.Application.Shared.Constant;
+using VertexERP.Application.Shared.Results;
 
-namespace VertexERP.Application.Modules.Identity.Roles.Create;
-
+namespace VertexERP.Application.Modules.Catalog.Categories.Update;
 
 public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("roles", async (Request command, Handler handler, CancellationToken ct) =>
+        app.MapPut("categories", async (Request request, Handler handler, CancellationToken ct) =>
         {
-            var result = await handler.HandleAsync(command, ct);
+            var result = await handler.HandleAsync(request, ct);
 
             return result.ToMinimalResult();
         })
-        //.RequireRole(secui.SecurityAdmin)
         .AddValidation<Request>()
+        .HasPermission(SecurityPermissions.Categories.Manage)
         .MapToApiVersion(1, 0)
-        .WithTags(Tags.Identity);
+        .WithTags(Tags.Authentication)
+        .Produces<Result<Response>>(StatusCodes.Status200OK);
     }
 }

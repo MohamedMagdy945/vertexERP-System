@@ -1,42 +1,52 @@
-﻿//using Microsoft.EntityFrameworkCore;
-//using VertexERP.Application.Common.Abstractions.Handler;
-//using VertexERP.Application.Common.Abstractions.Persistence;
-//using VertexERP.Application.Shared.Results;
-//using VertexERP.Domain.Module.Identity.Entities;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using VertexERP.Application.Common.Abstractions.Handler;
+using VertexERP.Application.Common.Abstractions.Persistence;
+using VertexERP.Application.Common.Authorization;
+using VertexERP.Application.Shared.Results;
+using VertexERP.Domain.Module.Identity.Entities;
 
-//namespace VertexERP.Application.Modules.Identity.Roles.Create;
+namespace VertexERP.Application.Modules.Identity.Roles.Create;
 
-//public sealed class Handler(IAppDbContext dbContext) : IHandler
-//{
-//    public async Task<Result<Response>> HandleAsync(Request request, CancellationToken ct)
-//    {
+public sealed class Handler(IAppDbContext dbContext) : IHandler
+{
+    public async Task<Result<Response>> HandleAsync(Request request, CancellationToken ct)
+    {
 
-//        var roleExists = await dbContext.Roles
-//            .AnyAsync(x => x.Name == request.Name, ct);
+        var invalidPermissions = request.Permissions
+           .Except(SecurityPermissions.All)
+           .ToArray();
 
-//        if (roleExists)
-//            return Result<Response>.Failure("Role already exists.");
-
-//        var permissions = await dbContext.Permissions
-//            .Where(x => request.PermissionIds.Contains(x.Id))
-//            .ToListAsync(ct);
-
-//        if (permissions.Count != request.PermissionIds.Count)
-//            return Result<Response>.Failure("Some permissions not found.");
+        if (invalidPermissions.Length > 0)
+        {
+            return Result<Response>.BadRequest(
+                $"Invalid permissions: {string.Join(", ", invalidPermissions)}");
+        }
+        var role = new Role(request.Name);
 
 
-//        var role = new Role(request.Name);
+        foreach (var permission in request.Permissions.Distinct())
+        {
+            role.AddPermission(permission);
+        }
 
-//        role.AddPermissions(permissions);
+        dbContext.Roles.Add(role);
 
-//        dbContext.Roles.Add(role);
+        try
+        {
+            await dbContext.SaveChangesAsync(ct);
+        }
+        catch (DbUpdateException ex)
+        {
+            if (ex.InnerException is SqlException { Number: 2601 or 2627 })
+                return Result<Response>.Conflict("Role name already exists.");
 
-//        await dbContext.SaveChangesAsync(ct);
-
-//        return Result<Response>.Success(new Response
-//        {
-//            Id = role.Id,
-//            Name = role.Name
-//        });
-//    }
-//}
+            throw;
+        }
+        return Result<Response>.Success(new Response
+        {
+            Id = role.Id,
+            Name = role.Name
+        });
+    }
+}

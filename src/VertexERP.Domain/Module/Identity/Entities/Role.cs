@@ -22,12 +22,12 @@ public class Role : Entity
         Name = name;
         Description = description;
     }
-    public void AddPermission(RolePermission rolePermission)
+    public void AddPermission(string permission)
     {
-        if (!RolePermissions.Contains(rolePermission))
-        {
-            RolePermissions.Add(rolePermission);
-        }
+        if (RolePermissions.Any(x => x.Permission == permission))
+            return;
+
+        RolePermissions.Add(new RolePermission(Id, permission));
     }
     public void RemovePermission(RolePermission rolePermission)
     {

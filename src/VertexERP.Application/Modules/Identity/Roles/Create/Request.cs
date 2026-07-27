@@ -3,5 +3,5 @@
 public sealed record Request(
     string Name,
     string? Description,
-    IReadOnlyList<Guid> PermissionIds
+    IReadOnlyList<string> Permissions
 );
