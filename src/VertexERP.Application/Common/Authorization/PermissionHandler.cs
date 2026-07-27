@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Http;
 using System.IdentityModel.Tokens.Jwt;
 using VertexERP.Application.Common.Abstractions.Identity;
-using VertexERP.Application.Shared.Constant;
 
 namespace VertexERP.Application.Common.Authorization;
 
@@ -11,7 +10,7 @@ public sealed class PermissionHandler(IUserPermissionService userPermissionServi
 {
     protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
     {
-        if (context.User.IsInRole(RoleNames.SystemAdmin))
+        if (context.User.IsInRole(SecurityRoles.SystemAdmin))
         {
             context.Succeed(requirement);
             return;

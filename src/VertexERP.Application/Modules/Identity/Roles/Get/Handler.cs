@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using VertexERP.Application.Common.Abstractions.Handler;
 using VertexERP.Application.Common.Abstractions.Persistence;
+using VertexERP.Application.Common.Authorization;
 using VertexERP.Application.Shared.Results;
 
 namespace VertexERP.Application.Modules.Identity.Roles.Get;
@@ -9,7 +10,10 @@ public sealed class Handler(IAppDbContext dbContext) : IHandler
 {
     public async Task<Result<Response>> HandleAsync(Request request, CancellationToken ct)
     {
-        var query = dbContext.Roles.AsNoTracking();
+        var query = dbContext.Roles
+            .AsNoTracking()
+            .Where(r => r.Name != SecurityRoles.SystemAdmin
+             && r.Name != SecurityRoles.SecurityAdmin); ;
 
         if (!string.IsNullOrWhiteSpace(request.SearchTerm))
         {

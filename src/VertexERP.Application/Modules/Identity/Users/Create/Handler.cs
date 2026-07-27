@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using VertexERP.Application.Common.Abstractions.Handler;
 using VertexERP.Application.Common.Abstractions.Identity;
 using VertexERP.Application.Common.Abstractions.Persistence;
-using VertexERP.Application.Shared.Constant;
+using VertexERP.Application.Common.Authorization;
 using VertexERP.Application.Shared.Results;
 using VertexERP.Domain.Module.Identity.Entities;
 
@@ -23,7 +23,7 @@ public sealed class Handler(IAppDbContext dbContext, IPasswordHasher passwordHas
             return Result<Response>.Conflict("Email already exists.");
 
         var defaultRole = await dbContext.Roles
-            .SingleOrDefaultAsync(r => r.Name == RoleNames.User, ct);
+            .SingleOrDefaultAsync(r => r.Name == SecurityRoles.User, ct);
 
         if (defaultRole is null)
             return Result<Response>.Failure("Default role not found.");
