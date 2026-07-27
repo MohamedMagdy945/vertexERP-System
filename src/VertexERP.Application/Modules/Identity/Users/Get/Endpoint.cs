@@ -20,7 +20,7 @@ public sealed class Endpoint : IEndpoint
 
             return result.ToMinimalResult();
         })
-        .RequireRole(SecurityRoles.SecurityAdmin)
+        .RequireRole(SecurityRoles.SystemAdmin, SecurityRoles.SecurityAdmin)
         .MapToApiVersion(1, 0)
         .WithTags(Tags.Identity)
         .Produces<Result<Page<Response>>>(StatusCodes.Status200OK);

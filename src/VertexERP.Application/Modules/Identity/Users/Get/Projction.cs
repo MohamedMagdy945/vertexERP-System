@@ -4,9 +4,9 @@ namespace VertexERP.Application.Modules.Identity.Users.Get;
 
 public static class Projection
 {
-    public static IQueryable<UserResponse> ToResponse(this IQueryable<User> query)
+    public static IQueryable<Response> ToResponse(this IQueryable<User> query)
     {
-        return query.Select(u => new UserResponse
+        return query.Select(u => new Response
         {
             Id = u.Id,
             Name = u.Name,
@@ -14,6 +14,7 @@ public static class Projection
             IsActive = u.IsActive,
             PortalType = u.PortalType.ToString(),
             CreatedAt = u.CreatedAt,
+            Roles = u.UserRoles.Select(r => r.Role.Name).ToList()
         });
     }
 };

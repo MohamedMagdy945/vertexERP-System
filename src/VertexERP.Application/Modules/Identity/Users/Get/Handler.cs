@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using VertexERP.Application.Common.Abstractions.Handler;
 using VertexERP.Application.Common.Abstractions.Persistence;
-using VertexERP.Application.Common.Extensions;
 using VertexERP.Application.Shared.Pagination;
 using VertexERP.Application.Shared.Results;
 
@@ -9,9 +8,9 @@ namespace VertexERP.Application.Modules.Identity.Users.Get;
 
 public sealed class Handler(IAppDbContext dbContext) : IHandler
 {
-    public async Task<Result<Response>> HandleAsync(Request request, CancellationToken ct)
+    public async Task<Result<Page<Response>>> HandleAsync(Request request, CancellationToken ct)
     {
-        var query = dbContext.Users.AsNoTracking().AsSplitQuery();
+        var query = dbContext.Users.AsNoTracking();
 
         if (!string.IsNullOrWhiteSpace(request.SearchTerm))
         {
@@ -26,12 +25,9 @@ public sealed class Handler(IAppDbContext dbContext) : IHandler
             .OrderBy(x => x.Id)
             .AsNoTracking()
             .ToResponse()
-            .ApplyPagination(request.PageNumber, request.PageSize)
-            .ToListAsync(ct);
+            .ToPageAsync(request, ct);
 
 
-        var page = Page<UserResponse>.Create(items, totalCount, request.PageNumber, request.PageSize);
-
-        return Result<Response>.Success(new Response { Users = page });
+        return Result<Page<Response>>.Success(items);
     }
 }

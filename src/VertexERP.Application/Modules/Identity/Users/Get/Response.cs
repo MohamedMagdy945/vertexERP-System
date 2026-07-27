@@ -1,9 +1,6 @@
-﻿
-using VertexERP.Application.Shared.Pagination;
+﻿namespace VertexERP.Application.Modules.Identity.Users.Get;
 
-namespace VertexERP.Application.Modules.Identity.Users.Get;
-
-public sealed class UserResponse
+public sealed class Response
 {
     public Guid Id { get; set; }
     public string Name { get; set; } = default!;
@@ -12,8 +9,4 @@ public sealed class UserResponse
     public string PortalType { get; set; } = default!;
     public DateTime CreatedAt { get; set; }
     public IReadOnlyCollection<string> Roles { get; set; } = [];
-}
-public sealed class Response
-{
-    public Page<UserResponse> Users { get; set; } = default!;
 }

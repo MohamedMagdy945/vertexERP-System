@@ -2,13 +2,14 @@
 using VertexERP.Application.Common.Abstractions.Handler;
 using VertexERP.Application.Common.Abstractions.Persistence;
 using VertexERP.Application.Common.Authorization;
+using VertexERP.Application.Shared.Pagination;
 using VertexERP.Application.Shared.Results;
 
 namespace VertexERP.Application.Modules.Identity.Roles.Get;
 
 public sealed class Handler(IAppDbContext dbContext) : IHandler
 {
-    public async Task<Result<Response>> HandleAsync(Request request, CancellationToken ct)
+    public async Task<Result<Page<Response>>> HandleAsync(Request request, CancellationToken ct)
     {
         var query = dbContext.Roles
             .AsNoTracking()
@@ -27,6 +28,6 @@ public sealed class Handler(IAppDbContext dbContext) : IHandler
             .ToResponse()
             .ToPageAsync(request, ct);
 
-        return Result<Response>.Success(new Response { Roles = roles });
+        return Result<Page<Response>>.Success(roles);
     }
 }
