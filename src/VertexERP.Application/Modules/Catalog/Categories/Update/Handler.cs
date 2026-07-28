@@ -3,8 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using VertexERP.Application.Common.Abstractions.Handler;
 using VertexERP.Application.Common.Abstractions.Persistence;
 using VertexERP.Application.Common.Abstractions.Storage;
+using VertexERP.Application.Common.Extensions;
 using VertexERP.Application.Shared.Results;
-using VertexERP.Domain.Module.Catalog.Entities;
 
 namespace VertexERP.Application.Modules.Catalog.Categories.Update;
 
@@ -18,7 +18,7 @@ public sealed class Handler(IAppDbContext dbContext, IFileStorage fileStorage) :
         if (category is null)
             return Result<Response>.NotFound("Category not found.");
 
-        var categoryName = Category.FormatName(request.Name);
+        var categoryName = request.Name.ToCleanString();
 
         var exists = await dbContext.Categories
             .AnyAsync(x => x.Id != request.Id && x.Name == categoryName, ct);
@@ -26,18 +26,25 @@ public sealed class Handler(IAppDbContext dbContext, IFileStorage fileStorage) :
         if (exists)
             return Result<Response>.Conflict("Category name already exists.");
 
-        string? imageUrl = null;
+        string? newImageUrl = category.ImageUrl;
+        string? oldImageUrlToDelete = null;
 
         if (request.Image is not null)
         {
-            if (!string.IsNullOrWhiteSpace(category.ImageUrl))
-                await fileStorage.DeleteAsync(category.ImageUrl, ct);
+            newImageUrl = await fileStorage.UploadAsync(request.Image, "categories", ct);
 
-            imageUrl = await fileStorage.UploadAsync(request.Image, "categories", ct);
+            if (!string.IsNullOrWhiteSpace(category.ImageUrl))
+            {
+                oldImageUrlToDelete = category.ImageUrl;
+            }
         }
-        category.Update(request.Name, request.Description, imageUrl);
 
         await dbContext.SaveChangesAsync(ct);
+
+        if (oldImageUrlToDelete is not null)
+        {
+            await fileStorage.DeleteAsync(oldImageUrlToDelete, ct);
+        }
 
         return Result<Response>.Success(category.Adapt<Response>());
     }

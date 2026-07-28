@@ -2,6 +2,6 @@
 
 public static class StringExtensions
 {
-    public static string FormatName(string name)
+    public static string ToCleanString(this string name)
         => name.Trim().ToLowerInvariant();
 }

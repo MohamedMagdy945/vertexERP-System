@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using VertexERP.Application.Common.Abstractions.Handler;
 using VertexERP.Application.Common.Abstractions.Persistence;
 using VertexERP.Application.Common.Abstractions.Storage;
+using VertexERP.Application.Common.Extensions;
 using VertexERP.Application.Shared.Results;
 using VertexERP.Domain.Module.Catalog.Entities;
 
@@ -12,7 +13,7 @@ public sealed class Handler(IAppDbContext dbContext, IFileStorage fileStorage) :
 {
     public async Task<Result<Response>> HandleAsync(Request request, CancellationToken ct)
     {
-        var categoryName = Category.FormatName(request.Name);
+        var categoryName = request.Name.ToCleanString();
 
         var exists = await dbContext.Categories.AnyAsync(x => x.Name == categoryName, ct);
 

@@ -23,7 +23,8 @@ public sealed class Endpoint : IEndpoint
         .AddValidation<Request>()
         .HasPermission(SecurityPermissions.Categories.Manage)
         .MapToApiVersion(1, 0)
-        .WithTags(Tags.Authentication)
+        .WithTags(Tags.Catalogs)
+        .DisableAntiforgery()
         .Produces<Result<Response>>(StatusCodes.Status200OK);
     }
 }
