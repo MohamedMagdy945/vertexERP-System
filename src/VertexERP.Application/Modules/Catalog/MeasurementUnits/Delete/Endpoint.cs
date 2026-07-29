@@ -7,19 +7,19 @@ using VertexERP.Application.Common.Extensions;
 using VertexERP.Application.Shared.Constant;
 using VertexERP.Application.Shared.Results;
 
-namespace VertexERP.Application.Modules.Catalog.Categories.Get;
+namespace VertexERP.Application.Modules.Catalog.MeasurementUnits.Delete;
 
 public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("/categories", async ([AsParameters] Request query, Handler handler, CancellationToken ct) =>
+        app.MapDelete("/measurement-units/{id:guid}", async (Guid id, Handler handler, CancellationToken ct) =>
         {
-            var result = await handler.HandleAsync(query, ct);
+            var result = await handler.HandleAsync(new Request(id), ct);
 
             return result.ToMinimalResult();
         })
-        .HasPermission(SecurityPermissions.Categories.View)
+        .HasPermission(SecurityPermissions.Units.Manage)
         .MapToApiVersion(1, 0)
         .WithTags(Tags.Catalogs)
         .Produces<Result<Response>>(StatusCodes.Status200OK);

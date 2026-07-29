@@ -7,15 +7,15 @@ using VertexERP.Application.Common.Extensions;
 using VertexERP.Application.Shared.Constant;
 using VertexERP.Application.Shared.Results;
 
-namespace VertexERP.Application.Modules.Catalog.Categories.Get;
+namespace VertexERP.Application.Modules.Catalog.MeasurementUnits.GetById;
 
 public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("/categories", async ([AsParameters] Request query, Handler handler, CancellationToken ct) =>
+        app.MapGet("/measurement-units/{id:guid}", async (Guid id, Handler handler, CancellationToken cancellationToken) =>
         {
-            var result = await handler.HandleAsync(query, ct);
+            var result = await handler.HandleAsync(new Request(id), cancellationToken);
 
             return result.ToMinimalResult();
         })
