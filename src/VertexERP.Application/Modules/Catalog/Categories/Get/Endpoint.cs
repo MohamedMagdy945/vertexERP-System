@@ -1,0 +1,28 @@
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
+using VertexERP.Application.Common.Abstractions.Endpoint;
+using VertexERP.Application.Common.Authorization;
+using VertexERP.Application.Common.Extensions;
+using VertexERP.Application.Modules.Catalog.Categories.Get;
+using VertexERP.Application.Shared.Constant;
+using VertexERP.Application.Shared.Results;
+
+namespace VertexERP.Application.Modules.Catalog.Categories.Queries.Get;
+
+public sealed class Endpoint : IEndpoint
+{
+    public void MapEndpoint(IEndpointRouteBuilder app)
+    {
+        app.MapGet("/categories", async ([AsParameters] Request query, Handler handler, CancellationToken ct) =>
+        {
+            var result = await handler.HandleAsync(query, ct);
+
+            return result.ToMinimalResult();
+        })
+        .HasPermission(SecurityPermissions.Categories.View)
+        .MapToApiVersion(1, 0)
+        .WithTags(Tags.Catalogs)
+        .Produces<Result<Response>>(StatusCodes.Status200OK);
+    }
+}
