@@ -6,12 +6,9 @@ namespace VertexERP.Domain.Module.Inventory.Entities;
 public sealed class Stock : AuditableEntity
 {
     public Guid ProductId { get; private set; }
-
-    public Product Product { get; private set; } = default!;
-
+    public Product Product { get; set; } = default!;
     public Guid WarehouseId { get; private set; }
-
-    public Warehouse Warehouse { get; private set; } = default!;
+    public Warehouse Warehouse { get; set; } = default!;
 
     public int Quantity { get; private set; }
 

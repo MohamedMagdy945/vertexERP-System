@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using VertexERP.Application.Common.Abstractions.Handler;
 using VertexERP.Application.Common.Abstractions.Persistence;
 using VertexERP.Application.Common.Abstractions.Storage;
 using VertexERP.Application.Shared.Results;
@@ -8,7 +9,7 @@ namespace VertexERP.Application.Modules.Catalog.Products.Images.Upload;
 
 public sealed class Handler(
     IAppDbContext dbContext,
-    IFileStorage fileStorage)
+    IFileStorage fileStorage) : IHandler
 {
     public async Task<Result<Response>> HandleAsync(Request request, CancellationToken ct)
     {

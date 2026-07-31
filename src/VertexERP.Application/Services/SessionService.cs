@@ -1,8 +1,8 @@
 ﻿using VertexERP.Application.Common.Abstractions.Http;
 using VertexERP.Application.Common.Abstractions.Identity;
 using VertexERP.Application.Common.Abstractions.Persistence;
-using VertexERP.Application.Types.Authentication.Contracts;
-using VertexERP.Application.Types.Authentication.Models;
+using VertexERP.Application.Common.Types.Authentication.Contracts;
+using VertexERP.Application.Common.Types.Authentication.Models;
 using VertexERP.Domain.Module.Identity.Entities;
 
 namespace VertexERP.Application.Services;

@@ -1,35 +1,28 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using VertexERP.Application.Common.Abstractions.Endpoint;
 using VertexERP.Application.Common.Authorization;
 using VertexERP.Application.Common.Extensions;
 using VertexERP.Application.Shared.Constant;
+using VertexERP.Application.Shared.Pagination;
 using VertexERP.Application.Shared.Results;
 
-namespace VertexERP.Application.Modules.Catalog.Products.Images.Upload;
+namespace VertexERP.Application.Modules.Inventory.Stocks.Warehouses;
 
 public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("products/{productId:guid}/images", async (
-            Guid productId,
-            [FromForm] IReadOnlyList<IFormFile> images,
-            Handler handler,
-            CancellationToken ct) =>
+        app.MapGet("/stocks/warehouses/{warehouseId:guid}", async (Guid warehouseId, [AsParameters] PageRequest pageRequest, Handler handler, CancellationToken cancellationToken) =>
         {
-            var request = new Request(productId, images);
-
-            var result = await handler.HandleAsync(request, ct);
+            var result = await handler.HandleAsync(new Request(warehouseId), pageRequest, cancellationToken);
 
             return result.ToMinimalResult();
         })
-        .HasPermission(SecurityPermissions.Categories.Manage)
+        .HasPermission(SecurityPermissions.Categories.View)
         .MapToApiVersion(1, 0)
         .WithTags(Tags.Catalogs)
-        .DisableAntiforgery()
         .Produces<Result<Response>>(StatusCodes.Status200OK);
     }
 }

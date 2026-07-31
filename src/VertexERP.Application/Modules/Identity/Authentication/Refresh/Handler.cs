@@ -4,9 +4,9 @@ using VertexERP.Application.Common.Abstractions.Handler;
 using VertexERP.Application.Common.Abstractions.Identity;
 using VertexERP.Application.Common.Abstractions.Persistence;
 using VertexERP.Application.Common.Extensions;
+using VertexERP.Application.Common.Types.Authentication.Contracts;
 using VertexERP.Application.Services;
 using VertexERP.Application.Shared.Results;
-using VertexERP.Application.Types.Authentication.Contracts;
 using VertexERP.Application.Types.Authentication.Models;
 
 namespace VertexERP.Application.Modules.Identity.Authentication.Refresh;

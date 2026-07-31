@@ -1,4 +1,4 @@
-﻿namespace VertexERP.Application.Types.Authentication.Contracts;
+﻿namespace VertexERP.Application.Common.Types.Authentication.Contracts;
 
 public sealed record AuthenticationResult(
     AuthenticatedUser User,

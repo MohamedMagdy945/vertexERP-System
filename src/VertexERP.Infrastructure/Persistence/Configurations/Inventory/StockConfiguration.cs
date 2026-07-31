@@ -16,18 +16,22 @@ public sealed class StockConfiguration : IEntityTypeConfiguration<Stock>
             x.WarehouseId
         });
 
-
         builder.Property(x => x.Quantity)
+            .HasPrecision(18, 2)
+            .HasDefaultValue(0);
+
+        builder.Property(x => x.UpdatedAt)
             .IsRequired();
 
         builder.HasOne(x => x.Product)
-        .WithMany()
-        .HasForeignKey(x => x.ProductId)
-        .OnDelete(DeleteBehavior.Restrict);
+             .WithMany()
+             .HasForeignKey(x => x.ProductId)
+             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(x => x.Warehouse)
-            .WithMany(x => x.Stocks)
+            .WithMany()
             .HasForeignKey(x => x.WarehouseId)
             .OnDelete(DeleteBehavior.Restrict);
+
     }
 }
