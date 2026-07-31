@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace VertexERP.Application.Services.Update;
+﻿namespace VertexERP.Application.Modules.Inventory.Warehouses.Update;
 
 public sealed record Request(
     Guid Id,
     string Name,
-    string? Description,
-    IFormFile? Image);
+    string Code,
+    string Location);

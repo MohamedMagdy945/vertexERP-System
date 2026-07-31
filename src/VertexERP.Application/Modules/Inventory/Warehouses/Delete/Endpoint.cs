@@ -13,7 +13,7 @@ public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapDelete("/categories/{id:guid}", async (Guid id, Handler handler, CancellationToken ct) =>
+        app.MapDelete("/warehouses/{id:guid}", async (Guid id, Handler handler, CancellationToken ct) =>
         {
             var result = await handler.HandleAsync(new Request(id), ct);
 

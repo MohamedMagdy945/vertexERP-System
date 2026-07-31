@@ -7,13 +7,13 @@ using VertexERP.Application.Common.Extensions;
 using VertexERP.Application.Shared.Constant;
 using VertexERP.Application.Shared.Results;
 
-namespace VertexERP.Application.Services.Update;
+namespace VertexERP.Application.Modules.Inventory.Warehouses.Update;
 
 public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPut("categories/{id:guid}", async (Guid id, Request request, Handler handler, CancellationToken ct) =>
+        app.MapPut("warehouses/{id:guid}", async (Guid id, Request request, Handler handler, CancellationToken ct) =>
         {
             var result = await handler.HandleAsync(request with { Id = id }, ct);
 
