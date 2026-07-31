@@ -8,7 +8,7 @@ public sealed class Handler() : IHandler
 {
     public async Task<Result<Response>> HandleAsync(Request request, CancellationToken ct)
     {
-        var allPermissions = SecurityPermissions.All;
+        var allPermissions = Perms.All;
 
         return Result<Response>.Success(new Response
         {

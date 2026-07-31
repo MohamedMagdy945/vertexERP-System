@@ -14,7 +14,7 @@ public sealed class Handler(IAppDbContext dbContext) : IHandler
     {
 
         var invalidPermissions = request.Permissions
-           .Except(SecurityPermissions.All)
+           .Except(Perms.All)
            .ToArray();
 
         if (invalidPermissions.Length > 0)

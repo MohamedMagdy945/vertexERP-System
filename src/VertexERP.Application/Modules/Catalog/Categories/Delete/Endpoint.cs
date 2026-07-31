@@ -15,11 +15,11 @@ public sealed class Endpoint : IEndpoint
     {
         app.MapDelete("/categories/{id:guid}", async (Guid id, Handler handler, CancellationToken ct) =>
         {
-            var result = await handler.HandleAsync(new Request(id),ct);
+            var result = await handler.HandleAsync(new Request(id), ct);
 
             return result.ToMinimalResult();
         })
-        .HasPermission(SecurityPermissions.Categories.Manage)
+        .HasPermission(Perms.Catalog.Manage)
         .MapToApiVersion(1, 0)
         .WithTags(Tags.Catalogs)
         .Produces<Result<Response>>(StatusCodes.Status200OK);

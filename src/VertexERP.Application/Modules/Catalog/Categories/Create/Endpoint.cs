@@ -21,7 +21,7 @@ public sealed class Endpoint : IEndpoint
             return result.ToMinimalResult();
         })
         .AddValidation<Request>()
-        .HasPermission(SecurityPermissions.Categories.Manage)
+        .HasPermission(Perms.Catalog.Manage)
         .MapToApiVersion(1, 0)
         .WithTags(Tags.Catalogs)
         .DisableAntiforgery()

@@ -1,36 +1,34 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
-	
-  <ItemGroup>
-	<FrameworkReference Include="Microsoft.AspNetCore.App" />
-	<PackageReference Include="Asp.Versioning.Http" Version="10.0.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Common\Abstractions\Identity\IRefreshTokenService.cs" />
-    <None Include="Common\Abstractions\Identity\IAccessTokenGenerator.cs" />
-    <None Include="Types\Authentication\Models\AccessTokenInfo.cs" />
-    <None Include="Types\Authentication\Models\RefreshTokenInfo.cs" />
-  </ItemGroup>
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
-    <PackageReference Include="Mapster" Version="10.0.11" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="10.0.10" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.10" />
-    <PackageReference Include="Scrutor" Version="7.0.0" />
-  </ItemGroup>
+	<ItemGroup>
+	  <Compile Remove="Types\**" />
+	  <EmbeddedResource Remove="Types\**" />
+	  <None Remove="Types\**" />
+	</ItemGroup>
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+		<PackageReference Include="Asp.Versioning.Http" Version="10.0.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="Common\Abstractions\Identity\IRefreshTokenService.cs" />
+		<None Include="Common\Abstractions\Identity\IAccessTokenGenerator.cs" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\VertexERP.Domain\VertexERP.Domain.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+		<PackageReference Include="Mapster" Version="10.0.11" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="10.0.10" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.10" />
+		<PackageReference Include="Scrutor" Version="7.0.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Modules\Inventory\" />
-  </ItemGroup>
-
+	<ItemGroup>
+		<ProjectReference Include="..\VertexERP.Domain\VertexERP.Domain.csproj" />
+	</ItemGroup>
 </Project>

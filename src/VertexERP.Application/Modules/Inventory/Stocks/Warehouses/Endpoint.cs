@@ -16,11 +16,11 @@ public sealed class Endpoint : IEndpoint
     {
         app.MapGet("/stocks/warehouses/{warehouseId:guid}", async (Guid warehouseId, [AsParameters] PageRequest pageRequest, Handler handler, CancellationToken cancellationToken) =>
         {
-            var result = await handler.HandleAsync(new Request(warehouseId), pageRequest, cancellationToken);
+            var result = await handler.HandleAsync(new Request(warehouseId, pageRequest), cancellationToken);
 
             return result.ToMinimalResult();
         })
-        .HasPermission(SecurityPermissions.Categories.View)
+        .HasPermission(Perms.Inventory.View)
         .MapToApiVersion(1, 0)
         .WithTags(Tags.Catalogs)
         .Produces<Result<Response>>(StatusCodes.Status200OK);

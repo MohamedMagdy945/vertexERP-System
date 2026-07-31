@@ -20,7 +20,7 @@ public sealed class Endpoint : IEndpoint
             return result.ToMinimalResult();
         })
         .AddValidation<Request>()
-        .HasPermission(SecurityPermissions.Units.Manage)
+        .HasPermission(Perms.Catalog.Manage)
         .MapToApiVersion(1, 0)
         .WithTags(Tags.Catalogs)
         .Produces<Result<Response>>(StatusCodes.Status200OK);
