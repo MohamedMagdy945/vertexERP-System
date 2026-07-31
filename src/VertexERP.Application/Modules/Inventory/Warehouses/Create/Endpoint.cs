@@ -23,7 +23,7 @@ public sealed class Endpoint : IEndpoint
         .AddValidation<Request>()
         .HasPermission(Perms.Inventory.Manage)
         .MapToApiVersion(1, 0)
-        .WithTags(Tags.Catalogs)
+        .WithTags(Tags.Inventory)
         .DisableAntiforgery()
         .Produces<Result<Response>>(StatusCodes.Status200OK);
     }

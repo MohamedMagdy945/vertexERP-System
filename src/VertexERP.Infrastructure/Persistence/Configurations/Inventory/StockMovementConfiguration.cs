@@ -4,12 +4,12 @@ using VertexERP.Domain.Module.Inventory.Entities;
 
 namespace VertexERP.Infrastructure.Persistence.Configurations.Inventory;
 
-public sealed class WarehouseTransactionConfiguration
-    : IEntityTypeConfiguration<WarehouseTransaction>
+public sealed class StockMovementConfiguration
+    : IEntityTypeConfiguration<StockMovement>
 {
-    public void Configure(EntityTypeBuilder<WarehouseTransaction> builder)
+    public void Configure(EntityTypeBuilder<StockMovement> builder)
     {
-        builder.ToTable("WarehouseTransactions");
+        builder.ToTable("StockMovements");
 
         builder.HasKey(x => x.Id);
 
@@ -22,7 +22,7 @@ public sealed class WarehouseTransactionConfiguration
             .HasConversion<int>()
             .IsRequired();
 
-        builder.Property(x => x.ReferenceType)
+        builder.Property(x => x.Direction)
             .HasConversion<int>()
             .IsRequired();
 

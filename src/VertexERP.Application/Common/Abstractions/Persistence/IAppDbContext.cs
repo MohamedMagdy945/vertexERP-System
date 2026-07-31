@@ -24,7 +24,7 @@ public interface IAppDbContext
     // Inventory
     public DbSet<Warehouse> Warehouses { get; }
     public DbSet<Stock> Stocks { get; }
-    public DbSet<WarehouseTransaction> WarehouseTransactions { get; }
+    public DbSet<StockMovement> StockMovements { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }
 

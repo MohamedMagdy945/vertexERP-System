@@ -1,11 +1,7 @@
 ﻿namespace VertexERP.Domain.Module.Inventory.Enums;
 
-public enum WarehouseTransactionType
+public enum StockMovementDirection
 {
-    Receipt = 1,
-    Issue = 2,
-    TransferIn = 3,
-    TransferOut = 4,
-    Adjustment = 5,
-    OpeningBalance = 6
+    In = 1,
+    Out = 2
 }

@@ -25,7 +25,7 @@ public class AppDbContext : DbContext, IAppDbContext
     // Inventory
     public DbSet<Warehouse> Warehouses { get; set; }
     public DbSet<Stock> Stocks { get; set; }
-    public DbSet<WarehouseTransaction> WarehouseTransactions { get; set; }
+    public DbSet<StockMovement> StockMovements { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)

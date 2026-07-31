@@ -13,7 +13,7 @@ public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("/warehouses", async (Request request, Handler handler, CancellationToken ct) =>
+        app.MapGet("/warehouses", async ([AsParameters] Request request, Handler handler, CancellationToken ct) =>
         {
             var result = await handler.HandleAsync(request, ct);
 
@@ -21,7 +21,7 @@ public sealed class Endpoint : IEndpoint
         })
         .HasPermission(Perms.Inventory.View)
         .MapToApiVersion(1, 0)
-        .WithTags(Tags.Catalogs)
+        .WithTags(Tags.Inventory)
         .Produces<Result<Response>>(StatusCodes.Status200OK);
     }
 }

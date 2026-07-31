@@ -7,19 +7,19 @@ using VertexERP.Application.Common.Extensions;
 using VertexERP.Application.Shared.Constant;
 using VertexERP.Application.Shared.Results;
 
-namespace VertexERP.Application.Modules.Catalog.MeasurementUnits.GetById;
+namespace VertexERP.Application.Modules.Inventory.Stocks.GetByProduct;
 
 public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("/measurement-units/{id:guid}", async (Guid id, Handler handler, CancellationToken cancellationToken) =>
+        app.MapGet("/stocks/products/{productId:guid}", async (Guid productId, Handler handler, CancellationToken cancellationToken) =>
         {
-            var result = await handler.HandleAsync(new Request(id), cancellationToken);
+            var result = await handler.HandleAsync(new Request(productId), cancellationToken);
 
             return result.ToMinimalResult();
         })
-        .HasPermission(Perms.Catalog.View)
+        .HasPermission(Perms.Inventory.View)
         .MapToApiVersion(1, 0)
         .WithTags(Tags.Catalog)
         .Produces<Result<Response>>(StatusCodes.Status200OK);

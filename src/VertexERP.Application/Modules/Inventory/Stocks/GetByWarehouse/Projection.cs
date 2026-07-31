@@ -1,6 +1,6 @@
 ﻿using VertexERP.Domain.Module.Inventory.Entities;
 
-namespace VertexERP.Application.Modules.Inventory.Stocks.Products;
+namespace VertexERP.Application.Modules.Inventory.Stocks.GetByWarehouse;
 
 public static class Projection
 {
@@ -8,9 +8,10 @@ public static class Projection
     {
         return query.Select(x => new Response
         {
-            WarehouseId = x.WarehouseId,
-            WarehouseName = x.Warehouse.Name,
+            ProductId = x.ProductId,
+            ProductName = x.Product.Name,
+            ProductCode = x.Product.Code,
             Quantity = x.Quantity
         });
     }
-};
+}

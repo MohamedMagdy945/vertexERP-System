@@ -26,9 +26,9 @@ public sealed class Endpoint : IEndpoint
 
             return result.ToMinimalResult();
         })
-        .HasPermission(Perms.Inventory.Manage)
+        .HasPermission(Perms.Catalog.Manage)
         .MapToApiVersion(1, 0)
-        .WithTags(Tags.Catalogs)
+        .WithTags(Tags.Catalog)
         .DisableAntiforgery()
         .Produces<Result<Response>>(StatusCodes.Status200OK);
     }

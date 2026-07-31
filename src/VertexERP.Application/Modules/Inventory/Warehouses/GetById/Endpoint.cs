@@ -21,7 +21,7 @@ public sealed class Endpoint : IEndpoint
         })
         .HasPermission(Perms.Inventory.View)
         .MapToApiVersion(1, 0)
-        .WithTags(Tags.Catalogs)
+        .WithTags(Tags.Inventory)
         .Produces<Result<Response>>(StatusCodes.Status200OK);
     }
 }

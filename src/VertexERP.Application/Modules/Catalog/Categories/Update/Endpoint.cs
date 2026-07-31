@@ -22,7 +22,7 @@ public sealed class Endpoint : IEndpoint
         .AddValidation<Request>()
         .HasPermission(Perms.Catalog.Manage)
         .MapToApiVersion(1, 0)
-        .WithTags(Tags.Catalogs)
+        .WithTags(Tags.Catalog)
         .Produces<Result<Response>>(StatusCodes.Status200OK);
     }
 }

@@ -5,7 +5,7 @@ using VertexERP.Domain.Module.Inventory.Enums;
 
 namespace VertexERP.Domain.Module.Inventory.Entities;
 
-public sealed class WarehouseTransaction : Entity
+public sealed class StockMovement : Entity
 {
     public Guid WarehouseId { get; private set; }
     public Warehouse Warehouse { get; private set; } = default!;
@@ -13,14 +13,13 @@ public sealed class WarehouseTransaction : Entity
     public Guid ProductId { get; private set; }
     public Product Product { get; private set; } = default!;
 
-    public int Quantity { get; private set; }
+    public decimal Quantity { get; private set; }
 
     public Guid PerformedByUserId { get; private set; }
     public User PerformedByUser { get; private set; } = default!;
+    public StockMovementType Type { get; set; }
 
-    public WarehouseTransactionType Type { get; private set; }
-
-    public TransactionReferenceType ReferenceType { get; private set; }
+    public StockMovementDirection Direction { get; set; }
 
     public DateTime TransactionDate { get; private set; }
 
@@ -28,15 +27,15 @@ public sealed class WarehouseTransaction : Entity
 
     public string? Notes { get; private set; }
 
-    private WarehouseTransaction() { }
+    private StockMovement() { }
 
-    public WarehouseTransaction(
+    public StockMovement(
         Guid warehouseId,
         Guid productId,
         int quantity,
         Guid performedByUserId,
-        WarehouseTransactionType type,
-        TransactionReferenceType referenceType,
+        StockMovementDirection direction,
+        StockMovementType type,
         DateTime transactionDate,
         string? referenceNumber = null,
         string? notes = null)
@@ -46,7 +45,7 @@ public sealed class WarehouseTransaction : Entity
         Quantity = quantity;
         PerformedByUserId = performedByUserId;
         Type = type;
-        ReferenceType = referenceType;
+        Direction = direction;
         TransactionDate = transactionDate;
         ReferenceNumber = referenceNumber;
         Notes = notes;
