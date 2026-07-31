@@ -1,5 +1,3 @@
-﻿using VertexERP.Application.Shared.Pagination;
+﻿namespace VertexERP.Application.Modules.Inventory.Warehouses.Get;
 
-namespace VertexERP.Application.Services.Get;
-
-public sealed record Request : SearchablePageRequest;
+public sealed record Request;

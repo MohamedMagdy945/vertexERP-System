@@ -4,5 +4,6 @@ public sealed class Response
 {
     public Guid Id { get; init; }
     public string Name { get; init; } = default!;
-    public string? Description { get; init; }
+    public string Code { get; init; } = default!;
+    public string Location { get; init; } = default!;
 }

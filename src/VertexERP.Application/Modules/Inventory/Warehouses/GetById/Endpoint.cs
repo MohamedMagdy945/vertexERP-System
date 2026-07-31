@@ -13,7 +13,7 @@ public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("/categories/{id:guid}", async (Guid id, Handler handler, CancellationToken cancellationToken) =>
+        app.MapGet("/warehouses/{id:guid}", async (Guid id, Handler handler, CancellationToken cancellationToken) =>
         {
             var result = await handler.HandleAsync(new Request(id), cancellationToken);
 

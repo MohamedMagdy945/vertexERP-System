@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Routing;
 using VertexERP.Application.Common.Abstractions.Endpoint;
 using VertexERP.Application.Common.Authorization;
 using VertexERP.Application.Common.Extensions;
-using VertexERP.Application.Services.Get;
 using VertexERP.Application.Shared.Constant;
 using VertexERP.Application.Shared.Results;
 
@@ -14,9 +13,9 @@ public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("/categories", async ([AsParameters] Request query, Handler handler, CancellationToken ct) =>
+        app.MapGet("/warehouses", async (Request request, Handler handler, CancellationToken ct) =>
         {
-            var result = await handler.HandleAsync(query, ct);
+            var result = await handler.HandleAsync(request, ct);
 
             return result.ToMinimalResult();
         })

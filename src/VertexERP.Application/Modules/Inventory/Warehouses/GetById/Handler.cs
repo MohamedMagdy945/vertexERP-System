@@ -9,7 +9,7 @@ public sealed class Handler(IAppDbContext dbContext) : IHandler
 {
     public async Task<Result<Response>> HandleAsync(Request request, CancellationToken ct)
     {
-        var category = await dbContext.Categories
+        var category = await dbContext.Warehouses
                 .AsNoTracking()
                 .Where(x => x.Id == request.Id)
                 .ToResponse()

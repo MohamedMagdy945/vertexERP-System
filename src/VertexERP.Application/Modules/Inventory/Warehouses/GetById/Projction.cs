@@ -1,16 +1,17 @@
-﻿using VertexERP.Domain.Module.Catalog.Entities;
+﻿using VertexERP.Domain.Module.Inventory.Entities;
 
 namespace VertexERP.Application.Modules.Inventory.Warehouses.GetById;
 
 public static class Projection
 {
-    public static IQueryable<Response> ToResponse(this IQueryable<Category> query)
+    public static IQueryable<Response> ToResponse(this IQueryable<Warehouse> query)
     {
-        return query.Select(u => new Response
+        return query.Select(x => new Response
         {
-            Id = u.Id,
-            Name = u.Name,
-            Description = u.Description,
+            Id = x.Id,
+            Name = x.Name,
+            Code = x.Code,
+            Location = x.Location
         });
     }
 };
