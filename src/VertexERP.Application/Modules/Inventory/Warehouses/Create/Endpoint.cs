@@ -14,7 +14,7 @@ public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("categories", async ([FromForm] Request request, Handler handler, CancellationToken ct) =>
+        app.MapPost("warehouses", async ([FromForm] Request request, Handler handler, CancellationToken ct) =>
         {
             var result = await handler.HandleAsync(request, ct);
 

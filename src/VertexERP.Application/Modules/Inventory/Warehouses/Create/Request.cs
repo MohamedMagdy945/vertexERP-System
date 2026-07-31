@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace VertexERP.Application.Modules.Inventory.Warehouses.Create;
+﻿namespace VertexERP.Application.Modules.Inventory.Warehouses.Create;
 
 public sealed record Request(
     string Name,
-    string? Description,
-    IFormFile? Image);
+    string Code,
+    string Location);

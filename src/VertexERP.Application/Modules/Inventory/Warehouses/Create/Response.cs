@@ -1,3 +1,7 @@
 ﻿namespace VertexERP.Application.Modules.Inventory.Warehouses.Create;
 
-public sealed record Response(Guid Id, string Name, string? Description);
+public sealed record Response(
+    Guid Id,
+    string Name,
+    string Code,
+    string Location);

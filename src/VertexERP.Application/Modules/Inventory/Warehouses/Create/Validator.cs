@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using Microsoft.AspNetCore.Http;
 
 namespace VertexERP.Application.Modules.Inventory.Warehouses.Create;
 
@@ -9,27 +8,20 @@ public sealed class Validator : AbstractValidator<Request>
     {
         RuleFor(x => x.Name)
             .NotEmpty()
-            .MaximumLength(100);
+            .WithMessage("Warehouse name is required.")
+            .MaximumLength(100)
+            .WithMessage("Warehouse name must not exceed 100 characters.");
 
-        RuleFor(x => x.Description)
-            .MaximumLength(500);
+        RuleFor(x => x.Code)
+            .NotEmpty()
+            .WithMessage("Warehouse code is required.")
+            .MaximumLength(50)
+            .WithMessage("Warehouse code must not exceed 50 characters.");
 
-        When(x => x.Image is not null, () =>
-        {
-            RuleFor(x => x.Image!)
-                .Must(HaveValidSize)
-                .WithMessage("Image size must be less than 6 MB.")
-                .Must(HaveValidExtension)
-                .WithMessage("Only JPG, JPEG, PNG, and WEBP images are allowed.");
-        });
-    }
-
-    private static bool HaveValidSize(IFormFile file)
-        => file is { Length: > 0 and <= 6 * 1024 * 1024 };
-
-    private static bool HaveValidExtension(IFormFile file)
-    {
-        var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
-        return ext is ".jpg" or ".jpeg" or ".png" or ".webp";
+        RuleFor(x => x.Location)
+            .NotEmpty()
+            .WithMessage("Warehouse location is required.")
+            .MaximumLength(200)
+            .WithMessage("Warehouse location must not exceed 200 characters.");
     }
 }
