@@ -6,10 +6,31 @@ using VertexERP.Infrastructure.Persistence;
 
 namespace VertexERP.Infrastructure.Services.Notifications;
 
-public sealed class NotificationService(
-    AppDbContext dbContext)
+public sealed class NotificationService(AppDbContext dbContext)
     : INotificationService
 {
+    public async Task SendAsync(
+        Guid userId,
+        string title,
+        string message,
+        NotificationType type,
+        object? data,
+        CancellationToken ct = default)
+    {
+        var notification = new Notification(
+            title,
+            message,
+            type,
+            data is null ? null : JsonSerializer.Serialize(data));
+
+
+        notification.Recipients.Add(
+            new NotificationRecipient(userId));
+
+        dbContext.Notifications.Add(notification);
+
+        await dbContext.SaveChangesAsync(ct);
+    }
     public async Task SendAsync(
         IEnumerable<Guid> userIds,
         string title,
