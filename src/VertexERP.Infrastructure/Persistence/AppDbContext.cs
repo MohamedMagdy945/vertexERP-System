@@ -3,6 +3,7 @@ using VertexERP.Application.Common.Abstractions.Persistence;
 using VertexERP.Domain.Module.Catalog.Entities;
 using VertexERP.Domain.Module.Identity.Entities;
 using VertexERP.Domain.Module.Inventory.Entities;
+using VertexERP.Domain.Module.Notifications.Entities;
 
 
 namespace VertexERP.Infrastructure.Persistence;
@@ -26,6 +27,10 @@ public class AppDbContext : DbContext, IAppDbContext
     public DbSet<Warehouse> Warehouses { get; set; }
     public DbSet<Stock> Stocks { get; set; }
     public DbSet<StockMovement> StockMovements { get; set; }
+
+    // Notifications
+    public DbSet<Notification> Notifications { get; set; }
+    public DbSet<NotificationRecipient> NotificationRecipients { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)

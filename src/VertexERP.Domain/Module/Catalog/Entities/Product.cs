@@ -17,16 +17,12 @@ public sealed class Product : Entity
     // Relationships
     public Guid CategoryId { get; private set; }
     public Category Category { get; private set; } = default!;
-
     public Guid UnitId { get; private set; }
     public MeasurementUnit Unit { get; private set; } = default!;
-
     // Status
     public bool IsAvailable { get; private set; }
-
     // Navigation Collections
     public ICollection<ProductImage> Images { get; } = [];
-
     private Product() { }
 
     public Product(string name, string code, decimal costPrice, decimal sellingPrice

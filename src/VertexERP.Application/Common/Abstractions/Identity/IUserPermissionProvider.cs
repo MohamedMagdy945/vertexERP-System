@@ -1,4 +1,4 @@
-﻿namespace VertexERP.Application.Common.Abstractions.Persistence;
+﻿namespace VertexERP.Application.Common.Abstractions.Identity;
 
 public interface IUserPermissionProvider
 {

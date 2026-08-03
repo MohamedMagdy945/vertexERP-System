@@ -7,7 +7,7 @@ public sealed class Response
     public Guid Id { get; init; }
     public Guid ProductId { get; init; }
     public Guid WarehouseId { get; init; }
-    public int Quantity { get; init; }
+    public decimal Quantity { get; init; }
     public StockMovementDirection Direction { get; init; }
     public StockMovementType Type { get; init; }
     public DateTime TransactionDate { get; init; }

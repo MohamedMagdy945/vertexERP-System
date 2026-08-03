@@ -2,6 +2,7 @@
 using VertexERP.Domain.Module.Catalog.Entities;
 using VertexERP.Domain.Module.Identity.Entities;
 using VertexERP.Domain.Module.Inventory.Entities;
+using VertexERP.Domain.Module.Notifications.Entities;
 
 namespace VertexERP.Application.Common.Abstractions.Persistence;
 
@@ -16,15 +17,22 @@ public interface IAppDbContext
 
 
     // Catalog
-    public DbSet<Product> Products { get; }
-    public DbSet<ProductImage> ProductImages { get; }
-    public DbSet<Category> Categories { get; }
-    public DbSet<MeasurementUnit> MeasurementUnits { get; }
+    DbSet<Product> Products { get; }
+    DbSet<ProductImage> ProductImages { get; }
+    DbSet<Category> Categories { get; }
+    DbSet<MeasurementUnit> MeasurementUnits { get; }
 
     // Inventory
-    public DbSet<Warehouse> Warehouses { get; }
-    public DbSet<Stock> Stocks { get; }
-    public DbSet<StockMovement> StockMovements { get; }
+    DbSet<Warehouse> Warehouses { get; }
+    DbSet<Stock> Stocks { get; }
+    DbSet<StockMovement> StockMovements { get; }
+
+    // Notifications
+    DbSet<Notification> Notifications { get; }
+    DbSet<NotificationRecipient> NotificationRecipients { get; }
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+
+
 }
 
