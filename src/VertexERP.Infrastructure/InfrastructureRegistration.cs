@@ -42,8 +42,8 @@ public static class InfrastructureRegistration
         services.AddMemoryCache();
 
         services.AddScoped<IUserPermissionCache, MemoryUserPermissionCache>();
-        services.AddScoped<IUserPermissionService, UserPermissionService>();
-        services.AddScoped<ICurrentUserService, CurrentUserService>();
+        services.AddScoped<IUserPermissionService, UserPermission>();
+        services.AddScoped<ICurrentUser, CurrentUserService>();
 
 
         services.AddDataSeeders();

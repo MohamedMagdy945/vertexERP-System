@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using VertexERP.Application.Common.Abstractions.Handler;
+using VertexERP.Application.Common.Abstractions.Endpoint;
 using VertexERP.Application.Common.Abstractions.Identity;
 using VertexERP.Application.Common.Abstractions.Persistence;
 using VertexERP.Application.Shared.Results;

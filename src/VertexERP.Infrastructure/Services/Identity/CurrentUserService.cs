@@ -5,7 +5,7 @@ using VertexERP.Application.Common.Abstractions.Identity;
 
 namespace VertexERP.Infrastructure.Services.Identity;
 
-public sealed class CurrentUserService(IHttpContextAccessor accessor) : ICurrentUserService
+public sealed class CurrentUserService(IHttpContextAccessor accessor) : ICurrentUser
 {
     private ClaimsPrincipal User => accessor.HttpContext?.User ?? new ClaimsPrincipal();
 

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using VertexERP.Application.Common.Abstractions.Cache;
-using VertexERP.Application.Common.Abstractions.Handler;
+using VertexERP.Application.Common.Abstractions.Endpoint;
 using VertexERP.Application.Common.Abstractions.Identity;
 using VertexERP.Application.Common.Abstractions.Persistence;
 using VertexERP.Application.Shared.Results;
@@ -8,7 +8,7 @@ using VertexERP.Application.Shared.Results;
 namespace VertexERP.Application.Modules.Identity.Me;
 
 public sealed class Handler(IAppDbContext dbContext,
-    ICurrentUserService currentUserService, IUserPermissionCache userPermissionCache) : IHandler
+    ICurrentUser currentUserService, IUserPermissionCache userPermissionCache) : IHandler
 {
     public async Task<Result<Response>> HandleAsync(Request request, CancellationToken cancellationToken)
     {

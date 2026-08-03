@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json.Serialization;
 using VertexERP.Application.Common;
-using VertexERP.Application.Common.Abstractions.Handler;
+using VertexERP.Application.Common.Abstractions.Endpoint;
 using VertexERP.Application.Common.Authorization;
 using VertexERP.Application.Services;
 

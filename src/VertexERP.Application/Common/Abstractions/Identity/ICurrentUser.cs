@@ -1,6 +1,6 @@
 ﻿namespace VertexERP.Application.Common.Abstractions.Identity;
 
-public interface ICurrentUserService
+public interface ICurrentUser
 {
     Guid UserId { get; }
 

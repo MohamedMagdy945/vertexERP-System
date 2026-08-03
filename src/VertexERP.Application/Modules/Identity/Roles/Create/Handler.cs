@@ -1,6 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using VertexERP.Application.Common.Abstractions.Handler;
+using VertexERP.Application.Common.Abstractions.Endpoint;
 using VertexERP.Application.Common.Abstractions.Persistence;
 using VertexERP.Application.Common.Authorization;
 using VertexERP.Application.Shared.Results;
