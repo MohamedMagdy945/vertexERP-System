@@ -1,4 +1,4 @@
-﻿namespace VertexERP.Application.Modules.Identity.Users.Roles.Delete;
+﻿namespace VertexERP.Application.Modules.Identity.UserRoles.Delete;
 
 public sealed record Response
 {

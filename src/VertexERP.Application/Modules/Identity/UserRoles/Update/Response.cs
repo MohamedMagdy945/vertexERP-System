@@ -1,4 +1,4 @@
-﻿namespace VertexERP.Application.Modules.Identity.Users.Roles.Update;
+﻿namespace VertexERP.Application.Modules.Identity.UserRoles.Update;
 
 public sealed class RoleResponse
 {

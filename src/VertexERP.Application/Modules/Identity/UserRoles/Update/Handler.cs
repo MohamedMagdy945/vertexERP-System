@@ -5,7 +5,7 @@ using VertexERP.Application.Common.Abstractions.Persistence;
 using VertexERP.Application.Shared.Results;
 using VertexERP.Domain.Module.Identity.Entities;
 
-namespace VertexERP.Application.Modules.Identity.Users.Roles.Update;
+namespace VertexERP.Application.Modules.Identity.UserRoles.Update;
 
 public sealed class Handler(IAppDbContext dbContext, IUserPermissionCache userPermissionCache) : IHandler
 {

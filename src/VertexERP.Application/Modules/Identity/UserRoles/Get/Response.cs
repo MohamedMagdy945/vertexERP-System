@@ -1,4 +1,4 @@
-﻿namespace VertexERP.Application.Modules.Identity.Users.Roles.Get;
+﻿namespace VertexERP.Application.Modules.Identity.UserRoles.Get;
 
 public sealed record Response
 {

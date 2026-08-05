@@ -12,7 +12,7 @@ public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("/notifications", async (Handler handler, CancellationToken ct) =>
+        app.MapGet("/notifications/mark-all-read", async (Handler handler, CancellationToken ct) =>
         {
             var result = await handler.HandleAsync(ct);
 

@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using VertexERP.Application.Common.Abstractions.Cache;
 using VertexERP.Application.Common.Abstractions.Http;
 using VertexERP.Application.Common.Abstractions.Identity;
+using VertexERP.Application.Common.Abstractions.Notifications;
 using VertexERP.Application.Common.Abstractions.Persistence;
 using VertexERP.Application.Common.Abstractions.Storage;
 using VertexERP.Infrastructure.Common.Extensions;
@@ -12,7 +13,9 @@ using VertexERP.Infrastructure.Persistence;
 using VertexERP.Infrastructure.Services.Cache;
 using VertexERP.Infrastructure.Services.Http;
 using VertexERP.Infrastructure.Services.Identity;
+using VertexERP.Infrastructure.Services.Notifications;
 using VertexERP.Infrastructure.Services.Storage;
+using VertexERP.Infrastructure.SignalR;
 
 namespace VertexERP.Infrastructure;
 
@@ -43,8 +46,12 @@ public static class InfrastructureRegistration
 
         services.AddScoped<IUserPermissionCache, MemoryUserPermissionCache>();
         services.AddScoped<IUserPermissionService, UserPermission>();
-        services.AddScoped<ICurrentUser, CurrentUserService>();
+        services.AddScoped<ICurrentUser, CurrentUser>();
+        services.AddScoped<INotificationService, NotificationService>();
 
+        services.AddScoped<INotificationPublisher, NotificationPublisher>();
+
+        services.AddSignalR();
 
         services.AddDataSeeders();
 

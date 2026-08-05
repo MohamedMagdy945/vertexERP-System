@@ -1,3 +1,3 @@
-﻿namespace VertexERP.Application.Modules.Identity.Users.Roles.Update;
+﻿namespace VertexERP.Application.Modules.Identity.UserRoles.Update;
 
 public sealed record Request(Guid UserId, IReadOnlyList<Guid> RoleIds);

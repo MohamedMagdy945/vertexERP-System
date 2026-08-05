@@ -4,6 +4,7 @@ using VertexERP.API.Extensions;
 using VertexERP.API.Middlewares;
 using VertexERP.Application;
 using VertexERP.Infrastructure;
+using VertexERP.Infrastructure.SignalR;
 
 namespace VertexERP.API;
 
@@ -51,6 +52,8 @@ public class Program
             app.UseAuthorization();
 
             app.MapEndpoints();
+
+            app.MapHub<NotificationHub>("/hubs/notifications");
 
             app.Run();
         }

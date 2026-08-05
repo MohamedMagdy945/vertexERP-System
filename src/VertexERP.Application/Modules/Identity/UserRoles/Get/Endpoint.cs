@@ -8,7 +8,7 @@ using VertexERP.Application.Common.Extensions;
 using VertexERP.Application.Shared.Constant;
 using VertexERP.Application.Shared.Results;
 
-namespace VertexERP.Application.Modules.Identity.Users.Roles.Get;
+namespace VertexERP.Application.Modules.Identity.UserRoles.Get;
 
 public sealed class Endpoint : IEndpoint
 {

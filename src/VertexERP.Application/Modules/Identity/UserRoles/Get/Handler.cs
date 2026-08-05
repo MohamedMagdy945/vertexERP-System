@@ -3,7 +3,7 @@ using VertexERP.Application.Common.Abstractions.Endpoint;
 using VertexERP.Application.Common.Abstractions.Persistence;
 using VertexERP.Application.Shared.Results;
 
-namespace VertexERP.Application.Modules.Identity.Users.Roles.Get;
+namespace VertexERP.Application.Modules.Identity.UserRoles.Get;
 
 public sealed class Handler(IAppDbContext dbContext) : IHandler
 {
