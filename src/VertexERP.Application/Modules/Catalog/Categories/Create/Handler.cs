@@ -13,13 +13,6 @@ public sealed class Handler(IAppDbContext dbContext, IFileStorage fileStorage) :
 {
     public async Task<Result<Response>> HandleAsync(Request request, CancellationToken ct)
     {
-        var categoryName = request.Name.ToCleanString();
-
-        var exists = await dbContext.Categories.AnyAsync(x => x.Name == categoryName, ct);
-
-        if (exists)
-            return Result<Response>.Conflict("Category name already exists.");
-
         string? imageUrl = null;
 
         if (request.Image is not null)
@@ -27,10 +20,21 @@ public sealed class Handler(IAppDbContext dbContext, IFileStorage fileStorage) :
             imageUrl = await fileStorage.UploadAsync(request.Image, "categories", ct);
         }
 
-        var category = new Category(request.Name, request.Description, imageUrl);
+        var category = new Category(request.Name.ToCleanString(), request.Description, imageUrl);
 
         dbContext.Categories.Add(category);
-        await dbContext.SaveChangesAsync(ct);
+
+        try
+        {
+            await dbContext.SaveChangesAsync(ct);
+        }
+        catch (DbUpdateException ex) when (ex.IsUniqueConstraintViolation())
+        {
+            if (imageUrl is not null)
+                await fileStorage.DeleteAsync(imageUrl, ct);
+
+            return Result<Response>.Conflict("Category name already exists.");
+        }
 
         return Result<Response>.Created(category.Adapt<Response>());
     }
