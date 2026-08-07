@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using VertexERP.Application.Shared.Pagination;
 
+namespace VertexERP.Application.Common.Extensions;
+
 public static class PaginationQueryableExtensions
 {
     public static async Task<Page<T>> ToPageAsync<T>(

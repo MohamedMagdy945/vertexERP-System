@@ -45,11 +45,6 @@ public sealed class Handler(
             Portal = context.Portal
         };
 
-        var roles = await dbContext
-            .GetRoleNames(sessionUser.Id)
-            .ToListAsync(ct);
-
-
         var authenticationResult = await authService.CreateSessionAsync(sessionUser, ct);
 
         logger.LogInformation("User {UserId} logged in successfully.", sessionUser.Id);
