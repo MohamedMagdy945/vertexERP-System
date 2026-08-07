@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using VertexERP.Application.Common.Abstractions.Identity;
-using VertexERP.Application.Types.Authentication.Models;
+using VertexERP.Application.Common.Types.Authentication.Models;
 using VertexERP.Infrastructure.Common.Settings;
 
 namespace VertexERP.Infrastructure.Services.Identity;

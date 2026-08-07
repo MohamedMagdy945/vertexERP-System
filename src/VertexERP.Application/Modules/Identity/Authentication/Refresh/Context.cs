@@ -4,8 +4,12 @@ namespace VertexERP.Application.Modules.Identity.Authentication.Refresh;
 
 public sealed class Context
 {
-    public RefreshToken RefreshToken { get; init; } = default!;
-    public Guid UserId { get; init; }
-    public string UserEmail { get; init; } = default!;
-    public string PortalType { get; init; } = default!;
+    public Guid Id { get; init; }
+    public required string Name { get; init; }
+    public required string Email { get; init; }
+    public bool IsActive { get; init; }
+    public string? AvatarUrl { get; init; }
+    public required string Portal { get; init; }
+    public required IReadOnlyList<string> Roles { get; init; }
+    public required RefreshToken RefreshToken { get; init; }
 }

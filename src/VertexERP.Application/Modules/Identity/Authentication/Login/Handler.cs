@@ -5,7 +5,6 @@ using VertexERP.Application.Common.Abstractions.Identity;
 using VertexERP.Application.Common.Abstractions.Persistence;
 using VertexERP.Application.Common.Extensions;
 using VertexERP.Application.Common.Types.Authentication.Contracts;
-using VertexERP.Application.Common.Types.Authentication.Models;
 using VertexERP.Application.Services;
 using VertexERP.Application.Shared.Results;
 
@@ -14,13 +13,15 @@ namespace VertexERP.Application.Modules.Identity.Authentication.Login;
 public sealed class Handler(
     IAppDbContext dbContext,
     IPasswordHasher passwordHasher,
-    SessionService sessionService,
-    IUserPermissionService userPermissionService,
-    ILogger<Handler> logger) : IHandler
+    AuthService authService,
+    ILogger<Handler> logger)
+    : IHandler
 {
-    public async Task<Result<AuthenticationResult>> HandleAsync(Request request, CancellationToken ct)
+    public async Task<Result<AuthenticationResult>> HandleAsync(
+        Request request,
+        CancellationToken ct)
     {
-        var email = request.Email.Trim().ToLowerInvariant();
+        var email = request.Email.ToCleanString();
 
         var context = await dbContext.Users
             .AsNoTracking()
@@ -28,33 +29,31 @@ public sealed class Handler(
             .ToContext()
             .SingleOrDefaultAsync(ct);
 
+
         if (context is null || !context.IsActive || !passwordHasher.Verify(request.Password, context.PasswordHash))
         {
-            logger.LogWarning("Failed login attempt for email: {Email}", email);
+            logger.LogWarning("Failed login attempt for email {Email}.", email);
+
             return Result<AuthenticationResult>.Unauthorized("Invalid email or password.");
         }
-
-        var roles = await dbContext.GetRoleNames(context.UserId).ToListAsync(ct);
-        var userClaims = new UserTokenClaims(context.UserId, context.Email, roles);
-
-
-        var permissions = await userPermissionService.GetPermissionsAsync(context.UserId, ct);
-
-        var authenticatedUser = new AuthenticatedUser
+        var sessionUser = new SessionUser
         {
-            Id = context.UserId,
+            Id = context.Id,
+            Name = context.Name,
             Email = context.Email,
-            Portal = context.PortalType,
-            Roles = roles,
-            Permissions = permissions
+            AvatarUrl = context.AvatarUrl,
+            Portal = context.Portal
         };
 
-        var tokenPair = sessionService.Create(userClaims);
+        var roles = await dbContext
+            .GetRoleNames(sessionUser.Id)
+            .ToListAsync(ct);
 
-        await dbContext.SaveChangesAsync(ct);
 
-        logger.LogInformation("User {UserId} logged in successfully.", context.UserId);
+        var authenticationResult = await authService.CreateSessionAsync(sessionUser, ct);
 
-        return Result<AuthenticationResult>.Success(new AuthenticationResult(authenticatedUser, tokenPair));
+        logger.LogInformation("User {UserId} logged in successfully.", sessionUser.Id);
+
+        return Result<AuthenticationResult>.Success(authenticationResult);
     }
 }

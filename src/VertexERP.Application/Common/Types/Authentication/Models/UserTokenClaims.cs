@@ -1,5 +1,6 @@
 ﻿namespace VertexERP.Application.Common.Types.Authentication.Models;
 
 public sealed record UserTokenClaims(
-    Guid UserId, string Email,
-    IEnumerable<string> Roles);
+    Guid UserId,
+    string Email,
+    IReadOnlyList<string> Roles);

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using VertexERP.Application.Types.Authentication.Models;
+using VertexERP.Application.Common.Types.Authentication.Models;
 
 namespace VertexERP.Application.Common.Extensions;
 

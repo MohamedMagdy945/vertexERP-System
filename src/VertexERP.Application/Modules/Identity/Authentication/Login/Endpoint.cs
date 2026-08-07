@@ -12,26 +12,32 @@ public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("/authentication/login", async (Request request, Handler handler, HttpContext httpContext, CancellationToken ct) =>
+        app.MapPost("/authentication/login", HandleAsync)
+            .AddValidation<Request>()
+            .MapToApiVersion(1, 0)
+            .WithTags(Tags.Authentication)
+            .Produces<Result<Response>>(StatusCodes.Status200OK);
+    }
+
+    private static async Task<IResult> HandleAsync(
+        Request request,
+        Handler handler,
+        HttpContext httpContext,
+        CancellationToken ct)
+    {
+        var result = await handler.HandleAsync(request, ct);
+
+        if (!result.IsSuccess || result.Data is null)
+            return result.ToMinimalResult();
+
+        httpContext.Response.SetRefreshTokenCookie(result.Data.RefreshToken, httpContext.Request.IsHttps);
+
+        var response = new Response
         {
-            var result = await handler.HandleAsync(request, ct);
+            User = result.Data.User,
+            AccessToken = result.Data.AccessToken
+        };
 
-            if (!result.IsSuccess || result.Data is null)
-                return result.ToMinimalResult();
-
-            httpContext.Response.SetRefreshTokenCookie(result.Data.TokenPair.RefreshToken, httpContext.Request.IsHttps);
-
-            var response = new Response
-            {
-                User = result.Data.User,
-                AccessToken = result.Data.TokenPair.AccessToken,
-            };
-
-            return Result<Response>.Success(response).ToMinimalResult();
-        })
-        .AddValidation<Request>()
-        .MapToApiVersion(1, 0)
-        .WithTags(Tags.Authentication)
-        .Produces<Result<Response>>(StatusCodes.Status200OK);
+        return Result<Response>.Success(response).ToMinimalResult();
     }
 }

@@ -1,5 +1,8 @@
-﻿namespace VertexERP.Application.Common.Types.Authentication.Contracts;
+﻿using VertexERP.Application.Common.Types.Authentication.Models;
+
+namespace VertexERP.Application.Common.Types.Authentication.Contracts;
 
 public sealed record AuthenticationResult(
     AuthenticatedUser User,
-    TokenPair TokenPair);
+    AccessTokenInfo AccessToken,
+    RefreshTokenInfo RefreshToken);

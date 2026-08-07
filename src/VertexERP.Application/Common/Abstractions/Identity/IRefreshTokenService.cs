@@ -1,4 +1,4 @@
-﻿using VertexERP.Application.Types.Authentication.Models;
+﻿using VertexERP.Application.Common.Types.Authentication.Models;
 
 namespace VertexERP.Application.Common.Abstractions.Identity;
 

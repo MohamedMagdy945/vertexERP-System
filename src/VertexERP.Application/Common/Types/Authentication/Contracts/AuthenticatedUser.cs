@@ -1,10 +1,10 @@
 ﻿namespace VertexERP.Application.Common.Types.Authentication.Contracts;
 
-public sealed class AuthenticatedUser
-{
-    public required Guid Id { get; init; }
-    public required string Email { get; init; }
-    public required string Portal { get; init; }
-    public required IReadOnlyList<string> Roles { get; init; }
-    public required IReadOnlySet<string> Permissions { get; init; }
-}
+public sealed record AuthenticatedUser(
+    Guid Id,
+    string FullName,
+    string Email,
+    string? AvatarUrl,
+    string Portal,
+    IReadOnlyList<string> Roles,
+    IReadOnlySet<string> Permissions);

@@ -8,6 +8,7 @@ public class User : Entity
     public string Name { get; private set; } = default!;
     public string Email { get; private set; } = default!;
     public string PasswordHash { get; private set; } = default!;
+    public string? AvatarUrl { get; private set; }
     public bool IsActive { get; private set; }
     public bool IsEmailConfirmed { get; private set; }
     public PortalType PortalType { get; private set; }

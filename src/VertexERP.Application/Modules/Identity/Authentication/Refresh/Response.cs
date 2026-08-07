@@ -1,5 +1,5 @@
 ﻿using VertexERP.Application.Common.Types.Authentication.Contracts;
-using VertexERP.Application.Types.Authentication.Models;
+using VertexERP.Application.Common.Types.Authentication.Models;
 
 namespace VertexERP.Application.Modules.Identity.Authentication.Refresh;
 
