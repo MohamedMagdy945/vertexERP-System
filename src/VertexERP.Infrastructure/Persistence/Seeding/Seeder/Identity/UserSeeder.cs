@@ -18,7 +18,7 @@ IPasswordHasher passwordHasher) : IDataSeeder
             return;
 
         var users = Users.
-            GetAll().
+            All.
             Select(seed => new User(seed.Name, seed.Email, passwordHasher.Hash(seed.Password)))
             .ToList();
 
@@ -30,8 +30,8 @@ IPasswordHasher passwordHasher) : IDataSeeder
 
 public static class Users
 {
-    public static readonly UserSeed SystemAdmin =
-        new("System Admin", "admin@example.com", "Admin@123");
+    public static readonly UserSeed Administrator =
+        new("Administrator", "admin@example.com", "Admin@123");
 
     public static readonly UserSeed System =
         new("System", "system@example.com", "System@123");
@@ -39,18 +39,17 @@ public static class Users
     public static readonly UserSeed Security =
         new("Security", "security@example.com", "Security@123");
 
-    public static readonly UserSeed User =
+    public static readonly UserSeed Standard =
         new("User", "user@example.com", "User@123");
 
-    public static IReadOnlyCollection<UserSeed> GetAll() =>
+    public static IReadOnlyCollection<UserSeed> All =>
     [
-        SystemAdmin,
+        Administrator,
         System,
         Security,
-        User
+        Standard
     ];
 }
-
 public sealed record UserSeed(
     string Name,
     string Email,

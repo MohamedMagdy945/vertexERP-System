@@ -1,9 +1,9 @@
 ﻿
 
 using System.Reflection;
-namespace VertexERP.Application.Common.Authorization;
+namespace VertexERP.Application.Common.Security;
 
-public static class Perms
+public static class SecurityPerms
 {
     public static class Identity
     {
@@ -53,7 +53,7 @@ public static class Perms
     }
 
     public static IReadOnlySet<string> All { get; } =
-        typeof(Perms)
+        typeof(SecurityPerms)
             .GetNestedTypes()
             .SelectMany(t => t.GetFields(
                 BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy))

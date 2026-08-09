@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using VertexERP.Application.Common.Abstractions.Endpoint;
-using VertexERP.Application.Common.Authorization;
 using VertexERP.Application.Common.Extensions;
+using VertexERP.Application.Common.Security;
 using VertexERP.Application.Shared.Constant;
 using VertexERP.Application.Shared.Results;
 

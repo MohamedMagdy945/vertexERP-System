@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using VertexERP.Application.Common.Abstractions.Endpoint;
 using VertexERP.Application.Common.Abstractions.Persistence;
-using VertexERP.Application.Common.Authorization;
+using VertexERP.Application.Common.Security;
 using VertexERP.Application.Shared.Results;
 
 namespace VertexERP.Application.Modules.Identity.Roles.GetById;

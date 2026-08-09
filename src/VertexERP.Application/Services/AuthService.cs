@@ -28,10 +28,7 @@ public sealed class AuthService(
         var permissions = await userPermissionService
             .GetPermissionsAsync(user.Id, ct);
 
-        var userClaims = new UserTokenClaims(
-            user.Id,
-            user.Email,
-            roles);
+        var userClaims = new UserTokenClaims(user.Id, user.Email);
 
         var accessTokenInfo = accessTokenGenerator.Generate(userClaims);
 

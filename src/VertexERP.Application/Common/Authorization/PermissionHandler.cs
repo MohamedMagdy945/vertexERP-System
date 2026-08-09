@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using System.IdentityModel.Tokens.Jwt;
 using VertexERP.Application.Common.Abstractions.Identity;
+using VertexERP.Application.Common.Security;
 
 namespace VertexERP.Application.Common.Authorization;
 

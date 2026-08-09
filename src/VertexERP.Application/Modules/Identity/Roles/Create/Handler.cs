@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using VertexERP.Application.Common.Abstractions.Endpoint;
 using VertexERP.Application.Common.Abstractions.Persistence;
-using VertexERP.Application.Common.Authorization;
+using VertexERP.Application.Common.Security;
 using VertexERP.Application.Shared.Results;
 using VertexERP.Domain.Module.Identity.Entities;
 
@@ -14,7 +14,7 @@ public sealed class Handler(IAppDbContext dbContext) : IHandler
     {
 
         var invalidPermissions = request.Permissions
-           .Except(Perms.All)
+           .Except(SecurityPerms.All)
            .ToArray();
 
         if (invalidPermissions.Length > 0)
