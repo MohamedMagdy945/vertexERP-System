@@ -1,6 +1,9 @@
 <Solution>
-  <Project Path="src/VertexERP.API/VertexERP.API.csproj" />
-  <Project Path="src/VertexERP.Application/VertexERP.Application.csproj" Id="bb2878e1-bfd9-4d7c-b440-5a60e702cab3" />
-  <Project Path="src/VertexERP.Domain/VertexERP.Domain.csproj" />
-  <Project Path="src/VertexERP.Infrastructure/VertexERP.Infrastructure.csproj" />
+  <Folder Name="/tests/">
+    <Project Path="tests/VertexERP.Application.Tests/VertexERP.Application.Tests.csproj" Id="a9925ebc-1db6-4251-b963-3cdcd252cbfe" />
+  </Folder>
+  <Project Path="VertexERP.API/VertexERP.API.csproj" />
+  <Project Path="VertexERP.Application/VertexERP.Application.csproj" />
+  <Project Path="VertexERP.Domain/VertexERP.Domain.csproj" />
+  <Project Path="VertexERP.Infrastructure/VertexERP.Infrastructure.csproj" />
 </Solution>
