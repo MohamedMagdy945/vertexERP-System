@@ -29,10 +29,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\VertexERP.Domain\VertexERP.Domain.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <Folder Include="Modules\Identity\RolePormissions\" />
 	</ItemGroup>
 </Project>
