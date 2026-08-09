@@ -3,12 +3,11 @@
 public sealed class Context
 {
     public Guid Id { get; init; }
-    public required string Name { get; init; }
-    public required string Email { get; init; }
-    public required string PasswordHash { get; init; }
+    public string Name { get; init; } = null!;
+    public string Email { get; init; } = null!;
+    public string PasswordHash { get; init; } = null!;
     public bool IsActive { get; init; }
     public string? AvatarUrl { get; init; }
-    public required string Portal { get; init; }
-    public required IReadOnlyList<string> Roles { get; init; }
-
+    public string Portal { get; init; } = null!;
+    public List<string> Roles { get; init; } = [];
 }

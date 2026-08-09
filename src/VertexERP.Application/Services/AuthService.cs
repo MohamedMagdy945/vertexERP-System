@@ -1,8 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using VertexERP.Application.Common.Abstractions.Http;
+﻿using VertexERP.Application.Common.Abstractions.Http;
 using VertexERP.Application.Common.Abstractions.Identity;
 using VertexERP.Application.Common.Abstractions.Persistence;
-using VertexERP.Application.Common.Extensions;
 using VertexERP.Application.Common.Types.Authentication.Contracts;
 using VertexERP.Application.Common.Types.Authentication.Models;
 using VertexERP.Domain.Module.Identity.Entities;
@@ -21,9 +19,6 @@ public sealed class AuthService(
         SessionUser user,
         CancellationToken ct = default)
     {
-        var roles = await dbContext
-           .GetRoleNames(user.Id)
-           .ToListAsync(ct);
 
         var permissions = await userPermissionService
             .GetPermissionsAsync(user.Id, ct);
@@ -45,14 +40,16 @@ public sealed class AuthService(
 
         await dbContext.SaveChangesAsync(ct);
 
-        var authenticatedUser = new AuthenticatedUser(
-                            Id: user.Id,
-                            FullName: user.Name,
-                            Email: user.Email,
-                            AvatarUrl: user.AvatarUrl,
-                            Portal: user.Portal,
-                            Roles: roles,
-                            Permissions: permissions);
+        var authenticatedUser = new AuthenticatedUser
+        {
+            Id = user.Id,
+            Name = user.Name,
+            Email = user.Email,
+            AvatarUrl = user.AvatarUrl,
+            Portal = user.Portal,
+            Roles = user.Roles,
+            Permissions = permissions
+        };
 
         return new AuthenticationResult(authenticatedUser, accessTokenInfo, refreshTokenInfo);
     }

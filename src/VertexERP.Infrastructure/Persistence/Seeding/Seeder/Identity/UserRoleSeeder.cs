@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using VertexERP.Application.Common.Abstractions.Persistence;
+using VertexERP.Application.Common.Security;
 using VertexERP.Domain.Module.Identity.Entities;
 using VertexERP.Infrastructure.Persistence.Seeding.SeederRunner;
 
@@ -22,9 +23,9 @@ public sealed class UserRoleSeeder(IAppDbContext dbContext) : IDataSeeder
 
         var userRoles = new List<UserRole>
         {
-            new(users[Users.Security.Email].Id, roles[Roles.SecurityAdmin].Id),
-            new(users[Users.Standard.Email].Id, roles[Roles.StandardUser].Id),
-            new(users[Users.System.Email].Id, roles[Roles.SystemAdmin].Id),
+            new(users[Users.Security.Email].Id, roles[SecurityRoles.SecurityAdmin].Id),
+            new(users[Users.Standard.Email].Id, roles[SecurityRoles.StandardUser].Id),
+            new(users[Users.System.Email].Id, roles[SecurityRoles.SystemAdmin].Id),
         };
 
         await dbContext.UserRoles.AddRangeAsync(userRoles);

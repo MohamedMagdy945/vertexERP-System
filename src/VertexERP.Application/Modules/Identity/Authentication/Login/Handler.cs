@@ -42,7 +42,8 @@ public sealed class Handler(
             Name = context.Name,
             Email = context.Email,
             AvatarUrl = context.AvatarUrl,
-            Portal = context.Portal
+            Portal = context.Portal,
+            Roles = context.Roles
         };
 
         var authenticationResult = await authService.CreateSessionAsync(sessionUser, ct);

@@ -15,8 +15,8 @@ public sealed class StockMovementConfiguration
 
 
         builder.Property(x => x.Quantity)
-            .IsRequired();
-
+            .IsRequired()
+            .HasPrecision(18, 3);
 
         builder.Property(x => x.Type)
             .HasConversion<int>()

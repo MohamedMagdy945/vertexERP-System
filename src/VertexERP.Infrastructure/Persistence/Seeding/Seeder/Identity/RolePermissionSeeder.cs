@@ -18,11 +18,11 @@ public sealed class RolePermissionSeeder(IAppDbContext dbContext) : IDataSeeder
         var securityRole = await dbContext.Roles
             .SingleAsync(x => x.Name == SecurityRoles.SecurityAdmin);
 
-        var rolePermissions = SecurityPerms.All
-         .Select(permission => new RolePermission(
-             securityRole.Id,
-             permission))
-         .ToList();
+        var rolePermissions = new[]
+        {
+            new RolePermission(securityRole.Id, SecurityPerms.Identity.View),
+            new RolePermission(securityRole.Id, SecurityPerms.Identity.Manage)
+        };
 
         await dbContext.RolePermissions.AddRangeAsync(rolePermissions);
         await dbContext.SaveChangesAsync();

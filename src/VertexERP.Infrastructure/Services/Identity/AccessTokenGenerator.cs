@@ -29,7 +29,6 @@ public sealed class AccessTokenGenerator(IOptions<AccessTokenSettings> options) 
             [JwtRegisteredClaimNames.Sub] = userClaims.UserId,
             [JwtRegisteredClaimNames.Email] = userClaims.Email,
             [JwtRegisteredClaimNames.Jti] = Guid.NewGuid().ToString(),
-            [Role] = userClaims.Roles
         };
 
         var tokenDescriptor = new SecurityTokenDescriptor
