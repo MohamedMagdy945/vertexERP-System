@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/tests/">
     <Project Path="tests/VertexERP.Application.Tests/VertexERP.Application.Tests.csproj" Id="a9925ebc-1db6-4251-b963-3cdcd252cbfe" />
+    <Project Path="tests/VertexERP.Infrastructure.Tests/VertexERP.Infrastructure.Tests.csproj" Id="bad546b5-21a1-42e3-a9f2-fb3812e5b99d" />
   </Folder>
   <Project Path="VertexERP.API/VertexERP.API.csproj" />
   <Project Path="VertexERP.Application/VertexERP.Application.csproj" />

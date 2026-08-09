@@ -7,15 +7,15 @@ using VertexERP.Infrastructure.Common.Settings;
 
 namespace VertexERP.Infrastructure.Services.Identity;
 
-public sealed class RefreshTokenService(IOptions<AccessTokenSettings> options) : IRefreshTokenService
+public sealed class RefreshTokenService(IOptions<RefreshTokenSettings> options) : IRefreshTokenService
 {
     private const int RefreshTokenSize = 32;
 
-    private readonly AccessTokenSettings _settings = options.Value;
+    private readonly RefreshTokenSettings _settings = options.Value;
 
     public RefreshTokenInfo Generate()
     {
-        var expiresAt = DateTime.UtcNow.AddDays(_settings.ExpirationInMinutes);
+        var expiresAt = DateTime.UtcNow.AddDays(_settings.ExpirationInDays);
 
         Span<byte> bytes = stackalloc byte[RefreshTokenSize];
         RandomNumberGenerator.Fill(bytes);

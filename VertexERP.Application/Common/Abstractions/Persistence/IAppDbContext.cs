@@ -3,7 +3,6 @@ using VertexERP.Domain.Module.Catalog.Entities;
 using VertexERP.Domain.Module.Identity.Entities;
 using VertexERP.Domain.Module.Inventory.Entities;
 using VertexERP.Domain.Module.Notifications.Entities;
-
 namespace VertexERP.Application.Common.Abstractions.Persistence;
 
 public interface IAppDbContext
