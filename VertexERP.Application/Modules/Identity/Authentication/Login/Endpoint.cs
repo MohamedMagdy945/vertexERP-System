@@ -19,10 +19,7 @@ public sealed class Endpoint : IEndpoint
             .Produces<Result<Response>>(StatusCodes.Status200OK);
     }
 
-    private static async Task<IResult> HandleAsync(
-        Request request,
-        Handler handler,
-        HttpContext httpContext,
+    private static async Task<IResult> HandleAsync(Request request,Handler handler, HttpContext httpContext,
         CancellationToken ct)
     {
         var result = await handler.HandleAsync(request, ct);

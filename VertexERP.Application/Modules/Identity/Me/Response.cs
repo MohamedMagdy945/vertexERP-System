@@ -11,5 +11,5 @@ public sealed class Response
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
     public IReadOnlyList<string> Roles { get; set; } = [];
-    public IReadOnlySet<string>? Permissions { get; set; }
+    public IReadOnlySet<string> Permissions { get; set; } = new HashSet<string>();
 }

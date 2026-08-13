@@ -6,7 +6,7 @@ using VertexERP.Application.Common.Extensions;
 
 namespace VertexERP.Infrastructure.Services.Identity;
 
-public sealed class UserPermission(IAppDbContext dbContext, IUserPermissionCache permissionCache)
+public sealed class UserPermissionService(IAppDbContext dbContext, IUserPermissionCache permissionCache)
     : IUserPermissionService
 
 {

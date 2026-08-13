@@ -17,10 +17,8 @@ public sealed class Endpoint : IEndpoint
             .WithTags(Tags.Authentication)
             .Produces<Result<Response>>(StatusCodes.Status200OK);
     }
-    private static async Task<IResult> HandleAsync(
-      Handler handler,
-      HttpContext httpContext,
-      CancellationToken ct)
+    private static async Task<IResult> HandleAsync(Handler handler,HttpContext httpContext,
+        CancellationToken ct)
     {
         var refreshToken = httpContext.Request.GetRefreshToken();
 

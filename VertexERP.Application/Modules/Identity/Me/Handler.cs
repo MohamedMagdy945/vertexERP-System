@@ -8,20 +8,21 @@ using VertexERP.Application.Shared.Results;
 namespace VertexERP.Application.Modules.Identity.Me;
 
 public sealed class Handler(IAppDbContext dbContext,
-    ICurrentUser currentUserService, IUserPermissionCache userPermissionCache) : IHandler
+    ICurrentUser currentUserService, IUserPermissionService userPermissionService) : IHandler
 {
-    public async Task<Result<Response>> HandleAsync(Request request, CancellationToken cancellationToken)
+    public async Task<Result<Response>> HandleAsync( CancellationToken ct)
     {
         var user = await dbContext.Users
             .AsNoTracking()
             .Where(u => u.Id == currentUserService.UserId)
             .ToResponse()
-            .SingleOrDefaultAsync(cancellationToken);
+            .SingleOrDefaultAsync(ct);
 
         if (user is null)
             return Result<Response>.Unauthorized();
 
-        user.Permissions = await userPermissionCache.GetAsync(currentUserService.UserId, cancellationToken);
+        user.Permissions = await userPermissionService
+            .GetPermissionsAsync(currentUserService.UserId, ct);
 
         return Result<Response>.Success(user);
     }

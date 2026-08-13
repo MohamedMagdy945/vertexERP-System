@@ -12,15 +12,18 @@ public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("/me", async (Handler handler, CancellationToken cancellationToken) =>
-        {
-            var result = await handler.HandleAsync(new Request(), cancellationToken);
+        app.MapGet("/me", HandleAsync)
+            .RequireAuthorization()
+            .MapToApiVersion(1, 0)
+            .WithTags(Tags.Identity)
+            .Produces<Result<Response>>(StatusCodes.Status200OK);
+    }
 
-            return result.ToMinimalResult();
-        })
-        .RequireAuthorization()
-        .MapToApiVersion(1, 0)
-        .WithTags(Tags.Identity)
-        .Produces<Result<Response>>(StatusCodes.Status200OK);
+    private static async Task<IResult> HandleAsync(Handler handler,
+        CancellationToken ct)
+    {
+        var result = await handler.HandleAsync(ct);
+
+        return result.ToMinimalResult();
     }
 }
