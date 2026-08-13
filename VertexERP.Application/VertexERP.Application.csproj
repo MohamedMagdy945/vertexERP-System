@@ -7,8 +7,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Modules\Identity\RolePormissions\**" />
 	  <Compile Remove="Types\**" />
+	  <EmbeddedResource Remove="Modules\Identity\RolePormissions\**" />
 	  <EmbeddedResource Remove="Types\**" />
+	  <None Remove="Modules\Identity\RolePormissions\**" />
 	  <None Remove="Types\**" />
 	</ItemGroup>
 	<ItemGroup>
@@ -26,10 +29,6 @@
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="10.0.10" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.10" />
 		<PackageReference Include="Scrutor" Version="7.0.0" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Modules\Identity\RolePormissions\" />
 	</ItemGroup>
 
 	<ItemGroup>

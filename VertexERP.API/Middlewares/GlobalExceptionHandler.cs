@@ -17,7 +17,7 @@ public sealed class GlobalExceptionHandler(
         Exception exception,
         CancellationToken ct)
     {
-        var (statusCode, logLevel, errors) = MapException(exception);
+            var (statusCode, logLevel, errors) = MapException(exception);
 
         httpContext.Response.StatusCode = statusCode;
 
@@ -59,7 +59,8 @@ public sealed class GlobalExceptionHandler(
         return true;
     }
 
-    private static (int StatusCode, LogLevel LogLevel, IReadOnlyList<string> Errors) MapException(Exception exception)
+    private static (int StatusCode, LogLevel LogLevel, IReadOnlyList<string> Errors)
+    MapException(Exception exception)
     {
         if (exception is DbUpdateException dbEx)
         {
@@ -84,13 +85,18 @@ public sealed class GlobalExceptionHandler(
 
         return exception switch
         {
+            BadHttpRequestException => (
+                StatusCodes.Status400BadRequest,
+                LogLevel.Warning,
+                ["The request is invalid or required request data is missing."]
+            ),
+
             DbUpdateException { InnerException: Microsoft.Data.SqlClient.SqlException { Number: 2601 or 2627 } } => (
                 StatusCodes.Status409Conflict,
                 LogLevel.Warning,
                 ["A record with the same unique identifier already exists."]
             ),
 
-            // 547: Foreign Key Violation
             DbUpdateException { InnerException: Microsoft.Data.SqlClient.SqlException { Number: 547 } } => (
                 StatusCodes.Status404NotFound,
                 LogLevel.Warning,
