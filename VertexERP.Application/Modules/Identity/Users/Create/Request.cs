@@ -2,4 +2,8 @@
 
 namespace VertexERP.Application.Modules.Identity.Users.Create;
 
-public sealed record Request(string Name, string Email, PortalType PortalType);
+public sealed record Request(
+    string Name,
+    string Email, 
+    PortalType PortalType,
+    IReadOnlyCollection<Guid> RoleIds);

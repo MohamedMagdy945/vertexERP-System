@@ -8,19 +8,22 @@ using VertexERP.Application.Shared.Constant;
 
 namespace VertexERP.Application.Modules.Identity.Users.Create;
 
-
 public sealed class Endpoint : IEndpoint
 {
-    public void MapEndpoint(IEndpointRouteBuilder app)
+   public void MapEndpoint(IEndpointRouteBuilder app)
+   {
+        app.MapPost("users", HandleAsync)
+            .HasPermission(SecurityPerms.Identity.Manage)
+            .AddValidation<Request>()
+            .MapToApiVersion(1, 0)
+            .WithTags(Tags.Identity);
+   }
+
+    private static async Task<IResult> HandleAsync( Request command, Handler handler,
+        CancellationToken ct)
     {
-        app.MapPost("users", async (Request command, Handler handler, CancellationToken ct) =>
-        {
-            var result = await handler.HandleAsync(command, ct);
-            return result.ToMinimalResult();
-        })
-        .RequireRole(SecurityRoles.SystemAdmin, SecurityRoles.SecurityAdmin)
-        .AddValidation<Request>()
-        .MapToApiVersion(1, 0)
-        .WithTags(Tags.Identity);
+        var result = await handler.HandleAsync(command, ct);
+
+        return result.ToMinimalResult();
     }
 }

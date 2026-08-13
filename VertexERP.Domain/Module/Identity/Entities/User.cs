@@ -47,6 +47,10 @@ public class User : Entity
     {
         UserRoles.Remove(userRole);
     }
+    public void ClearUserRoles()
+    {
+        UserRoles.Clear();
+    }
 
     public void AddRefreshToken(RefreshToken refreshToken)
     {

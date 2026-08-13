@@ -17,17 +17,21 @@ public sealed class GlobalExceptionHandler(
         Exception exception,
         CancellationToken ct)
     {
-            var (statusCode, logLevel, errors) = MapException(exception);
+        var (statusCode, logLevel, errors) = MapException(exception);
 
         httpContext.Response.StatusCode = statusCode;
 
-        logger.Log(logLevel, exception,
-             "Exception while processing {Method} {Path}: {Message}",
-             httpContext.Request.Method,
-             httpContext.Request.Path,
-             exception.Message);
+        logger.Log(
+            logLevel,
+            exception,
+            "Exception while processing {Method} {Path}: {Message}",
+            httpContext.Request.Method,
+            httpContext.Request.Path,
+            exception.Message);
 
-        var errorMessage = errors.FirstOrDefault() ?? "An unexpected error occurred.";
+        var errorMessage =
+            errors.FirstOrDefault()
+            ?? "An unexpected error occurred.";
 
         switch (statusCode)
         {
@@ -59,9 +63,15 @@ public sealed class GlobalExceptionHandler(
         return true;
     }
 
-    private static (int StatusCode, LogLevel LogLevel, IReadOnlyList<string> Errors)
-    MapException(Exception exception)
+    private static (
+        int StatusCode,
+        LogLevel LogLevel,
+        IReadOnlyList<string> Errors)
+        MapException(Exception exception)
     {
+        /*
+         * Database exceptions
+         */
         if (exception is DbUpdateException dbEx)
         {
             if (dbEx.IsUniqueConstraintViolation())
@@ -69,8 +79,9 @@ public sealed class GlobalExceptionHandler(
                 return (
                     StatusCodes.Status409Conflict,
                     LogLevel.Warning,
-                    ["A record with the same unique identifier already exists."]
-                );
+                    [
+                        "A record with the same unique identifier already exists."
+                    ]);
             }
 
             if (dbEx.IsForeignKeyConstraintViolation())
@@ -78,52 +89,49 @@ public sealed class GlobalExceptionHandler(
                 return (
                     StatusCodes.Status404NotFound,
                     LogLevel.Warning,
-                    ["The referenced entity was not found."]
-                );
+                    [
+                        "One or more referenced entities were not found."
+                    ]);
             }
+
+            return (
+                StatusCodes.Status500InternalServerError,
+                LogLevel.Error,
+                [
+                    "A database error occurred while processing the request."
+                ]);
         }
 
+        /*
+         * Other exceptions
+         */
         return exception switch
         {
             BadHttpRequestException => (
                 StatusCodes.Status400BadRequest,
                 LogLevel.Warning,
-                ["The request is invalid or required request data is missing."]
-            ),
-
-            DbUpdateException { InnerException: Microsoft.Data.SqlClient.SqlException { Number: 2601 or 2627 } } => (
-                StatusCodes.Status409Conflict,
-                LogLevel.Warning,
-                ["A record with the same unique identifier already exists."]
-            ),
-
-            DbUpdateException { InnerException: Microsoft.Data.SqlClient.SqlException { Number: 547 } } => (
-                StatusCodes.Status404NotFound,
-                LogLevel.Warning,
-                ["The referenced entity was not found."]
-            ),
-
-            DbUpdateException => (
-                StatusCodes.Status500InternalServerError,
-                LogLevel.Error,
-                ["A database error occurred while processing the request."]
-            ),
+                [
+                    "The request is invalid or required request data is missing."
+                ]),
 
             OperationCanceledException => (
                 StatusCodes.Status499ClientClosedRequest,
                 LogLevel.Information,
-                ["The request was canceled."]
-            ),
+                [
+                    "The request was canceled."
+                ]),
 
             _ => (
                 StatusCodes.Status500InternalServerError,
                 LogLevel.Error,
-                ["An unexpected error occurred. Please try again later."]
-            )
+                [
+                    "An unexpected error occurred. Please try again later."
+                ])
         };
     }
 
-    private static ProblemDetails CreateInternalServerProblem(HttpContext httpContext)
+    private static ProblemDetails CreateInternalServerProblem(
+        HttpContext httpContext)
     {
         var problem = new ProblemDetails
         {
@@ -133,7 +141,8 @@ public sealed class GlobalExceptionHandler(
             Instance = httpContext.Request.Path
         };
 
-        problem.Extensions[HttpContextItemKeys.CorrelationId] = httpContext.GetCorrelationId();
+        problem.Extensions[HttpContextItemKeys.CorrelationId] =
+            httpContext.GetCorrelationId();
 
         return problem;
     }

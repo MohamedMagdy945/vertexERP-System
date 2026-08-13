@@ -9,17 +9,13 @@ public sealed class Handler(IAppDbContext dbContext) : IHandler
 {
     public async Task<Result<Response>> HandleAsync(Request request, CancellationToken ct)
     {
-        var user = await dbContext.Users
-            .SingleOrDefaultAsync(x => x.Id == request.Id, ct);
+        var deleted = await dbContext.Users
+            .Where(x => x.Id == request.Id)
+            .ExecuteDeleteAsync(ct);
 
-        if (user is null)
+        if (deleted == 0)
             return Result<Response>.NotFound("User not found.");
 
-
-        dbContext.Users.Remove(user);
-
-        await dbContext.SaveChangesAsync(ct);
-
-        return Result<Response>.Success(new Response { Id = user.Id }, "User deleted successfully.");
+        return Result<Response>.Success( new Response { Id = request.Id }, "User deleted successfully.");
     }
 }

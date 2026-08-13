@@ -14,15 +14,20 @@ public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("/users", async ([AsParameters] Request request, Handler handler, CancellationToken ct) =>
-        {
-            var result = await handler.HandleAsync(request, ct);
+        app.MapGet("users", HandleAsync)
+            .HasPermission( SecurityPerms.Identity.View)
+            .MapToApiVersion(1, 0)
+            .WithTags(Tags.Identity)
+            .Produces<Result<Page<Response>>>(StatusCodes.Status200OK);
+    }
 
-            return result.ToMinimalResult();
-        })
-        .RequireRole(SecurityRoles.SystemAdmin, SecurityRoles.SecurityAdmin)
-        .MapToApiVersion(1, 0)
-        .WithTags(Tags.Identity)
-        .Produces<Result<Page<Response>>>(StatusCodes.Status200OK);
+    private static async Task<IResult> HandleAsync(
+        [AsParameters] Request request,
+        Handler handler,
+        CancellationToken ct)
+    {
+        var result = await handler.HandleAsync(request, ct);
+
+        return result.ToMinimalResult();
     }
 }

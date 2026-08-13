@@ -13,9 +13,7 @@ public sealed class Handler(IAppDbContext dbContext) : IHandler
     public async Task<Result<Page<Response>>> HandleAsync(Request request, CancellationToken ct)
     {
         var query = dbContext.Roles
-            .AsNoTracking()
-            .Where(r => r.Name != SecurityRoles.SystemAdmin
-             && r.Name != SecurityRoles.SecurityAdmin); ;
+            .AsNoTracking();
 
         if (!string.IsNullOrWhiteSpace(request.SearchTerm))
         {
