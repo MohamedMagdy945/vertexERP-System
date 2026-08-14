@@ -4,11 +4,5 @@ public sealed record Response
 {
     public Guid Id { get; set; }
     public string Name { get; set; } = default!;
-    public IReadOnlyList<PermissionResponse> Permissions { get; set; } = [];
-}
-
-public sealed record PermissionResponse
-{
-    public Guid Id { get; set; }
-    public string Name { get; set; } = default!;
+    public IReadOnlyList<string> Permissions { get; set; } = [];
 }

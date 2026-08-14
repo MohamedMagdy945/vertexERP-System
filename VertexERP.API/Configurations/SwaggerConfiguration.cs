@@ -39,6 +39,16 @@ public static class SwaggerConfiguration
 
             const string scheme = "Bearer";
 
+            options.AddSecurityDefinition(scheme, new OpenApiSecurityScheme
+            {
+                Name = "Authorization",
+                Description = "Enter your JWT token. Example: Bearer {your token}",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.Http,
+                Scheme = "bearer",
+                BearerFormat = "JWT"
+            });
+
             options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
             {
                 [new OpenApiSecuritySchemeReference(scheme, document)] = []

@@ -10,13 +10,12 @@ namespace VertexERP.Application.Modules.Identity.Roles.Update;
 
 public sealed class Handler(IAppDbContext dbContext, IUserPermissionCache userPermissionCache) : IHandler
 {
-    public async Task<Result<Response>> HandleAsync(
-    Request request,
-    CancellationToken ct)
+    public async Task<Result<Response>> HandleAsync(Guid id, Request request,
+        CancellationToken ct)
     {
         var role = await dbContext.Roles
-       .Include(x => x.RolePermissions)
-       .SingleOrDefaultAsync(x => x.Id == request.Id, ct);
+           .Include(x => x.RolePermissions)
+           .SingleOrDefaultAsync(x => x.Id == id, ct);
 
         if (role is null)
             return Result<Response>.NotFound("Role not found.");
