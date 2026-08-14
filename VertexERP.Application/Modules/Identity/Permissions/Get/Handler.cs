@@ -6,7 +6,7 @@ namespace VertexERP.Application.Modules.Identity.Permissions.Get;
 
 public sealed class Handler() : IHandler
 {
-    public async Task<Result<Response>> HandleAsync(Request request, CancellationToken ct)
+    public async Task<Result<Response>> HandleAsync(CancellationToken ct)
     {
         var allPermissions = SecurityPerms.All;
 
