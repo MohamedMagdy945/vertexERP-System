@@ -13,12 +13,12 @@ public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPut("products/{id:guid}", HandleAsync) 
-        .AddValidation<Request>()
-        .HasPermission(SecurityPerms.Catalog.Manage)
-        .MapToApiVersion(1, 0)
-        .WithTags(Tags.Catalog)
-        .Produces<Result<Response>>(StatusCodes.Status200OK);
+        app.MapPut("products/{id:guid}", HandleAsync)
+            .AddValidation<Request>()
+            .HasPermission(SecurityPerms.Catalog.Manage)
+            .MapToApiVersion(1, 0)
+            .WithTags(Tags.Catalog)
+            .Produces<Result<Response>>(StatusCodes.Status200OK);
     }
     private static async Task<IResult> HandleAsync(Guid id, Request request, Handler handler,
         CancellationToken ct)

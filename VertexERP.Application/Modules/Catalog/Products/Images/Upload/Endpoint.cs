@@ -14,14 +14,14 @@ public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("products/{productId:guid}/images",HandleAsync)
+        app.MapPost("products/{productId:guid}/images", HandleAsync)
             .HasPermission(SecurityPerms.Catalog.Manage)
             .MapToApiVersion(1, 0)
             .WithTags(Tags.Catalog)
             .DisableAntiforgery()
             .Produces<Result<Response>>(StatusCodes.Status200OK);
     }
-    private static async Task<IResult> HandleAsync(Guid productId, Request request, Handler handler,
+    private static async Task<IResult> HandleAsync(Guid productId, [FromForm] Request request, Handler handler,
         CancellationToken ct)
     {
         var result = await handler.HandleAsync(productId, request, ct);

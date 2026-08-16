@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using VertexERP.Application.Modules.Catalog.Products.Update;
 
 namespace VertexERP.Application.Modules.Catalog.Products.Update;
 
@@ -7,9 +6,6 @@ public sealed class Validator : AbstractValidator<Request>
 {
     public Validator()
     {
-
-        RuleFor(x => x.Id)
-          .NotEmpty().WithMessage("Category ID is required.");
 
         RuleFor(x => x.Name)
             .NotEmpty().WithMessage("Product name is required.")

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using VertexERP.Application.Common.Abstractions.Endpoint;
 using VertexERP.Application.Common.Extensions;
@@ -13,14 +14,15 @@ public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPut("categories/{id:guid}", HandleAsync) 
+        app.MapPut("categories/{id:guid}", HandleAsync)
         .AddValidation<Request>()
         .HasPermission(SecurityPerms.Catalog.Manage)
+        .DisableAntiforgery()
         .MapToApiVersion(1, 0)
         .WithTags(Tags.Catalog)
         .Produces<Result<Response>>(StatusCodes.Status200OK);
     }
-    private static async Task<IResult> HandleAsync(Guid id, Request request, Handler handler,
+    private static async Task<IResult> HandleAsync(Guid id, [FromForm] Request request, Handler handler,
         CancellationToken ct)
     {
         var result = await handler.HandleAsync(request, ct);
