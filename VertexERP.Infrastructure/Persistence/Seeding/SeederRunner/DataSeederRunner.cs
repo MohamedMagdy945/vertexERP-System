@@ -1,20 +1,13 @@
-﻿namespace VertexERP.Infrastructure.Persistence.Seeding.SeederRunner
+﻿namespace VertexERP.Infrastructure.Persistence.Seeding.SeederRunner;
+
+public class DataSeederRunner(IEnumerable<IDataSeeder> seeders)
 {
-    public class DataSeederRunner
+    public async Task SeedAsync()
     {
-        private readonly IEnumerable<IDataSeeder> _seeders;
-
-        public DataSeederRunner(IEnumerable<IDataSeeder> seeders)
+        foreach (var seeder in seeders)
         {
-            _seeders = seeders;
+            await seeder.SeedAsync();
         }
 
-        public async Task SeedAsync()
-        {
-            foreach (var seeder in _seeders)
-            {
-                await seeder.SeedAsync();
-            }
-        }
     }
 }

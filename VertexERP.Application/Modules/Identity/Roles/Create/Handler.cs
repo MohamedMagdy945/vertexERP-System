@@ -1,6 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using VertexERP.Application.Common.Abstractions.Endpoint;
+﻿using VertexERP.Application.Common.Abstractions.Endpoint;
 using VertexERP.Application.Common.Abstractions.Persistence;
 using VertexERP.Application.Common.Security;
 using VertexERP.Application.Shared.Results;
@@ -19,11 +17,9 @@ public sealed class Handler(IAppDbContext dbContext) : IHandler
 
         if (invalidPermissions.Length > 0)
         {
-            return Result<Response>.BadRequest(
-                $"Invalid permissions: {string.Join(", ", invalidPermissions)}");
+            return Result<Response>.BadRequest($"Invalid permissions: {string.Join(", ", invalidPermissions)}");
         }
         var role = new Role(request.Name);
-
 
         foreach (var permission in request.Permissions.Distinct())
         {
@@ -32,21 +28,16 @@ public sealed class Handler(IAppDbContext dbContext) : IHandler
 
         dbContext.Roles.Add(role);
 
-        try
-        {
-            await dbContext.SaveChangesAsync(ct);
-        }
-        catch (DbUpdateException ex)
-        {
-            if (ex.InnerException is SqlException { Number: 2601 or 2627 })
-                return Result<Response>.Conflict("Role name already exists.");
+        await dbContext.SaveChangesAsync(ct);
 
-            throw;
-        }
         return Result<Response>.Success(new Response
         {
             Id = role.Id,
-            Name = role.Name
+            Name = role.Name,
+            Permissions = role.RolePermissions
+            .Select(rp => rp.Permission)
+            .ToList()
+
         });
     }
 }

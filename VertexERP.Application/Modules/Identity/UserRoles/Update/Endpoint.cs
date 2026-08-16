@@ -1,5 +1,4 @@
-﻿using Azure;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using VertexERP.Application.Common.Abstractions.Endpoint;
@@ -14,15 +13,18 @@ public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPut("/users/{userId}/roles", async (Guid userId, Request request, Handler handler, CancellationToken ct) =>
-        {
-            var result = await handler.HandleAsync(request with { UserId = userId }, ct);
+        app.MapPut("users/{userId}/roles", HandleAsync)
+            .HasPermission(SecurityPerms.Identity.Manage)
+            .MapToApiVersion(1, 0)
+            .WithTags(Tags.Identity)
+            .Produces<Result<Response>>(StatusCodes.Status200OK);
+    }
 
-            return result.ToMinimalResult();
-        })
-        .RequireRole(SecurityRoles.SystemAdmin, SecurityRoles.SecurityAdmin)
-        .MapToApiVersion(1, 0)
-        .WithTags(Tags.Identity)
-        .Produces<Result<Page<Response>>>(StatusCodes.Status200OK);
+    private static async Task<IResult> HandleAsync(Guid userId, Request request, Handler handler,
+        CancellationToken ct)
+    {
+        var result = await handler.HandleAsync(userId, request, ct);
+
+        return result.ToMinimalResult();
     }
 }

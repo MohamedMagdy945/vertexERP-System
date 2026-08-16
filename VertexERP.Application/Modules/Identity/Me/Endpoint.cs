@@ -12,7 +12,7 @@ public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("/me", HandleAsync)
+        app.MapGet("me", HandleAsync)
             .RequireAuthorization()
             .MapToApiVersion(1, 0)
             .WithTags(Tags.Identity)

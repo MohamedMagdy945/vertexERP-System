@@ -6,9 +6,8 @@ using VertexERP.Infrastructure.Persistence.Seeding.SeederRunner;
 
 namespace VertexERP.Infrastructure.Persistence.Seeding.Seeder.Identity;
 
-public sealed class UserSeeder(
-IAppDbContext dbContext,
-IPasswordHasher passwordHasher) : IDataSeeder
+public sealed class UserSeeder(IAppDbContext dbContext,
+    IPasswordHasher passwordHasher) : IDataSeeder
 {
     public int Order => 1;
 

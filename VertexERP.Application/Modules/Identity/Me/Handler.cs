@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using VertexERP.Application.Common.Abstractions.Cache;
 using VertexERP.Application.Common.Abstractions.Endpoint;
 using VertexERP.Application.Common.Abstractions.Identity;
 using VertexERP.Application.Common.Abstractions.Persistence;
@@ -10,7 +9,7 @@ namespace VertexERP.Application.Modules.Identity.Me;
 public sealed class Handler(IAppDbContext dbContext,
     ICurrentUser currentUserService, IUserPermissionService userPermissionService) : IHandler
 {
-    public async Task<Result<Response>> HandleAsync( CancellationToken ct)
+    public async Task<Result<Response>> HandleAsync(CancellationToken ct)
     {
         var user = await dbContext.Users
             .AsNoTracking()
