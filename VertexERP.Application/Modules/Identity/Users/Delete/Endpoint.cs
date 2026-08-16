@@ -23,7 +23,7 @@ public sealed class Endpoint : IEndpoint
     private static async Task<IResult> HandleAsync(Guid id,Handler handler,
         CancellationToken cancellationToken)
     {
-        var result = await handler.HandleAsync( new Request(id),cancellationToken);
+        var result = await handler.HandleAsync(id,cancellationToken);
 
         return result.ToMinimalResult();
     }

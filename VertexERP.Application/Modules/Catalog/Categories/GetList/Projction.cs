@@ -1,6 +1,6 @@
 ﻿using VertexERP.Domain.Module.Catalog.Entities;
 
-namespace VertexERP.Application.Modules.Catalog.Categories.GetById;
+namespace VertexERP.Application.Modules.Catalog.Categories.GetList;
 
 public static class Projection
 {

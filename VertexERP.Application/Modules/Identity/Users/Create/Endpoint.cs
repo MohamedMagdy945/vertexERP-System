@@ -19,10 +19,10 @@ public sealed class Endpoint : IEndpoint
             .WithTags(Tags.Identity);
    }
 
-    private static async Task<IResult> HandleAsync( Request command, Handler handler,
+    private static async Task<IResult> HandleAsync(Request request, Handler handler,
         CancellationToken ct)
     {
-        var result = await handler.HandleAsync(command, ct);
+        var result = await handler.HandleAsync(request, ct);
 
         return result.ToMinimalResult();
     }

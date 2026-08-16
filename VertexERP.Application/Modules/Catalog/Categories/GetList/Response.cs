@@ -1,4 +1,4 @@
-﻿namespace VertexERP.Application.Modules.Catalog.Categories.GetById;
+﻿namespace VertexERP.Application.Modules.Catalog.Categories.GetList;
 
 public sealed class Response
 {
