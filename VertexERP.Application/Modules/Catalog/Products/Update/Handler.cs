@@ -8,10 +8,10 @@ namespace VertexERP.Application.Modules.Catalog.Products.Update;
 
 public sealed class Handler(IAppDbContext dbContext) : IHandler
 {
-    public async Task<Result<Response>> HandleAsync(Request request, CancellationToken ct)
+    public async Task<Result<Response>> HandleAsync(Guid id ,Request request, CancellationToken ct)
     {
         var affectedRows = await dbContext.Products
-            .Where(x => x.Id == request.Id)
+            .Where(x => x.Id == id)
             .ExecuteUpdateAsync(setters =>
             {
                 setters.SetProperty(x => x.Name, request.Name)

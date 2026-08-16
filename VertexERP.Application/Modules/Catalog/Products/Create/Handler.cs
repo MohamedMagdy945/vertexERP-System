@@ -12,7 +12,7 @@ public sealed class Handler(
     IAppDbContext dbContext,
     IFileStorage fileStorage) : IHandler
 {
-    public async Task<Result<Response>> Handle(Request request, CancellationToken ct)
+    public async Task<Result<Response>> HandleAsync(Request request, CancellationToken ct)
     {
         var code = request.Code.ToCleanString();
         var barcode = request.Barcode?.ToCleanString();

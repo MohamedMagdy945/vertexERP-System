@@ -7,15 +7,15 @@ namespace VertexERP.Application.Modules.Catalog.MeasurementUnits.Delete;
 
 public sealed class Handler(IAppDbContext dbContext) : IHandler
 {
-    public async Task<Result<Response>> HandleAsync(Request request, CancellationToken ct)
+    public async Task<Result<Response>> HandleAsync(Guid id, CancellationToken ct)
     {
         var affected = await dbContext.Categories
-            .Where(x => x.Id == request.Id)
+            .Where(x => x.Id == id)
             .ExecuteDeleteAsync(ct);
 
         if (affected == 0)
             return Result<Response>.NotFound("Category not found.");
 
-        return Result<Response>.Success(new Response(request.Id));
+        return Result<Response>.Success(new Response(id));
     }
 }

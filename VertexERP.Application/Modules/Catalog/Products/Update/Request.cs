@@ -1,7 +1,6 @@
 ﻿namespace VertexERP.Application.Modules.Catalog.Products.Update;
 
 public sealed record Request(
-    Guid Id,
     string Name,
     string Code,
     decimal CostPrice,

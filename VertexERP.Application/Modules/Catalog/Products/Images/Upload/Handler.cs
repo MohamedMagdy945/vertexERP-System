@@ -11,7 +11,7 @@ public sealed class Handler(
     IAppDbContext dbContext,
     IFileStorage fileStorage) : IHandler
 {
-    public async Task<Result<Response>> HandleAsync(Request request, CancellationToken ct)
+    public async Task<Result<Response>> HandleAsync(Guid productId ,Request request, CancellationToken ct)
     {
         var uploadedImagesCount = request.Images?.Count ?? 0;
 
@@ -19,7 +19,7 @@ public sealed class Handler(
             return Result<Response>.Failure("No images provided.");
 
         var context = await dbContext.Products
-            .Where(x => x.Id == request.ProductId)
+            .Where(x => x.Id == productId)
             .ToContext()
             .FirstOrDefaultAsync(ct);
 
@@ -43,14 +43,14 @@ public sealed class Handler(
         try
         {
             var images = urls
-                .Select(url => new ProductImage(url, request.ProductId))
+                .Select(url => new ProductImage(url, productId))
                 .ToList();
 
             dbContext.ProductImages.AddRange(images);
 
             await dbContext.SaveChangesAsync(ct);
 
-            var respone = new Response(request.ProductId, images.Select(x => new ImageResponse(x.Id, x.Url)).ToList());
+            var respone = new Response(productId, images.Select(x => new ImageResponse(x.Id, x.Url)).ToList());
             return Result<Response>.Success(respone, "Images uploaded successfully.");
         }
         catch

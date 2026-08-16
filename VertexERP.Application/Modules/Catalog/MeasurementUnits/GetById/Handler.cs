@@ -7,11 +7,11 @@ namespace VertexERP.Application.Modules.Catalog.MeasurementUnits.GetById;
 
 public sealed class Handler(IAppDbContext dbContext) : IHandler
 {
-    public async Task<Result<Response>> HandleAsync(Request request, CancellationToken ct)
+    public async Task<Result<Response>> HandleAsync(Guid id, CancellationToken ct)
     {
         var category = await dbContext.MeasurementUnits
                 .AsNoTracking()
-                .Where(x => x.Id == request.Id)
+                .Where(x => x.Id == id)
                 .ToResponse()
                 .SingleOrDefaultAsync(ct);
 

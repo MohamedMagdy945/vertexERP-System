@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using VertexERP.Application.Common.Abstractions.Endpoint;
 using VertexERP.Application.Common.Extensions;
@@ -13,15 +14,17 @@ public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapDelete("/products/{id:guid}", async (Guid id, Handler handler, CancellationToken ct) =>
-        {
-            var result = await handler.HandleAsync(new Request(id), ct);
+        app.MapDelete("products/{id:guid}", HandleAsync)
+            .HasPermission(SecurityPerms.Catalog.Manage)
+            .MapToApiVersion(1, 0)
+            .WithTags(Tags.Catalog)
+            .Produces<Result<Response>>(StatusCodes.Status200OK);
+    }
+    private static async Task<IResult> HandleAsync(Guid id, Handler handler,
+       CancellationToken ct)
+    {
+        var result = await handler.HandleAsync(id, ct);
 
-            return result.ToMinimalResult();
-        })
-        .HasPermission(SecurityPerms.Catalog.Manage)
-        .MapToApiVersion(1, 0)
-        .WithTags(Tags.Catalog)
-        .Produces<Result<Response>>(StatusCodes.Status200OK);
+        return result.ToMinimalResult();
     }
 }

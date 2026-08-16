@@ -14,12 +14,7 @@ public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("/products", async ([FromForm] Request command, Handler handler, CancellationToken ct) =>
-        {
-            var result = await handler.Handle(command, ct);
-
-            return result.ToMinimalResult();
-        })
+        app.MapPost("products", HandleAsync) 
         .AddValidation<Request>()
         .HasPermission(SecurityPerms.Catalog.Manage)
         .MapToApiVersion(1, 0)
@@ -27,4 +22,12 @@ public sealed class Endpoint : IEndpoint
         .DisableAntiforgery()
         .Produces<Result<Response>>(StatusCodes.Status200OK);
     }
+    private static async Task<IResult> HandleAsync([FromForm] Request request, Handler handler,
+        CancellationToken ct)
+    {
+        var result = await handler.HandleAsync(request, ct);
+
+        return result.ToMinimalResult();
+    }
+
 }

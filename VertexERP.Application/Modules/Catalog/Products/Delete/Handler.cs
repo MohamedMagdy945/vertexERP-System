@@ -8,15 +8,15 @@ namespace VertexERP.Application.Modules.Catalog.Products.Delete;
 
 public sealed class Handler(IAppDbContext dbContext, IFileStorage fileStorage) : IHandler
 {
-    public async Task<Result<Response>> HandleAsync(Request request, CancellationToken ct)
+    public async Task<Result<Response>> HandleAsync(Guid id, CancellationToken ct)
     {
         var imagePaths = await dbContext.ProductImages
-          .Where(x => x.ProductId == request.Id)
+          .Where(x => x.ProductId == id)
           .Select(x => x.Url)
           .ToListAsync(ct);
 
         var affectedRows = await dbContext.Products
-          .Where(x => x.Id == request.Id)
+          .Where(x => x.Id == id)
           .ExecuteDeleteAsync(ct);
 
         if (affectedRows == 0)
@@ -27,6 +27,6 @@ public sealed class Handler(IAppDbContext dbContext, IFileStorage fileStorage) :
             await fileStorage.DeleteManyAsync(imagePaths, ct);
         }
 
-        return Result<Response>.Success(new Response(request.Id), "Product deleted successfully.");
+        return Result<Response>.Success(new Response(id), "Product deleted successfully.");
     }
 }
