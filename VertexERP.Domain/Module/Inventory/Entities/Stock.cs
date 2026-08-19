@@ -9,9 +9,10 @@ public sealed class Stock : AuditableEntity
     public Product Product { get; set; } = default!;
     public Guid WarehouseId { get; private set; }
     public Warehouse Warehouse { get; set; } = default!;
-
     public decimal Quantity { get; private set; }
+    public decimal ReservedQuantity { get; private set; }
 
+    public decimal AvailableQuantity => Quantity - ReservedQuantity;
     private Stock() { }
 
     private Stock(Guid productId,Guid warehouseId)
@@ -48,6 +49,19 @@ public sealed class Stock : AuditableEntity
         MarkAsUpdated();
    
         return Result.Success();
-    } 
+    }
+    public Result Reserve(decimal quantity)
+    {
+        if (quantity <= 0)
+            return Result.Failure("Reservation quantity must be greater than zero.");
 
+        if (AvailableQuantity < quantity)
+            return Result.Failure("Insufficient available stock.");
+
+        ReservedQuantity += quantity;
+
+        MarkAsUpdated();
+
+        return Result.Success();
+    }
 }

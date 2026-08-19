@@ -40,8 +40,6 @@ public sealed class Handler(IAppDbContext dbContext , ICurrentUser currentUser) 
 
         dbContext.StockMovements.Add(movement);
 
-        dbContext.StockMovements.Add(movement);
-
         await dbContext.SaveChangesAsync(ct);
 
         var response = new Response(

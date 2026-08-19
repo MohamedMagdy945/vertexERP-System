@@ -17,7 +17,11 @@ public sealed class StockConfiguration : IEntityTypeConfiguration<Stock>
         });
 
         builder.Property(x => x.Quantity)
-            .HasPrecision(18, 2)
+            .HasPrecision(18, 3)
+            .HasDefaultValue(0);
+
+        builder.Property(x => x.ReservedQuantity)
+            .HasPrecision(18, 3)
             .HasDefaultValue(0);
 
         builder.Property(x => x.UpdatedAt)

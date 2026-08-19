@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using VertexERP.Application.Common.Abstractions.Endpoint;
 using VertexERP.Application.Common.Extensions;
@@ -13,14 +14,14 @@ public sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("stock-movements/receive", HandleAsync)
-            .HasPermission(SecurityPerms.Inventory.View)
+        app.MapPost("inventory/stock-movements/receive", HandleAsync)
+            .HasPermission(SecurityPerms.Inventory.Manage)
             .MapToApiVersion(1, 0)
             .WithTags(Tags.Inventory)
             .Produces<Result<Response>>(StatusCodes.Status200OK);
     }
 
-    private static async Task<IResult> HandleAsync([AsParameters] Request request, Handler handler,
+    private static async Task<IResult> HandleAsync(Request request, Handler handler,
         CancellationToken ct)
     {
         var result = await handler.HandleAsync(request, ct);

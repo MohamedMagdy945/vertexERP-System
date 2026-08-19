@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VertexERP.Infrastructure.Persistence;
 
@@ -11,9 +12,11 @@ using VertexERP.Infrastructure.Persistence;
 namespace VertexERP.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260819103229_UpdateAppDbb")]
+    partial class UpdateAppDbb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -345,15 +348,12 @@ namespace VertexERP.Infrastructure.Persistence.Migrations
 
                     b.Property<decimal>("Quantity")
                         .ValueGeneratedOnAdd()
-                        .HasPrecision(18, 3)
-                        .HasColumnType("decimal(18,3)")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)")
                         .HasDefaultValue(0m);
 
                     b.Property<decimal>("ReservedQuantity")
-                        .ValueGeneratedOnAdd()
-                        .HasPrecision(18, 3)
-                        .HasColumnType("decimal(18,3)")
-                        .HasDefaultValue(0m);
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");

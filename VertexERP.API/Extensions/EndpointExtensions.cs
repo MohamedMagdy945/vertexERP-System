@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using Serilog.Core;
 using VertexERP.Application.Common;
 using VertexERP.Application.Common.Abstractions.Endpoint;
 
@@ -23,10 +24,16 @@ public static class EndpointExtensions
                            && !type.IsInterface
                            && !type.IsAbstract);
 
+
+        var logger = app.Services
+            .GetRequiredService<ILogger<Program>>();
+
         foreach (var type in endpointTypes)
         {
+
             var endpoint = Activator.CreateInstance(type) as IEndpoint;
 
+          
             endpoint?.MapEndpoint(versionedGroup);
         }
 

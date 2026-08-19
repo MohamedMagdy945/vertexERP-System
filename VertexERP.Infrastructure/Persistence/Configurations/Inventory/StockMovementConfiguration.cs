@@ -18,6 +18,7 @@ public sealed class StockMovementConfiguration
             .IsRequired()
             .HasPrecision(18, 3);
 
+
         builder.Property(x => x.Type)
             .HasConversion<int>()
             .IsRequired();

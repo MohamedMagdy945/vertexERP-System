@@ -56,6 +56,22 @@ public class Program
 
             app.MapHub<NotificationHub>("/hubs/notifications");
 
+            foreach (var endpointDataSource in app.Services.GetServices<EndpointDataSource>())
+            {
+                foreach (var endpoint in endpointDataSource.Endpoints)
+                {
+                    try
+                    {
+                        _ = endpoint.Metadata;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"❌ CRASHING ENDPOINT FOUND: {endpoint.DisplayName}");
+                        throw;
+                    }
+                }
+            }
+
             app.Run();
         }
         catch (Exception ex)
