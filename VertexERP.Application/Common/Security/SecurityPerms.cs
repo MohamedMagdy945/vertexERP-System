@@ -20,6 +20,7 @@ public static class SecurityPerms
     {
         public const string View = "inventory.view";
         public const string Manage = "inventory.manage";
+        public const string Adjustment = "inventory.adjustment.manage";
     }
 
     public static class Sales

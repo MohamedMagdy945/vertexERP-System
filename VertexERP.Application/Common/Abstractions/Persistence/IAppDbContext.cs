@@ -25,6 +25,7 @@ public interface IAppDbContext
     DbSet<Warehouse> Warehouses { get; }
     DbSet<Stock> Stocks { get; }
     DbSet<StockMovement> StockMovements { get; }
+    DbSet<StockAdjustment> StockAdjustments { get; }
 
     // Notifications
     DbSet<Notification> Notifications { get; }

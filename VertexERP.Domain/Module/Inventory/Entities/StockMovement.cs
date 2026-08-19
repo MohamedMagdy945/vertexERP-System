@@ -54,6 +54,31 @@ public sealed class StockMovement : Entity
         Notes = notes;
     }
 
+    public static StockMovement CreateAdjustment(
+        Guid warehouseId,
+        Guid productId,
+        decimal quantity,
+        Guid performedByUserId)
+    {
+        if (quantity == 0)
+            throw new ArgumentException(
+                "Movement quantity cannot be zero.",
+                nameof(quantity));
+
+        var direction = quantity > 0
+            ? StockMovementDirection.In
+            : StockMovementDirection.Out;
+
+        return new StockMovement(
+            warehouseId,
+            productId,
+            Math.Abs(quantity),
+            performedByUserId,
+            direction,
+            StockMovementType.Adjustment,
+            DateTime.UtcNow);
+    }
+
     public void UpdateNotes(string? notes)
     {
         Notes = notes;

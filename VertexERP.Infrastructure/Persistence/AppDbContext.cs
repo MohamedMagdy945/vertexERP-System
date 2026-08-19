@@ -22,6 +22,7 @@ public class AppDbContext : DbContext, IAppDbContext
     public DbSet<ProductImage> ProductImages { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<MeasurementUnit> MeasurementUnits { get; set; }
+    public DbSet<StockAdjustment> StockAdjustments { get; set; }
 
     // Inventory
     public DbSet<Warehouse> Warehouses { get; set; }

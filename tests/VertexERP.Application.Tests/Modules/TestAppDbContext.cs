@@ -37,6 +37,8 @@ public class TestAppDbContext : DbContext, IAppDbContext
 
     public DbSet<NotificationRecipient> NotificationRecipients => throw new NotImplementedException();
 
+    public DbSet<StockAdjustment> StockAdjustments => throw new NotImplementedException();
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseInMemoryDatabase(Guid.NewGuid().ToString());

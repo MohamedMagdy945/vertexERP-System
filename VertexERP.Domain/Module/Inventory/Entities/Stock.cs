@@ -64,4 +64,17 @@ public sealed class Stock : AuditableEntity
 
         return Result.Success();
     }
+    public Result ApplyAdjustment(decimal quantity)
+    {
+        var newQuantity = Quantity + quantity;
+
+        if (newQuantity < 0)
+            return Result.Failure("Adjustment would make stock quantity negative.");
+
+        Quantity = newQuantity;
+
+        MarkAsUpdated();
+
+        return Result.Success();
+    }
 }

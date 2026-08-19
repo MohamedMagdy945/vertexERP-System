@@ -40,7 +40,7 @@ public class Program
 
             app.UseSwaggerDocumentation();
 
-            await app.SeedDataAsync();
+            //await app.SeedDataAsync();
 
             app.UseMiddleware<CorrelationIdMiddleware>();
 
@@ -55,22 +55,6 @@ public class Program
             app.MapEndpoints();
 
             app.MapHub<NotificationHub>("/hubs/notifications");
-
-            foreach (var endpointDataSource in app.Services.GetServices<EndpointDataSource>())
-            {
-                foreach (var endpoint in endpointDataSource.Endpoints)
-                {
-                    try
-                    {
-                        _ = endpoint.Metadata;
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"❌ CRASHING ENDPOINT FOUND: {endpoint.DisplayName}");
-                        throw;
-                    }
-                }
-            }
 
             app.Run();
         }
