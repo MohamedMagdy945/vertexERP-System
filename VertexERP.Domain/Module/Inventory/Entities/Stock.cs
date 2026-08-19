@@ -10,32 +10,44 @@ public sealed class Stock : AuditableEntity
     public Guid WarehouseId { get; private set; }
     public Warehouse Warehouse { get; set; } = default!;
 
-    public int Quantity { get; private set; }
+    public decimal Quantity { get; private set; }
 
     private Stock() { }
 
-    public Stock(Guid productId, Guid warehouseId, int quantity = 0)
+    private Stock(Guid productId,Guid warehouseId)
     {
         ProductId = productId;
         WarehouseId = warehouseId;
-        Quantity = quantity;
     }
 
-    public void Increase(int quantity)
+    public static Stock Create(Guid productId,Guid warehouseId)
     {
+        return new Stock(productId, warehouseId);
+    }
+
+    public Result Receive(decimal quantity)
+    {
+        if (quantity <= 0)
+            return Result.Failure("Receive quantity must be greater than zero.");
+
         Quantity += quantity;
+
         MarkAsUpdated();
+        return Result.Success();
     }
 
-    public void Decrease(int quantity)
+    public Result Issue(decimal quantity)
     {
+        if (quantity <= 0)
+            return Result.Failure("Issue quantity must be greater than zero.");
+
+        if (Quantity < quantity)
+            return Result.Failure("Insufficient stock.");
+
         Quantity -= quantity;
         MarkAsUpdated();
-    }
+   
+        return Result.Success();
+    } 
 
-    public void SetQuantity(int quantity)
-    {
-        Quantity = quantity;
-        MarkAsUpdated();
-    }
 }
