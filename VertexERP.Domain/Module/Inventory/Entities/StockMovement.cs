@@ -17,9 +17,10 @@ public sealed class StockMovement : Entity
 
     public Guid PerformedByUserId { get; private set; }
     public User PerformedByUser { get; private set; } = default!;
-    public StockMovementType Type { get; set; }
 
-    public StockMovementDirection Direction { get; set; }
+    public StockMovementType Type { get; private set; }
+
+    public StockMovementDirection Direction { get; private set; }
 
     public DateTime TransactionDate { get; private set; }
 
@@ -27,12 +28,14 @@ public sealed class StockMovement : Entity
 
     public string? Notes { get; private set; }
 
-    private StockMovement() { }
+    private StockMovement()
+    {
+    }
 
     public StockMovement(
         Guid warehouseId,
         Guid productId,
-        int quantity,
+        decimal quantity,
         Guid performedByUserId,
         StockMovementDirection direction,
         StockMovementType type,
@@ -44,8 +47,8 @@ public sealed class StockMovement : Entity
         ProductId = productId;
         Quantity = quantity;
         PerformedByUserId = performedByUserId;
-        Type = type;
         Direction = direction;
+        Type = type;
         TransactionDate = transactionDate;
         ReferenceNumber = referenceNumber;
         Notes = notes;
@@ -54,6 +57,7 @@ public sealed class StockMovement : Entity
     public void UpdateNotes(string? notes)
     {
         Notes = notes;
+
         MarkAsUpdated();
     }
 }

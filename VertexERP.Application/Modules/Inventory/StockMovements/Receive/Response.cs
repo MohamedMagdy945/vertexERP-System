@@ -5,4 +5,6 @@ namespace VertexERP.Application.Modules.Inventory.StockMovements.Receive;
 public sealed record Response(
     Guid ProductId,
     Guid WarehouseId,
-    decimal Quantity);
+    decimal PreviousQuantity,
+    decimal ReceivedQuantity,
+    decimal CurrentQuantity);
